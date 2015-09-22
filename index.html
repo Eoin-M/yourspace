@@ -1,11 +1,24 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>YourSpace</title>
-		<script>
-		</script>
-	</head>
-	<body>
-	</body>
-	
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Calculator Add Example</title>
+</head>
+<body>
+  <form name="myForm" action="" onsubmit="return calc(this['A'].value,this['B'].value);" method="post">
+      <input type="text" name="A"> + 
+      <input type="text" name="B"> =
+      <span id="result"></span>
+      <br>
+      <input type="submit" value="Submit">
+  </form>
+    <script>
+    function calc(a,b){
+      //var a = document.forms["myForm"]["A"].value;
+      //var b = document.forms["myForm"]["B"].value;
+      document.querySelector("#result").textContent = Number(a)+Number(b);
+      return false;
+    }
+    </script>
+</body>
 </html>
