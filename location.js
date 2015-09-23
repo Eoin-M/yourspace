@@ -1,9 +1,4 @@
-/* Up to date version of location functions which replaces david.js file. They will be changed in future and I'm planning on adding a location object 
-	as a global varibale instead but this works for now. To get location in longtitude and latitude call the myGetLocation()
-	function and the global variables lat and long will be changed. 
-*/
-var lat;
-var long;
+var loc = new UserLocation;
 
 function myGetLocation()
 {
@@ -22,15 +17,22 @@ function myGetLocation()
 
 function positionToLongLat(position)
 {
-	lat = position.coords.latitude;
-	long = position.coords.longitude;
-	console.log("longtitude: "+long+"\nlatitude: "+lat);
-	runGoogleNavigatorAPI();
+	console.log("longtitude: "+position.coords.longitude+"\nlatitude: "+position.coords.latitude);
+	loc.long = position.coords.longitude;
+	loc.lat = position.coords.latitude;
+	loc.isFound = true;
+	runGoogleNavigatorAPI( position.coords.longitude , position.coords.latitude );
 }
 
 function noLocationError(error) //should work but I've never seen it called...
 {
-	//alert("failed");
+	loc.long = null;
+	loc.lat = null;
+	loc.address = null;
+	loc.city = null;
+	loc.state = null;
+	loc.country = null;
+	loc.isFound = false;
 	switch(error.code) {
 		case error.PERMISSION_DENIED:
 			console.log("The user denied the request for Geolocation.");
@@ -47,7 +49,7 @@ function noLocationError(error) //should work but I've never seen it called...
 	}
 }
 
-function runGoogleNavigatorAPI()
+function runGoogleNavigatorAPI(long, lat)
 //http://stackoverflow.com/questions/6797569/get-city-name-using-geolocation source
 {
 	var geocoder = new google.maps.Geocoder();
@@ -56,19 +58,65 @@ function runGoogleNavigatorAPI()
 	{//start of anonymous function taken as the second input of geocoder.geocode method
 		if (status == google.maps.GeocoderStatus.OK)
 		{
-			if (results[0])//says (results[1]) in original source?
+			if (results[0])//if there is a result
 			{
-				console.log(results[0].formatted_address);
-				//TODO: results object can be further parsed to get city, country etc.
+				loc.address = results[0].formatted_address;
+				//console.log(results[0]);
+				var i = 0;
+				for (i = 0; i < results[0].address_components.length; i++)
+				{
+					
+					var j = 0;
+					for (j = 0; j < results[0].address_components[i].types.length; j++)
+					{
+						if (results[0].address_components[i].types[j] == "administrative_area_level_1")
+						{
+							loc.city = results[0].address_components[i].long_name;
+						}
+						else if (results[0].address_components[i].types[j] == "administrative_area_level_6")
+						{
+							loc.state = results[0].address_components[i].long_name;
+						}
+						else if (results[0].address_components[i].types[j] == "country")
+						{
+							loc.country = results[0].address_components[i].long_name;
+						}
+					}
+				}
 			}
 			else
 			{
 				console.log("No results found");
+				loc.address = null;
+				loc.city = null;
+				loc.state = null;
+				loc.country = null;
 			}
 		}
 		else
 		{
-			alert("Geocoder failed due to: "+status);
+			console.log("Geocoder failed due to: "+status);
+			loc.address = null;
+			loc.city = null;
+			loc.state = null;
+			loc.country = null;
 		}
 	});
+	
+}
+
+function UserLocation(long, lat, address, city, state, country, isFound)//A constructor function
+{
+	this.long = long;
+	this.lat = lat;
+	this.address = address;
+	this.city = city;
+	this.state = state;
+	this.country = country;
+	this.isFound = isFound;//boolean on whether we have longitude and latitude coordinates
+}
+
+function showLoc()//temporary function to show off locations
+{
+	alert("full address = "+ loc.address + "\ncity = " + loc.city +"\nstate = "+ loc.state +"\ncountry = "+loc.country);
 }
