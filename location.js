@@ -61,7 +61,7 @@ function runGoogleNavigatorAPI(long, lat)
 			if (results[0])//if there is a result
 			{
 				loc.address = results[0].formatted_address;
-				//console.log(results[0]);
+				console.log(results[0]);
 				var i = 0;
 				for (i = 0; i < results[0].address_components.length; i++)
 				{
@@ -69,11 +69,11 @@ function runGoogleNavigatorAPI(long, lat)
 					var j = 0;
 					for (j = 0; j < results[0].address_components[i].types.length; j++)
 					{
-						if (results[0].address_components[i].types[j] == "administrative_area_level_1")
+						if (results[0].address_components[i].types[j] == "locality")
 						{
 							loc.city = results[0].address_components[i].long_name;
 						}
-						else if (results[0].address_components[i].types[j] == "administrative_area_level_6")
+						else if (results[0].address_components[i].types[j] == "administrative_area_level_1")
 						{
 							loc.state = results[0].address_components[i].long_name;
 						}
@@ -81,6 +81,14 @@ function runGoogleNavigatorAPI(long, lat)
 						{
 							loc.country = results[0].address_components[i].long_name;
 						}
+						//route means street name
+						//Galway is locality and political
+						//Galway City is administrative_area_level_2 and political
+						//Galway is administrative_area_level_1 and political
+						//Ireland is country and political
+						
+						//Have city as locality
+						//Have state as administrative_area_level_1
 					}
 				}
 			}
@@ -120,3 +128,12 @@ function showLoc()//temporary function to show off locations
 {
 	alert("full address = "+ loc.address + "\ncity = " + loc.city +"\nstate = "+ loc.state +"\ncountry = "+loc.country);
 }
+
+//hard code New York: Lat is 40.7127, Long is -74.0059
+//hard code Mountain View California: Lat is 37.421996, Long is -122.085033
+//Paris 48.858336, 2.294528
+//Joannaville Poland 53.426777, 14.512333
+//Tokyo 35.738422, 139.710961
+//Rio -22.951862, -43.210766
+//Capetown -34.357214, 18.474284
+//Sydney -33.857169, 151.215173
