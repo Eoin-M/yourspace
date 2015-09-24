@@ -67,6 +67,7 @@ function runGoogleNavigatorAPI(long, lat)
 				{
 					
 					var j = 0;
+					//TODO clear loc fields due to old results staying if no new address part matching the type is found
 					for (j = 0; j < results[0].address_components[i].types.length; j++)
 					{
 						if (results[0].address_components[i].types[j] == "locality")
@@ -122,6 +123,51 @@ function UserLocation(long, lat, address, city, state, country, isFound)//A cons
 	this.state = state;
 	this.country = country;
 	this.isFound = isFound;//boolean on whether we have longitude and latitude coordinates
+}
+
+function initMap() 
+{
+	
+	if (loc.isFound) 
+	{
+		var myLatlng = {lat: loc.lat, lng: loc.long};
+	}
+	else 
+	{
+		var myLatlng = {lat: 0, lng: 0};
+	}
+	var map = new google.maps.Map(document.getElementById('map'), 
+	{
+    zoom: 4,
+    center: myLatlng
+	});
+
+  map.addListener('click', function(event) {
+	  
+	var lat = event.latLng.lat();
+    var lng = event.latLng.lng();
+	var marker = new google.maps.Marker({
+		position: event.latLng,
+		map: map,
+		visible: true,
+		animation: google.maps.Animation.DROP,
+	});
+	//alert("lat is :"+lat+    "lng is :"+lng);
+	setTimeout(function() //delay of 500ms to let pin dropping animation happen first
+	{
+    	if (confirm("Is this your location?"))
+		{
+			loc.long = event.latLng.lng();
+			loc.lat = event.latLng.lat();
+			loc.isFound = true;
+			runGoogleNavigatorAPI(event.latLng.lng(), event.latLng.lat());
+		}
+		else
+		{
+			marker.setMap(null);
+		}
+	}, 500)
+  });
 }
 
 function showLoc()//temporary function to show off locations

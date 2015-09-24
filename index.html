@@ -2,9 +2,14 @@
 <html>
 	<head>
 		<title>YourSpace</title>
-		<script>
-			
-		</script>
+		<style>
+			#map {
+					height: 500px;
+					width: 500px;
+					/*Was 50% for both but they wouldn't show up at all unless <!DOCTYPE html> was omitted...
+					Something to investigate but for now 500px will do... TODO*/
+				}
+		</style>
 		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script> 
 		<script type="text/javascript" src="location.js"></script>
 	</head>
@@ -12,6 +17,9 @@
 	<body>
 		<button type="button" onclick="myGetLocation()";>Get location!</button>
 		<button type="button" onclick="showLoc()";>Show Location!</button>
+		<button type="button" onclick="initMap()";>Show Map!</button>
+		<div id="map">
+		</div>
 	</body>
 	
 </html>
