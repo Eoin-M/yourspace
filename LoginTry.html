@@ -1,0 +1,134 @@
+<HTML>
+    <head>
+        <meta charset="UTF-8"> <!-- A meta tag describes the pages content but doen't show up on the loaded page-->
+        <script>
+            var http = require('http');
+
+            http.request({ hostname: 'danu6.it.nuigalway.ie/Joanna98/MEAN/LoginTry.html' }, function(res) {
+            res.setEncoding('utf8');
+            res.on('data', function(chunk) {
+            console.log(chunk);
+            });
+            }).end();
+        </script>
+    </head>
+
+    <body>
+        M.E.A.N Website!
+        <br><br>
+
+        <div 
+          class="fb-login-button"
+          scope="public_profile, email"
+          data-max-rows="2" 
+          data-size="xlarge" 
+          data-show-faces="true" 
+          data-auto-logout-link="true"
+          onlogin="checkLoginState();"></div>
+     
+        <div id="fb-root"></div>
+
+
+
+<!--
+        <div id="myLikeButton"
+        class="fb-like" 
+        data-href="http://danu6.it.nuigalway.ie/Joanna98/MEAN/LoginTry.html" 
+        data-layout="standard" 
+        data-action="like" 
+        data-show-faces="true" 
+        data-share="true"></div>
+      -->
+<!--
+        <fb:login-button scope="public_profile,email" data-max-rows="2" data-size="xlarge" onlogin="checkLoginState();">
+        </fb:login-button>
+-->
+        <script>
+
+          (function(d, s, id) {
+               var js, fjs = d.getElementsByTagName(s)[0];
+
+              if (d.getElementById(id)) return;
+                js = d.createElement(s); 
+                js.id = id;
+                js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.4&appId=1627445677505485";
+                fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));
+
+    
+          // This is called with the results from from FB.getLoginStatus(). 
+          function statusChangeCallback(response) {
+              console.log('statusChangeCallback');
+              console.log(response);
+              
+              if (response.status === 'connected') {
+                  console.log("Logged into M.E.A.N & FB");
+                  testAPI();
+              } else if (response.status === 'not_authorized') {
+                  document.getElementById('status').innerHTML = 'Please log ' + 'into this app.';
+                  console.log("Logged to FB & NOT MEAN!")
+              } else {
+                document.getElementById('status').innerHTML = 'Please log ' + 'into Facebook.';
+                console.log("Not logged into MEAN or FB");
+              }
+            displayLike();
+          } //end of statusChangeCallback
+
+/*
+          function displayLike(){
+
+            var likeBtn = getElementById("myLikeButton");
+
+            console.log("I made a function displayLike");
+
+            if(FB.getLoginStatus ==='not_authorized' || FB.getLoginStatus === 'unknown'){
+              likeBtn.style.visibility = "hidden";
+            } else if (FB.getLoginStatus === 'connected'){
+              likeBtn.style.visibility = "visible";
+            } else {
+              likeBtn.style.visibility = "visible";
+            }
+          }
+          */
+
+          // This function is called when someone finishes with the Login Button
+          function checkLoginState() {
+            FB.getLoginStatus(function(response) {
+              statusChangeCallback(response);
+            });
+          }
+
+          window.fbAsyncInit = function() {
+              FB.init({
+                appId      : '1627420814174638', //M.E.A.N teams official ID 
+                cookie     : true,  // enable cookies 
+                xfbml      : true,  // parse social plugins on this page
+                version    : 'v2.2' // use version 2.2
+              });
+
+              // This function gets the state of the person visiting this page and can return one of three states to
+              // the callback you provide either: Logged in to M.E.A.N & FB ('connected'), Logged into FB but not M.E.A.N ('not_authorised'),
+              // or not Logged into FB or M.E.A.N, these three cases are handled in the callback function.
+
+              FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+              });
+
+          };  //end of fbAsynsInit function
+
+          // Here we run a very simple test of the Graph API after login is successful
+          function testAPI() {
+              console.log('Welcome to The M.E.A.N App, please wait while we fetch your information... ');
+
+              FB.api('/me', function(response) {
+                console.log('Successful login for: ' + response.name);
+                //this makes sure that the message below doesn't desplay if you are logged out
+                if(!FB.getLoginStatus === 'unknown' || !FB.getLoginStatus === 'not_authorized'){
+                   document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
+                 }
+              });
+          } //end of testAPI
+          
+        </script>
+    </body>
+</HTML>
