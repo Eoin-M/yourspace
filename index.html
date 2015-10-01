@@ -9,7 +9,17 @@
 					/*Was 50% for both but they wouldn't show up at all unless <!DOCTYPE html> was omitted...
 					Something to investigate but for now 500px will do... TODO*/
 				}
+			.redText
+			{
+				color: red;
+			}
+			.greenText
+			{
+				color: green;
+			}
 		</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="stocks.js"></script>
 		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script> 
 		<script type="text/javascript" src="location.js"></script>
 	</head>
@@ -22,6 +32,15 @@
 			<input type="text" name="q" size="31" value="" placeholder="Search Google">
 		</form>
 		<div id="map">
+		</div>
+
+		<div class="stock">
+			Search Stock:<br>
+			<input type="text" id="queryStockName" >
+			<button type="button" onclick="searchStock()"> Search for this stock </button>
+			<div id="stockName"> </div>
+			<div id="stockResult"> </div>
+			<div id="stockChange"> </div>
 		</div>
 	</body>
 	
