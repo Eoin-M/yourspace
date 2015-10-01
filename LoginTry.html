@@ -15,36 +15,37 @@
 
     <body>
         M.E.A.N Website!
-        <br><br>
+        <h6>If you don't see anything turn on Facebook trackers and reload the page <h6>
+        
 
-        <div 
-          class="fb-login-button"
-          scope="public_profile, email"
-          data-max-rows="2" 
-          data-size="xlarge" 
-          data-show-faces="true" 
-          data-auto-logout-link="true"
-          onlogin="checkLoginState();"></div>
-     
         <div id="fb-root"></div>
 
+        <!-- This div puts in the big FB login button -->
+        <div class="fb-login-button" 
+        scope="public_profile, email" 
+        data-max-rows="2" 
+        data-size="xlarge" 
+        data-show-faces="true"  
+        data-auto-logout-link="true" 
+        onlogin="checkLoginState();"></div>
 
+        <br><br>
 
-<!--
-        <div id="myLikeButton"
-        class="fb-like" 
+        <div id="mylkbtn"
+        style = "display: none;"
+        class="fb-like"
         data-href="http://danu6.it.nuigalway.ie/Joanna98/MEAN/LoginTry.html" 
-        data-layout="standard" 
-        data-action="like" 
-        data-show-faces="true" 
-        data-share="true"></div>
-      -->
+        data-layout = "standard"
+        data-action="like"
+        data-share="true"
+        data-show-faces="true"
+        ></div>
+        
 <!--
         <fb:login-button scope="public_profile,email" data-max-rows="2" data-size="xlarge" onlogin="checkLoginState();">
         </fb:login-button>
 -->
         <script>
-
           (function(d, s, id) {
                var js, fjs = d.getElementsByTagName(s)[0];
 
@@ -64,32 +65,18 @@
               if (response.status === 'connected') {
                   console.log("Logged into M.E.A.N & FB");
                   testAPI();
+              }else if (response.status === 'unknown') {
+                  document.getElementById("mylkbtn").style = "display: none";
               } else if (response.status === 'not_authorized') {
                   document.getElementById('status').innerHTML = 'Please log ' + 'into this app.';
-                  console.log("Logged to FB & NOT MEAN!")
+                  console.log("Logged to FB & NOT MEAN!");
+                  document.getElementById("mylkbtn").style = "display: none";
               } else {
-                document.getElementById('status').innerHTML = 'Please log ' + 'into Facebook.';
-                console.log("Not logged into MEAN or FB");
+                  document.getElementById('status').innerHTML = 'Please log ' + 'into Facebook.';
+                  console.log("Not logged into MEAN or FB");
+                  document.getElementById("mylkbtn").style = "display: none";
               }
-            displayLike();
           } //end of statusChangeCallback
-
-/*
-          function displayLike(){
-
-            var likeBtn = getElementById("myLikeButton");
-
-            console.log("I made a function displayLike");
-
-            if(FB.getLoginStatus ==='not_authorized' || FB.getLoginStatus === 'unknown'){
-              likeBtn.style.visibility = "hidden";
-            } else if (FB.getLoginStatus === 'connected'){
-              likeBtn.style.visibility = "visible";
-            } else {
-              likeBtn.style.visibility = "visible";
-            }
-          }
-          */
 
           // This function is called when someone finishes with the Login Button
           function checkLoginState() {
@@ -108,7 +95,8 @@
 
               // This function gets the state of the person visiting this page and can return one of three states to
               // the callback you provide either: Logged in to M.E.A.N & FB ('connected'), Logged into FB but not M.E.A.N ('not_authorised'),
-              // or not Logged into FB or M.E.A.N, these three cases are handled in the callback function.
+              // or not Logged into FB or M.E.A.N
+              // These three cases are handled in the callback function.
 
               FB.getLoginStatus(function(response) {
                 statusChangeCallback(response);
@@ -127,8 +115,23 @@
                    document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
                  }
               });
+              mybtn();
           } //end of testAPI
-          
+
+          function mybtn(){
+            document.getElementById("mylkbtn").style = "display: block";
+
+          }
         </script>
+
+        <!-- 
+          Below we include the Login Button social plugin. This button uses
+          the JavaScript SDK to present a graphical Login button that triggers
+          the FB.login() function when clicked.
+        -->
+        
+        
+        <!-- <div id="status"></div> -->
+
     </body>
 </HTML>
