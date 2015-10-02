@@ -11,19 +11,26 @@ function getStockData(symbol)
 		//$("#date").text("Bid Price: " + data.query.results.quote.Date);
 		//$("#time").text("Bid Price: " + data.query.results.quote.LastTradeTime);
 		$("#stockResult").text("Price: " + data.query.results.quote.LastTradePriceOnly);
-		$("#stockChange").text("Change: " + data.query.results.quote.PercentChange);
+		if( !(data.query.results.quote.PercentChange === null))
+		{
+			$("#stockChange").text("Change: " + data.query.results.quote.PercentChange);
+		}
+		else
+		{
+			$("#stockChange").text("Change: 0.00%");
+		}
 		//$("#bid").text("Bid Price: " + data.query.results.quote.LastTradePriceOnly);
 		//$("#ask").text("Bid Price: " + data.query.results.quote.Ask);
 		//("#volume").text("Bid Price: " + data.query.results.quote.Volume);
 		//$("#high").text("Bid Price: " + data.query.results.quote.HighLimit);
 		//$("#low").text("Bid Price: " + data.query.results.quote.LowLimit);
-
+		
 		var change = parseInt(data.query.results.quote.PercentChange,10);//10 here means base 10
-		if(change >= 0)
+		if(change > 0)
 		{
 			document.getElementById("stockChange").className = "greenText";
 		}
-		else
+		else if (change < 0)
 		{
 			document.getElementById("stockChange").className = "redText";
 		}
