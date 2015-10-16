@@ -12,17 +12,17 @@ html(lang="en")
     link(rel='stylesheet', type='text/css', href="/style.css")
   body
     br
-    .dropdown
-      button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown')
-        | Rss Feeds 
-        span.caret
-      ul.dropdown-menu
-        li
-          a#rte RTE
-        li
-          a#bbc /r/Gaming
-        li
-          a#cnn CNN
-    #title.title
-    #rssFeed.scroll
-    br
+    #rss
+        .dropdown
+          button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown')
+            | Rss Feeds 
+            span.caret
+          ul.dropdown-menu
+            li
+              a#rte RTE
+            li
+              a#bbc /r/Gaming
+            li
+              a#cnn CNN
+        #title.title
+        #rssFeed.scroll

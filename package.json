@@ -1,0 +1,14 @@
+{
+  "name": "ExpressApp",
+  "version": "0.0.1",
+  "description": "A Node.js App using express",
+  "dependencies": {
+    "body-parser": "~1.0.1",
+    "express": "*",
+    "feedreader": "^0.1.1",
+    "ipware": "^0.0.7",
+    "jade": "*",
+    "mongodb": "^2.0.43"
+  },
+  "engine": "node >=0.6.x"
+}
