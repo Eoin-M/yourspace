@@ -1,0 +1,47 @@
+doctype html
+html(lang="en")
+  head    
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
+    script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+    script(src="/ajax.js")
+    script(src="/test.js")
+    title Express
+    link(rel='stylesheet', type='text/css', href="/style.css")
+  body
+    h1 Ajax
+    h3 Express
+    input#newID(type='text' placeholder='ID \(eg 1, 2, 3...\)')
+    input#newName(type='text' placeholder='Name \(eg Sean\)')
+    input#newAge(type='text' placeholder='Age \(eg 19\)')
+    input#add(type='button', value='Add User')
+    br
+    br
+    input#ID(type='text' placeholder='ID \(eg 1, 2, 3...\)')
+    input#find(type='button', value='Find User')
+    br
+    #userName Example
+    br
+    input#oldID(type='text' placeholder='ID \(eg 1, 2, 3...\)')
+    input#del(type='button', value='Delete User')
+    br
+    br
+    .dropdown
+      button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown')
+        | Rss Feeds 
+        span.caret
+      ul.dropdown-menu
+        li
+          a#rte RTE
+        li
+          a#bbc BBC
+        li
+          a#cnn CNN
+    //input#rss(type='button', value='Get News Feed')
+    #title.title
+    #rssFeed.scroll
+    br
+    br
+    input#list(type='button', value='List All Users')
+    #user0

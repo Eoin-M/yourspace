@@ -1,0 +1,67 @@
+div.title {
+	background-color: #346299;
+}
+
+div.scroll {
+	height: 500px;
+	overflow: auto;
+}
+
+div.scroll, div.title {
+	margin-left: 10px;
+	width: 300px;
+	padding: 0.4%;
+}
+
+div.head {
+	border-bottom: 1px dashed;
+	color: #366bad;
+	overflow: auto;
+	//min-height: 130px;
+}
+
+.dropdown {
+	margin-left: 10px;
+	margin-bottom: 8px;
+}
+
+a.rssTitle {
+	color: white;
+}
+
+a:link  {
+	text-decoration: none;
+	outline: 0;
+}
+
+a:visited {
+	text-decoration: none;
+	outline: 0;
+}
+
+a:hover {
+	text-decoration: none;
+	outline: 0;
+}
+
+a:active {
+	text-decoration: none;
+	outline: 0;
+}
+
+img {
+	height: 80px;
+	float: left;
+    margin: 5px 8px 5px 0px;
+	position:relative
+}
+
+p {
+	font-size: 0.85em;
+	color: grey;
+}
+
+p.date {
+	font-size: 0.65em;
+	text-align: right;
+}
