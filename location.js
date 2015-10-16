@@ -23,6 +23,7 @@ function positionToLongLat(position)
 	loc.lat = position.coords.latitude;
 	loc.isFound = true;
 	runGoogleNavigatorAPI( position.coords.longitude , position.coords.latitude );
+	getWeather();//Sean's weather function is called now
 }
 
 function noLocationError(error) //should work but I've never seen it called...
