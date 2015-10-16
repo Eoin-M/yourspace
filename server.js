@@ -1,3 +1,4 @@
+var getJSON =require('get-json');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -207,6 +208,22 @@ app.post('/rssFeed', function(req, res){
 	feedparser.on('end', function() {
 		res.setHeader('Content-Type', 'application/json');
 		res.send(JSON.stringify({rssFeed: rssFeed}));
+	});
+});
+
+app.post('/weather', function(req, res) {
+	getJSON('http://www.myweather2.com/developer/forecast.ashx?uac=3IS/qEHwnA&output=json&query=53.27,-9.08&temp_unit=c', function(err, response){
+		if(err)
+		{
+			console.log(err);
+		}
+		else
+		{
+			//res.setHeader('Content-Type', '');
+			//res.send(JSON.stringify({json: res.result}));
+			//res.setHeader('content-type', 'application/json');
+			res.send(JSON.stringify({json: response}));
+		}
 	});
 });
 

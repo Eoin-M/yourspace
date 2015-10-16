@@ -9,6 +9,8 @@ html(lang="en")
     script(src="/rss.js")
     script(src="/location.js")
     script(src="/stocks.js")
+    script(src="/weather.js")
+    
     title Your Space
     link(rel='stylesheet', type='text/css', href="/style.css")
   body
@@ -27,3 +29,22 @@ html(lang="en")
               a#cnn CNN
         #title.title
         #rssFeed.scroll
+        
+    #daWeather
+       table(style='width:100%')
+          tr
+            td Date
+            td#today
+            td#2moro
+          tr
+            td Description
+            td#desc_today
+            td#desc_2moro
+          tr
+            td Temp Day
+            td#temp_today
+            td#temp_2moro
+          tr
+            td Temp Night
+            td#night_today
+            td#night_2moro
