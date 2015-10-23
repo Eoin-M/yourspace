@@ -6,13 +6,11 @@ app.set('views',__dirname);
 app.use(express.static(__dirname +'/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-//app.set('view engine', 'jade');
 
 require('colors');
 
 var _ = require('lodash');
 var yahooFinance = require('Yahoo-finance');
-
 
 var SYMBOL = 'AAPL';
 app.get('/', function (req,res)
@@ -20,7 +18,6 @@ app.get('/', function (req,res)
 	console.log("user connnected");
 	res.sendfile("index.html");
 });
-
 app.post('/stocks', function (req, res)
 {
 	console.log("hit");
@@ -33,10 +30,48 @@ app.post('/stocks', function (req, res)
 	{
 		console.log(util.format('=== %s ===', SYMBOL).cyan);
 		//console.log(JSON.stringify(snapshot, null, 2));
-	  
+		var tempObj = {};
+		tempObj.symbol = snapshot.symbol;
+		tempObj.lastTradePriceOnly = snapshot.lastTradePriceOnly;
+		tempObj.change = snapshot.change;
+		
 		res.setHeader('Content-Type', 'application/json');
-		res.send(JSON.stringify({stock:snapshot}));
+		res.send(tempObj);
 
+	});
+});
+
+app.post('/multStocks', function (req, res)
+{
+	console.log("hit");
+	//console.log(req);
+	var SYMBOLS = [
+		'AAPL',
+		'GOOG',
+		'MSFT']
+	var results = [];
+	i=0;
+	
+	yahooFinance.snapshot({
+	symbols: SYMBOLS
+	}).then(function (result) 
+	{
+		_.each(result, function (snapshot, symbol)
+		{
+			console.log(util.format('=== %s ===', snapshot.name).cyan);
+			console.log(JSON.stringify(snapshot, null, 2));
+			
+			//results[i] = JSON.stringify({snapshot});
+			var tempObj = {};
+			tempObj.symbol = snapshot.symbol;
+			tempObj.lastTradePriceOnly = snapshot.lastTradePriceOnly;
+			tempObj.change = snapshot.change;
+			results[i] = tempObj;
+			i++
+		});
+		//console.log(tempObj);
+		res.setHeader('Content-Type', 'application/json');
+		res.send(results);
 	});
 });
 
