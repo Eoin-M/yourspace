@@ -45,10 +45,22 @@
 	{
 		$scope.getStock=function()
 		{
+			var temp = $scope.multiStocks;
+			console.dir(temp);
+			var i = 0;
+			for (i = 0; i < $scope.multiStocks.length; i++)
+			{
+				if( $scope.multiStocks[i].symbol.toUpperCase() == $scope.wantedStock.toUpperCase())
+				{
+					alert("already there");
+					//TODO small notficaion to say stock is already shown
+					return;
+				}
+			}
 			console.log("entered getStock");
 			$http.post('/stocks', JSON.stringify({target: $scope.wantedStock}))
 			.success(function(data){
-			console.dir(data);
+			//console.dir(data);
 			if (data.lastTradePriceOnly !== null)
 			{
 				$scope.multiStocks.push(data);
@@ -61,10 +73,13 @@
 				data.change = "";
 				//console.dir(data)
 				$scope.multiStocks.push(data);
+				//for now just adds <stock name> not found to stocks
+				//TODO small notficaion to say stock wasn't found
 				$scope.wantedStock = "";
 			}
 			}).error(function(data){
-			alert("failed");
+				console.error("An error occured on the server when adding stock "+$scope.wantedStock+". Server returned: ");
+				console.dir(data);
 			});
 		};
 		$scope.getMultStock=function()
@@ -75,7 +90,8 @@
 			//console.dir(data);
 			$scope.multiStocks = data
 			}).error(function(data){
-			alert("failed");
+				console.error("An error occured on the server when adding multiple stocks. Server returned: ");
+				console.dir(data);
 			});
 		};
 		$scope.setStockClass = function (input) {
@@ -104,7 +120,7 @@
 		</div>
 		
 		<form ng-submit="getStock()" class="newStockForm">
-			<input type="text" ng-model="wantedStock" placeholder="Add another stock">
+			<input type="text" pattern="[A-Za-z].{1,6}" title="Can only contain between 2 and 7 letters" ng-model="wantedStock" placeholder="Add another stock">
 			<button>Check</button>
 		</form>
 	</div>

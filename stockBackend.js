@@ -12,7 +12,7 @@ require('colors');
 var _ = require('lodash');
 var yahooFinance = require('Yahoo-finance');
 
-var SYMBOL = 'AAPL';
+
 app.get('/', function (req,res)
 {
 	console.log("user connnected");
@@ -22,6 +22,7 @@ app.post('/stocks', function (req, res)
 {
 	console.log("hit");
 	console.log(req);
+	var SYMBOL = '';
 	SYMBOL = req.body.target;
 	
 	yahooFinance.snapshot({
@@ -50,7 +51,7 @@ app.post('/multStocks', function (req, res)
 		'GOOG',
 		'MSFT']
 	var results = [];
-	i=0;
+	var i=0;
 	
 	yahooFinance.snapshot({
 	symbols: SYMBOLS
