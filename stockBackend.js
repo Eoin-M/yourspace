@@ -21,7 +21,7 @@ app.get('/', function (req,res)
 app.post('/stocks', function (req, res)
 {
 	console.log("hit");
-	console.log(req);
+	//console.log(req);
 	var SYMBOL = '';
 	SYMBOL = req.body.target;
 	
@@ -44,9 +44,11 @@ app.post('/stocks', function (req, res)
 
 app.post('/multStocks', function (req, res)
 {
-	console.log("hit");
+	//console.log("hit");
 	//console.log(req);
-	var SYMBOLS = [
+	
+	
+	var SYMBOLS = [//temporary solution until users' stocks can be read from database
 		'AAPL',
 		'GOOG',
 		'MSFT']
@@ -60,7 +62,7 @@ app.post('/multStocks', function (req, res)
 		_.each(result, function (snapshot, symbol)
 		{
 			console.log(util.format('=== %s ===', snapshot.name).cyan);
-			console.log(JSON.stringify(snapshot, null, 2));
+			//console.log(JSON.stringify(snapshot, null, 2));
 			
 			//results[i] = JSON.stringify({snapshot});
 			var tempObj = {};

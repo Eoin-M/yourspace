@@ -37,16 +37,14 @@
 		}
 	</style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-touch.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-touch.js"></script>
 	<script>
 	var stocks = angular.module('stocks', ['ngTouch']);
-	stocks.controller('mainController', function ($scope, $http)
+	stocks.controller('mainController', function ($scope, $http, $interval)
 	{
 		$scope.getStock=function()
 		{
-			var temp = $scope.multiStocks;
-			console.dir(temp);
 			var i = 0;
 			for (i = 0; i < $scope.multiStocks.length; i++)
 			{
@@ -63,7 +61,21 @@
 			//console.dir(data);
 			if (data.lastTradePriceOnly !== null)
 			{
-				$scope.multiStocks.push(data);
+				var i = 0;
+				var isInserted = false;
+				for (i = 0; i < $scope.multiStocks.length; i++)
+				{
+					if ( (data.symbol).localeCompare($scope.multiStocks[i].symbol) < 0 )//if it is ahead of where it should be
+					{
+						$scope.multiStocks.splice(i, 0, data);
+						isInserted = true;
+						break;
+					}
+				}
+				if (!isInserted)
+				{
+					$scope.multiStocks.splice(i, -1, data);//put it in the last slot
+				}
 				$scope.wantedStock = "";
 			}
 			else 
@@ -71,7 +83,6 @@
 				data.symbol += " not found";
 				data.lastTradePriceOnly = "";
 				data.change = "";
-				//console.dir(data)
 				$scope.multiStocks.push(data);
 				//for now just adds <stock name> not found to stocks
 				//TODO small notficaion to say stock wasn't found
@@ -82,10 +93,40 @@
 				console.dir(data);
 			});
 		};
+		$scope.updateStock = $interval(function()
+		{
+			var i=0, j=0;
+			var results = [];
+			for (i = 0; i < $scope.multiStocks.length; i++)
+			{
+				//console.dir($scope.multiStocks[i]);
+				$http.post('/stocks', JSON.stringify({target: $scope.multiStocks[i].symbol}))
+				.success(function(data){
+					results.push(data);
+					j++;
+					if(j == $scope.multiStocks.length)
+					{
+						results.sort(function(a,b)//sorts stocks into alphabetical order based on symbol
+						{
+							return (a.symbol).localeCompare(b.symbol);
+						});
+						//console.dir(results);
+						$scope.multiStocks = results;
+						console.log("updated");
+						//$scope.$apply();
+					}
+				}).error(function(data){
+					console.error("An error occured on the server when updating stock "+$scope.multiStocks[i].symbol+". Server returned: ");
+					console.dir(data);
+				});
+			}
+			
+		}, 30000);//Updates stocks every 30 seconds
+		
 		$scope.getMultStock=function()
 		{
 			console.log("entered getMultStock");
-			$http.post('/multStocks')
+			$http.post('/multStocks', null)
 			.success(function(data){
 			//console.dir(data);
 			$scope.multiStocks = data
@@ -94,6 +135,7 @@
 				console.dir(data);
 			});
 		};
+		
 		$scope.setStockClass = function (input) {
 			input = input - 0;
 			if (input < 0) 
@@ -106,12 +148,13 @@
 			}
 		}	
 	});
+	
 	</script>
 </head>
 <body ng-controller="mainController" >
 	<div ng-init="getMultStock()" class="mainStockDiv"><!-- calls getMultStock() on load-->
 
-		<div ng-repeat="multiStock in multiStocks"  ng-class="{'individualStockOdd': $odd, 'individualStock': true}" >
+		<div ng-repeat="multiStock in multiStocks track by multiStock.symbol | orderBy: 'symbol' "  ng-class="{'individualStockOdd': $odd, 'individualStock': true}" >
 		<!-- Add this to above line to enable swipe to delete ng-swipe-left="multiStocks.splice($index,1)" ng-swipe-right="multiStocks.splice($index,1)"-->
 			<span ng-click="multiStocks.splice($index,1)" class="closeIndStock"> X </span>
 			<div>Stock: {{ multiStock.symbol | uppercase}}</div><!--filter formats to uppercase-->
