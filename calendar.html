@@ -1,0 +1,64 @@
+<html ng-app="calendar">
+<head>
+	<style>
+		.mainCalendarDiv
+		{
+			display: inline-block;
+			outline: #D1E0E0 solid;
+		}
+		.individualEvent
+		{
+			outline: #D1E0E0 solid;
+			padding: 5px;
+			position: relative;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-touch.js"></script>
+	<script>
+	var calendar = angular.module('calendar', ['ngTouch']);
+	calendar.controller('mainController', function ($scope, $http)
+	{
+		$scope.getEvents=function()
+		{
+			
+			console.log("entered getEvents");
+			$http.post('/nextEvents', JSON.stringify({code: null}))
+			.success(function(data)
+			{
+				//var temp = data[0].auth;
+				if (!data[0].auth)
+				{
+					alert("temp: not able to authorised yet");
+				}
+				else
+				{
+					data.splice(0, 1)//gets rid of first entry which isn't an event
+					console.dir(data);
+					
+					$scope.events = data;
+				}
+				
+				
+			}).error(function(data){
+				console.error("An error occured. Server returned: ");
+				console.dir(data);
+			});
+		};
+		
+	});
+	
+	</script>
+</head>
+<body ng-controller="mainController" >
+	<div ng-init="getEvents()" class="mainCalendarDiv">
+		<div ng-repeat="event in events" ng-class="{'individualEvent': true}">
+			<div>{{ event.description}}</div>
+			<div>{{ event.start | date:'HH:mm EEE d MMM'}}</div>
+			<!-- <span>{{ event.end | date:'medium'}}</span> -->
+			<span>{{ event.diff }} minutes long</span>
+		</div>
+	</div>
+</body>
+</html>
