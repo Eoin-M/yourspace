@@ -18,22 +18,25 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-touch.js"></script>
 	<script>
 	var calendar = angular.module('calendar', ['ngTouch']);
-	calendar.controller('mainController', function ($scope, $http)
+	calendar.controller('mainController', function ($scope, $http, $sce)
 	{
 		$scope.getEvents=function()
 		{
 			
 			console.log("entered getEvents");
+			$scope.calAuth = true;//to hide the iframe
 			$http.post('/nextEvents', JSON.stringify({code: null}))
 			.success(function(data)
 			{
 				//var temp = data[0].auth;
 				if (!data[0].auth)
 				{
-					alert("temp: not able to authorised yet");
+					$scope.califrameLink = $sce.trustAsResourceUrl(data[0].link);
+					$scope.calAuth = data[0].auth;
 				}
 				else
 				{
+					
 					data.splice(0, 1)//gets rid of first entry which isn't an event
 					console.dir(data);
 					
@@ -53,6 +56,8 @@
 </head>
 <body ng-controller="mainController" >
 	<div ng-init="getEvents()" class="mainCalendarDiv">
+		<a ng-href="{{ califrameLink }}" ng-hide="calAuth"> Use calendar</a>
+		
 		<div ng-repeat="event in events" ng-class="{'individualEvent': true}">
 			<div>{{ event.description}}</div>
 			<div>{{ event.start | date:'HH:mm EEE d MMM'}}</div>

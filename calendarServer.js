@@ -1,4 +1,7 @@
 //Reference: https://developers.google.com/google-apps/calendar/quickstart/nodejs
+//Check: https://developers.google.com/google-apps/calendar/v3/reference/events for events (colourID...)
+//Check: https://developers.google.com/google-apps/calendar/v3/reference/events/list for choosing what day etc.
+
 var express = require('express');
 var app = express();
 var util = require('util');
@@ -23,9 +26,9 @@ var CAL_TOKEN_PATH = CAL_TOKEN_DIR + 'calendar-nodejs-quickstart.json';
 
 var CAL_REQ;//calendar request global variable
 var CAL_RES;//calendar response global variable
-var usersCode;
+var usersCode = null;
 
-//Check dropbox for 
+
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -39,12 +42,14 @@ var usersCode;
 
 
 
-function authorize(credentials, callback) {
+function authorize(callback) {
   
-  var clientSecret = "Check dropbox";
-  var clientId = "check dropbox";
   
-  var redirectUrl = "http://localhost";
+  
+  //var clientSecret = "Check dropbox";
+  //var clientId = "check dropbox";
+  
+  var redirectUrl = "http://localhost:8080";
   var auth = new googleAuth();
   var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
 
@@ -84,21 +89,15 @@ function getNewToken(oauth2Client, callback) {
     var custEvents = [];
     var tempObj = {}
     tempObj.auth = false;
-    tempObj.link = "authUrl";
+    tempObj.link = authUrl;
     custEvents[0] = tempObj;
     CAL_RES.setHeader('Content-Type', 'application/json');
 	  CAL_RES.send(custEvents);
   }
-  /*console.log('Authorize this app by visiting this url: ', authUrl);
-  var rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-  rl.question('Enter the code from that page here: ', function(code) {
-    rl.close();*/
   else{
     oauth2Client.getToken(usersCode, function(err, token) {
         if (err) {
+          console.log("code" +usersCode);
           console.log('Error while trying to retrieve access token', err);
           return;
         }
@@ -136,7 +135,7 @@ function listEvents(auth) {
   calendar.events.list({
     auth: auth,
     calendarId: 'primary',
-    timeMin: (new Date()).toISOString(),
+    timeMin: (new Date()).toISOString(),//today is the min date
     maxResults: 5,//number of events returned
     singleEvents: true,
     orderBy: 'startTime'
@@ -179,6 +178,7 @@ function listEvents(auth) {
 
 app.get('/', function (req,res)
 {
+  usersCode = req.query.code;//reference: http://javascriptplayground.com/blog/2013/06/node-and-google-oauth/
 	console.log("user connnected");
 	res.sendfile("calendar.html");
 });
@@ -188,20 +188,16 @@ app.post('/nextEvents', function (req, res)
 	console.log("hit");
   CAL_REQ = req;
   CAL_RES = res;
-  if (req.body.code != null)
-  {
-    usersCode = req.body.code;
-  }
+  
   //STEP 1:first gets authorisation to access calendar
   fs.readFile('client_secret.json', function processClientSecrets(err, content) {
   if (err) 
   {
     console.log('Error loading client secret file: ' + err);
-    return;
   }
     // Authorize a client with the loaded credentials, then call the
     // Google Calendar API.
-    authorize(JSON.parse(content), listEvents);
+    authorize(listEvents);
     console.log(content);
   });
 	//END STEP 1
