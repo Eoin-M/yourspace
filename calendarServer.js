@@ -44,8 +44,7 @@ var usersCode = null;
 
 function authorize(callback) {
   
-  
-  
+
   //var clientSecret = "Check dropbox";
   //var clientId = "check dropbox";
   
@@ -134,9 +133,10 @@ function listEvents(auth) {
   var calendar = google.calendar('v3');
   calendar.events.list({
     auth: auth,
+    //calendarId: 'ta2m8hkjtdp5pva728eo3ep6v4@group.calendar.google.com',//'primary'
     calendarId: 'primary',
     timeMin: (new Date()).toISOString(),//today is the min date
-    maxResults: 5,//number of events returned
+    maxResults: 7,//number of events returned
     singleEvents: true,
     orderBy: 'startTime'
   }, function(err, response) {
@@ -164,8 +164,20 @@ function listEvents(auth) {
         var timeDiff = Math.abs(eventObj.end.getTime() - eventObj.start.getTime());
         eventObj.diff = Math.ceil(timeDiff / (1000 * 60));
         eventObj.description = event.summary;
+        if (event.colorId == null)
+        {
+          event.colorId='-1';
+        }
+        if (event.location == null)
+        {
+          event.location=false;
+        }
+        eventObj.colorID = event.colorId;
+        eventObj.location = event.location;
+        eventObj.link = event.htmlLink;
         console.log(util.format('========================================').cyan);
         console.log(event);
+        //console.log(eventObj);
         //console.log('%s - %s', start, event.summary);
         custEvents[i+1] = eventObj;
       }
