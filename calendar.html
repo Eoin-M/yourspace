@@ -21,7 +21,7 @@
 		{
 			background-color: #A4BDFC;
 		}
-		.blueEvent
+		.darkblueEvent
 		{
 			background-color: #5484ED;
 		}
@@ -146,7 +146,7 @@
 	<div ng-init="getEvents()" class="mainCalendarDiv">
 		<a ng-href="{{ calAuthLink }}" ng-hide="calAuth"> Use calendar</a>
 		
-		<div ng-repeat="event in events" ng-class="setEventClass(event.colorID)"> <!---->
+		<div ng-repeat="event in events | orderBy: 'start' " ng-class="setEventClass(event.colorID)"> <!---->
 			<div ><a ng-href="{{ event.link }}" target="_blank">{{ event.description}}</a></div>
 			<span>{{ event.start | date:'HH:mm EEE d MMM'}}</span>
 			<!-- <div>{{ event.end | date:'HH:mm EEE d MMM'}}</div>-->
