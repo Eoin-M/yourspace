@@ -1,0 +1,65 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<title>Draggable Panel</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<!-- draggable only works with jquery version 1.7.2-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.js"></script>
+
+	</head>
+
+	<style>
+		#divcontainer{
+		border: 1px solid #111111;
+		width: 80%;
+		height: 80%;
+		margin: 0 auto;
+		padding: 3px;
+		}
+
+		#draggablePanelList .panel-heading{
+			cursor: move;
+			background-color: #00E68A;
+			font-family: 'Tangerine', sans-serif;
+       		font-size: 22px;
+		}
+	</style>
+
+		<script>
+			//jQuery has to be spelled with a capital Q otherwist it wont work
+			jQuery(function($){
+				var panelList = $('#draggablePanelList');
+
+				panelList.sortable({
+					handle: '.panel-heading', //makes only this element draggable
+					update: function(){
+						$('.panel', panelList).each(function(index, elem){
+							var $listItem = $(elem),
+							newIndex = $listItem.index();
+						});
+					}
+				});
+			});
+		</script>
+		<body>
+			<h3 align="center">A nice big box</h3>
+			<div id="divcontainer">
+				<ul id="draggablePanelList" class="list-unstyled">
+					<li class="panel panel-info">
+						<div class="panel-heading"> Heading</div>
+						<div class="panel-body"> Content. . .</div>
+					</li>
+
+					<li class="panel panel-info">
+						<div class="panel-heading"> Heading</div>
+						<div class="panel-body"> Content. . .</div>
+					</li>
+				</lu>
+			</div>
+		</body>
+
+</html>
