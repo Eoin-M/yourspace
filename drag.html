@@ -3,6 +3,8 @@
 	<head>
 		<title>Draggable Panel</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<!-- this leads to a library which enables the resizable panel-->
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -27,14 +29,19 @@
 			font-family: 'Tangerine', sans-serif;
        		font-size: 22px;
 		}
+
+		#box{
+			background-color: #85e738; margin: 5px; overflow: auto; /* auto means if you make the box too small it'll make a scrollbar so that you can still see everyting*/
+		}
+		
 	</style>
 
 		<script>
 			//jQuery has to be spelled with a capital Q otherwist it wont work
 			jQuery(function($){
-				var panelList = $('#draggablePanelList');
-
-				panelList.sortable({
+				var panel = $('#draggablePanelList');
+				//draggable only works for 1 div, alt use sortable which works for any div num
+				panel.draggable({
 					handle: '.panel-heading', //makes only this element draggable
 					update: function(){
 						$('.panel', panelList).each(function(index, elem){
@@ -44,21 +51,23 @@
 					}
 				});
 			});
+
+			$(function(){
+				$('#box').resizable();
+			});
 		</script>
 		<body>
 			<h3 align="center">A nice big box</h3>
 			<div id="divcontainer">
 				<ul id="draggablePanelList" class="list-unstyled">
-					<li class="panel panel-info">
+					<li id="drag" class="panel panel-info">
 						<div class="panel-heading"> Heading</div>
 						<div class="panel-body"> Content. . .</div>
 					</li>
+				</ul>
 
-					<li class="panel panel-info">
-						<div class="panel-heading"> Heading</div>
-						<div class="panel-body"> Content. . .</div>
-					</li>
-				</lu>
+				<div id="box" ui-widget-content><h3> I'm a box, watch me resize!</h3> </div>
+
 			</div>
 		</body>
 
