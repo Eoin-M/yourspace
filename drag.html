@@ -17,7 +17,7 @@
 	<style>
 		#divcontainer{
 		border: 1px solid #111111;
-		width: 80%;
+		width: 90%;
 		height: 80%;
 		margin: 0 auto;
 		padding: 3px;
@@ -25,7 +25,6 @@
 
 		#draggablePanelList .panel-heading{
 			cursor: move;
-			background-color: #00E68A;
 			font-family: 'Tangerine', sans-serif;
        		font-size: 22px;
 		}
@@ -33,15 +32,57 @@
 		#box{
 			background-color: #85e738; margin: 5px; overflow: auto; /* auto means if you make the box too small it'll make a scrollbar so that you can still see everyting*/
 		}
-		
+
+		#box h3{
+			text-align: center; 
+			margin: 0;
+		}
+
+		#resizable h3 { text-align: center; margin: 0; }
+		#resizable { 
+			width: 150px; height: 
+			150px; 
+			padding: 0.5em;
+			min-width: 150px;
+			min-height: 170px;
+			max-width: 300px;
+			max-height: 300px;
+		}
+  		
+		#resizable2 h3 { text-align: center; margin: 0; }
+  		#resizable2{ 
+  			width: 150px; 
+  			height: 150px; 
+  			padding: 0.5em;
+  			min-width: 150px;
+			min-height: 170px;
+			max-width: 300px;
+			max-height: 300px;
+  		}
+
+  		#resizable3 h3 { text-align: center; margin: 0; }
+  		#resizable3{ 
+  			width: 150px; 
+  			height: 150px; 
+  			padding: 0.5em;
+  			/*below dimentions are specific for a 16/9 aspect ratio*/
+  			min-width: 160px;
+			min-height: 180px;
+			max-width: 640px;
+			max-height: 360px;
+  		}
+
+  		.ui-resizable-helper { border: 1px dotted gray; }
 	</style>
+
+	
 
 		<script>
 			//jQuery has to be spelled with a capital Q otherwist it wont work
 			jQuery(function($){
 				var panel = $('#draggablePanelList');
 				//draggable only works for 1 div, alt use sortable which works for any div num
-				panel.draggable({
+				panel.sortable({
 					handle: '.panel-heading', //makes only this element draggable
 					update: function(){
 						$('.panel', panelList).each(function(index, elem){
@@ -52,21 +93,53 @@
 				});
 			});
 
-			$(function(){
+			$(function() {
 				$('#box').resizable();
+			   $( "#resizable" ).resizable({animate: true});
+			   $( "#resizable2" ).resizable({grid: 50});
+			   $( "#resizable3" ).resizable({aspectRatio: 16 / 9});
+			   $('##resizable4').resizable();
+
+			   var res1 = $('#resizable');
+			   res1.draggable({handle: '.panel-heading'});
+
+			   var res2 = $('#resizable2');
+			   res2.draggable({handle: '.panel-heading'});
+
+			   var res3 = $('#resizable3');
+			   res3.draggable({handle: '.panel-heading',});
+
 			});
+
 		</script>
 		<body>
 			<h3 align="center">A nice big box</h3>
 			<div id="divcontainer">
 				<ul id="draggablePanelList" class="list-unstyled">
-					<li id="drag" class="panel panel-info">
-						<div class="panel-heading"> Heading</div>
-						<div class="panel-body"> Content. . .</div>
+					<li id="drag" class="panel panel-success">
+						<div class="panel-heading "> Bro</div>
+						<div class="panel-body "> I can only be rearranged between myself and Other Bro</div>
+					</li>
+					<li id="drag" class="panel panel-success">
+						<div class="panel-heading "> Other Bro</div>
+						<div class="panel-body"> I can only be rearranged between myself and Bro too!</div>
 					</li>
 				</ul>
 
-				<div id="box" ui-widget-content><h3> I'm a box, watch me resize!</h3> </div>
+				<div id="resizable" class="panel panel-success">
+				  <h3 id="t1" class="panel-heading">Resizable</h3>
+				  <div class="panel-body">I work just fine, can drag and have an animates resize</div>
+				</div>
+
+				<div id="resizable2" class="panel panel-danger">
+				  <h3 id="t2" class="panel-heading">Resizable</h3>
+				  <div class="panel-body">I work just fine, can drag and resize and I snap to a grid </div>
+				</div>
+
+				<div id="resizable3" class="panel panel-danger">
+				  <h3 id="t3" class="panel-heading">Resizable</h3>
+				  <div class="panel-body">No matter what you do to me my aspect ratio will stay the same </div>
+				</div>
 
 			</div>
 		</body>
