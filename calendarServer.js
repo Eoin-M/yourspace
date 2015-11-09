@@ -31,6 +31,7 @@ var usersCode = null;
 
 function authorize(callback) {
   
+
 	//var clientSecret = "Check dropbox";
 	//var clientId = "check dropbox";
 	  
@@ -59,7 +60,7 @@ function authorize(callback) {
 
 
 function getNewToken(oauth2Client, callback) {
-	var SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
+	var SCOPES = ['https://www.googleapis.com/auth/calendar'];
 	var authUrl = oauth2Client.generateAuthUrl(
 	{
 		access_type: 'offline',
@@ -112,7 +113,7 @@ function storeToken(token) {
 
 function listEvents(auth) 
 {
-   
+   debugger;
    var calendar = google.calendar('v3');
    var custEvents = [];//the array we'll eventually be returning to the browser
    calendar.calendarList.list(
@@ -136,11 +137,14 @@ function listEvents(auth)
         } 
         else 
         {
-			//console.log(calendars);
+			//.log(calendars);
 			var i = 0;
+			var calComplete = 0;
+			//console.log("Cal length "+calendars.length);
 			for (i = 0; i < calendars.length; i++)
 			{
 				//console.log(calendars[i].id);
+				//console.log("Calendar "+i+calendars[i].summary);
 				calendar.events.list(
 				{
 				  auth: auth,
@@ -155,15 +159,18 @@ function listEvents(auth)
 				{
 					if (err) 
 					{
-						console.log('ln:159 The API returned an error: ' + err);
+						console.log('ln:159 Calendar error: ' + err);
+						calComplete++;
 						return;
 					}
 				  
 					var events = response.items;
 					if (events != null)
 					{
+						
 						for (var j = 0; j < events.length; j++) 
 						{
+							
 							var eventObj = {};
 							var event = events[j];
 							//console.log("EVENTS===" +events[j]);
@@ -184,20 +191,37 @@ function listEvents(auth)
 							eventObj.location = event.location;
 							eventObj.link = event.htmlLink;
 							custEvents[custEvents.length] = eventObj;
+							
+							
 							//console.log(eventObj);
 						}
+						if (j ==0)
+						{
+							console.log("ln 204 No events were in calendar "+calendars[i]);
+						}
+						calComplete++;
 					}
+					else
+					{
+						calComplete++;
+						console.log("No events in calendar "+response);
+					}
+					//console.log("-------------"+calComplete+"   "+calendars.length);
+					if (calComplete == calendars.length)
+					{
+						returnCalData(custEvents);
+					}
+					
 				}
             )}
         }
-		setTimeout(returnCalData, 500, custEvents);//Temp solution until a way is found to know when all events are returned TODO
 	});
 }
   
   
 function returnCalData(eventsAry)
 {
-	//console.log(util.format("CUSTEVENTS ===="+eventsAry).cyan);
+	console.log(util.format(eventsAry).yellow);
 	CAL_RES.setHeader('Content-Type', 'application/json');
 	CAL_RES.send(eventsAry);
 } 
