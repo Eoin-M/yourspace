@@ -1,0 +1,44 @@
+<html ng-app="myemail">
+<head>
+	<style>
+		
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
+	<script>
+	var calendar = angular.module('myemail', []);
+	calendar.controller('mainController', function ($scope, $http)
+	{
+		$scope.getEmails=function()
+		{
+			console.log("entered getEmails");
+			$scope.emailAuth = true;//to hide the button
+			$http.post('/nextEmails', JSON.stringify({code: null}))
+			.success(function(data)
+			{
+				console.log(data);
+                for( var i = 0; i < data.length; i++)
+                {
+                    console.dir(data[i]);
+                }
+                //alert(atob("Ym9keSBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYg0K"));
+                //atob converts base 64 to ascii text
+                //TODO convert and display the email data
+				
+			}).error(function(data){
+				console.error("An error occured. Server returned: ");
+				console.dir(data);
+			});
+		};
+	});
+	
+	</script>
+</head>
+<body ng-controller="mainController" >
+	<div ng-init="getEmails()" class="mainEmailDiv">
+		<div ng-repeat="email in emails">
+			
+		</div>
+	</div>
+</body>
+</html>
