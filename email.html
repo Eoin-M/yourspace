@@ -16,15 +16,80 @@
 			$http.post('/nextEmails', JSON.stringify({code: null}))
 			.success(function(data)
 			{
-				console.log(data);
+                var emails = [];
+                data.splice(0, 1);
                 for( var i = 0; i < data.length; i++)
                 {
-                    console.dir(data[i]);
+                    //console.dir(data[i]);
+                    var tempObject = {};
+                    tempObject.snippet = data[i].snippet;
+                    tempObject.id = data[i].id;
+                    tempObject.url = "https://mail.google.com/mail/u/0/#inbox/"+tempObject.id;
+                    tempObject.unixTime = data[i].internalDate;//in milliseconds
+                    tempObject.from = parseEmailHeaders(data[i], "From");
+                    tempObject.subject = parseEmailHeaders(data[i], "Subject");
+                    tempObject.unread = isInArray("UNREAD", data[i].labelIds);
+                    tempObject.star = isInArray("STARRED", data[i].labelIds);
+                    tempObject.important = isInArray("IMPORTANT", data[i].labelIds);
+                    //tempObject.date = parseEmailHeaders(data[i], "Date"); Unix time is preferable...
+                    //tempObject.returnPath = parseEmailHeaders(data[i], "Return-Path"); Buggy
+                    
+                    if (data[i].payload.parts === undefined)
+                    {
+                        if (data[i].payload.body.data !== undefined)
+                        {
+                            if (data[i].payload.mimeType === "text/html")
+                            {// 10/100 only have a HTML version
+                                tempObject.content = "There is no text version of this email, please view it in GMails's actual client"+
+                                " at "+tempObject.url;
+                            }
+                            else
+                            {
+                                try{// 2/100
+                                    tempObject.content = atob(data[i].payload.body.data);
+                                }
+                                catch(err)
+                                {// 1/100 was caught id:151d03bf2aff6e69
+                                    tempObject.content = "We cannot parse this email, please view it in GMails's actual client"+
+                                    " at "+tempObject.url;
+                                }
+                            }
+                        }
+                        else
+                        {// 0/100 
+                            tempObject.content = "We cannot parse this email, please view it in GMails's actual client at "+tempObject.url;
+                        }
+                    }
+                    else
+                    {
+                        if (data[i].payload.parts[0].body.data === undefined)
+                        {
+                            try{// 36/100 tried
+                                tempObject.content = atob(data[i].payload.parts[0].parts[0].body.data);
+                            }
+                            catch(err)
+                            {// 28/100 were caught
+                                tempObject.content = "We cannot parse this email, please view it in GMails's actual client"+
+                                " at "+tempObject.url;
+                            }
+                        }
+                        else
+                        {
+                            try{// 52/100 tried
+                                tempObject.content = atob(data[i].payload.parts[0].body.data);
+                            }
+                            catch(err)
+                            {// 32/100 were caught
+                                tempObject.content = "We cannot parse this email, please view it in GMails's actual client"+
+                                " at "+tempObject.url;
+                            }
+                        }
+                    }
+                    emails.push(tempObject);
+                    //console.dir(data[i].payload);
                 }
-                //alert(atob("Ym9keSBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYiBiYmJiYg0K"));
-                //atob converts base 64 to ascii text
-                //TODO convert and display the email data
-				
+                $scope.emails = emails;
+                
 			}).error(function(data){
 				console.error("An error occured. Server returned: ");
 				console.dir(data);
@@ -32,12 +97,36 @@
 		};
 	});
 	
+    function parseEmailHeaders(email, target)
+    {
+        for(var i =0; i < email.payload.headers.length; i++)
+        {
+            if (email.payload.headers[i].name === target) return email.payload.headers[i].value;
+        }
+        return null;
+    }
+    
+    function isInArray(target, array)
+    {
+        if (array.indexOf(target) === -1) return false;
+        else return true;
+    }
 	</script>
 </head>
 <body ng-controller="mainController" >
 	<div ng-init="getEmails()" class="mainEmailDiv">
-		<div ng-repeat="email in emails">
-			
+		<div ng-repeat="email in emails | orderBy: '-unixTime' track by email.id">
+			<div><strong>SNIPPET:</strong>{{email.snippet}}...</div>
+            <div><strong>BODY:</strong>{{email.content}}</div>
+            <div><strong>FROM:</strong> {{email.from}}</div>
+            <div><strong>Subject:</strong> {{email.subject}}</div>
+            <div><strong>ID:</strong> {{email.id}}</div>
+            <div><strong>Unix:</strong> {{email.unixTime}}</div>
+            <div><strong>Url:</strong> {{email.url}}</div>
+            <div><strong>Unread:</strong> {{email.unread}}</div>
+            <div><strong>Star:</strong> {{email.star}}</div>
+            <div><strong>Important:</strong> {{email.important}}</div>
+            <hr>
 		</div>
 	</div>
 </body>
