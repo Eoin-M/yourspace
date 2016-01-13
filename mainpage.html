@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+	<head >
+	  <meta charset="utf-8">
+	  <!-- jqery -->
+	  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	  <link rel="stylesheet" href="/resources/demos/style.css">
+	  <!-- bootstrap-->
+	  <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
+
+	  <!-- navbar-->
+	  	<div class="container-fluid">
+	  		<a class="navbar-brand" href="#">Brand</a>
+	  
+			<div class="menu" onclick="$('.downlinks').toggle();">
+			 	Hi, You
+			</div>
+			
+			<div class="bar">
+			 	<div class="bartext">Current position: Galway Ireland</div>
+			</div>
+			<div class="boxforlinks">
+				<div class="downlinks">
+					<div><a href="#" onclick="$('#1').toggle();" class="btn btn-primary" data-target="#blue"><p>Blue</p></a></div>
+					<div><a href="#" onclick="$('#2').toggle();" class="btn btn-info" data-target="#violet"><p>Violet</p></a></div>
+					<div><a href="#" onclick="$('#3').toggle();" class="btn btn-warning"  data-target="#orange"><p>Orange</p></a></div>
+					<div><a href="#" onclick="$('#4').toggle();" class="btn btn-success"  data-target="#green"><p>Green</p></a></div>
+					<div><a href="#" onclick="$('#5').toggle();" class="btn btn-danger" data-target="#red"><p>Red</p></a></div>
+				</div>
+			</div>
+	  	</div> <!-- end navbar-->
+
+	  
+	  
+
+
+	  <style> 
+		    #sortable { 
+		    	list-style-type: none; 
+		    	margin: 0; 
+		    	padding: 0; 
+		    	width: 100%; 
+		    	opacity: 0.8;
+		    }
+		    #sortable li { 
+		    	margin: 5px 5px 5px 5px; 
+		    	padding: 1px; 
+		    	float: left; 
+		    	width: 200px; 
+		    	height: 350px; 
+		    	font-size: 20px; 
+		    	text-align: center; 
+		    	border-radius: 5px;
+		    	overflow: hidden;
+		    	border: 1px solid #ffff99;
+		    }
+		    body{
+		    	/* previously #172C4F
+		    	background-color:  #E2F7D7;*/
+		    }
+		    .btn{
+		    	margin: 10px;
+		    	height: 50px;
+		    	width: 200px;
+		    	border-radius: 10px;
+		    	overflow: hidden;
+		    }
+		    .panel{
+		    	cursor: move;
+		    }
+		    .bar{
+		    	margin-top: 15px;
+		    	margin-left: 90px;
+		    	height: 50px;
+		    	width: 85%;
+		    	background-color: #0A031F;
+		    	color: #fff;
+		    	opacity: 0.7;
+		    	overflow: hidden;
+		    }
+		    .bartext{
+		    	margin-top: 10px;
+		    	margin-left: 15px;
+		    }
+		    .menu{
+		    	height: 40px;
+		    	width: 100px;
+		    	border-left: 1px solid #fff;
+		    	border-right: 1px solid #fff;
+		    	margin-top: 10px;
+		    	margin-left: 84%;
+		    	overflow: hidden;
+		    	color: white;
+		    	text-align: center;
+		    	padding-top: 5px;
+		    }
+		    .menu:hover{
+		    	font-size: 20px;
+		    	padding-top: -15px;
+		    }
+		    .navbar-brand{
+		    	color: white;
+		    	margin-top: 0px;
+		    	margin-left: 75px;
+		    	font-size: 45px;
+		    }
+		    .downlinks{
+		    	display: none;
+		    	border: 1px solid white;
+		    	float: right;
+		    	margin-left: 35px;
+		    	margin-top: 20px;
+		    	position: absolute;
+		    }
+		    .boxforlinks{
+		    	border: 1px solid white;
+		    	height: 400px;
+		    	width: 300px;
+		    	margin-left: 1050px;
+		    	border-radius: 30px;
+		    }
+		    body { 
+			  background: url(http://p1.pichost.me/i/39/1629941.jpg) no-repeat center center fixed; 
+			  -webkit-background-size: cover;
+			  -moz-background-size: cover;
+			  -o-background-size: cover;
+			  background-size: cover;
+			}
+			p{
+				font-size: 20px;
+			}
+
+		    /* this makes all of them visible at the start
+		    li{
+		    	display: none;
+		    }
+		    */
+/* 
+			#blue{
+				height: 250px;
+				width: 350px;
+				border: 1px solid #ffff99;
+				border-top: 50%;
+				float: left;
+				margin: 5px 5px 5px 5px;
+				background-color: #E0F2F5;
+				border-radius: 12px;
+				overflow: hidden;
+				text-align: center; 
+				padding: 0px;
+			}*/
+
+	  </style>
+
+	  <script>
+	  $(function() {
+	    $( "#sortable" ).sortable({
+	    	cursor: 'move',
+	    	handle: '.panel-heading',
+	    	placeholder: 'placeholder',
+	    	forcePlaceholderSize: true,
+	    	opacity: 0.4,
+	    	stop: function(event, ui){
+				$(ui.item).find('#sortable').click();
+				var sortorder='';
+				$('#sortable').each(function(){
+					
+					    var itemorder=$(this).sortable('toArray');
+						sortorder+=itemorder.toString();
+						
+				});
+				alert('SortOrder: '+sortorder);
+				/*Pass sortorder variable to server using ajax to save state*/
+			}
+	    });
+	    $( "#sortable" ).disableSelection();
+	    $('li').toggle();
+	  });
+
+	  </script>
+
+	</head>
+	<body>
+	 
+		<ul id="sortable">
+
+		    <li class="ui-state-default" id="1">
+			  	<div id="blue" >	
+					<div class="panel panel-primary">
+				      <div class="panel-heading">Module 1</div>
+
+				    </div>
+				</div>
+		    </li>
+
+		    <li class="ui-state-default" id="2">
+		    	<div id="violet" >	
+					<div class="panel panel-info">
+				      <div class="panel-heading">Module 2</div>
+				    </div>
+				</div>
+		    </li>
+
+		    <li class="ui-state-default" id="3">
+		    	<div id="orange" >	
+					<div class="panel panel-warning">
+				      <div class="panel-heading">Module 3</div>
+				    </div>
+				</div>
+		    </li>
+
+		    <li class="ui-state-default" id="4">
+		    	<div id="green" >	
+					<div class="panel panel-success">
+				      <div class="panel-heading">Module 4</div>
+				    </div>
+				</div>
+		    </li>
+
+		    <li class="ui-state-default" id="5">
+		    	<div id="red" >	
+					<div class="panel panel-danger">
+				      <div class="panel-heading">Module 5</div>
+				    </div>
+				</div>
+		    </li>
+<!-- 
+		    <li class="ui-state-default" id="6"></li>
+		    <li class="ui-state-default" id="7"></li>
+		    <li class="ui-state-default" id="8"></li>
+		    <li class="ui-state-default" id="9"></li>
+		    <li class="ui-state-default" id="10"></li>
+		    <li class="ui-state-default" id="11"></li>
+		    -->
+		</ul>
+	 
+	 
+	</body>
+</html>
