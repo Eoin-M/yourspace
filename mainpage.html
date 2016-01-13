@@ -14,7 +14,7 @@
 	  	<div class="container-fluid">
 	  		<a class="navbar-brand" href="#">Brand</a>
 	  
-			<div class="menu" onclick="$('.downlinks').toggle();">
+			<div class="menu" onclick="$('.boxforlinks').toggle();">
 			 	Hi, You
 			</div>
 			
@@ -107,19 +107,39 @@
 		    	font-size: 45px;
 		    }
 		    .downlinks{
-		    	display: none;
-		    	border: 1px solid white;
+		    	/*border: 1px solid white;*/
 		    	float: right;
-		    	margin-left: 35px;
-		    	margin-top: 20px;
-		    	position: absolute;
+		    	margin-left: 55px;
+		    	margin-top: 80px;
 		    }
 		    .boxforlinks{
+		    	display: none;
 		    	border: 1px solid white;
-		    	height: 400px;
+		    	height: 500px;
 		    	width: 300px;
-		    	margin-left: 1050px;
-		    	border-radius: 30px;
+		    	overflow: hidden;
+		    	margin-left: 1030px;
+		    	border-bottom-left-radius: 150px;
+		    	border-top-left-radius: 150px;
+		    	background-color: #0A031F;
+		    	opacity: 0.7;
+		    	position: absolute;
+		    }
+		    .boxforlinks #in{
+		    	animation-name: menuslidein;
+		    	animation-duration: 2.5s;
+		    }
+		    @keyframes menuslidein{
+		    	from{ right: -50%;}
+		    	to{ right: 0%;}
+		    }
+		    .boxforlinks #out{
+		    	animation-name: menuslideout;
+		    	animation-duration: 2.5s;
+		    }
+		    @keyframes menuslideout{
+		    	from{ right: 0%;}
+		    	to{ right: -50%;}
 		    }
 		    body { 
 			  background: url(http://p1.pichost.me/i/39/1629941.jpg) no-repeat center center fixed; 
@@ -177,6 +197,16 @@
 	    });
 	    $( "#sortable" ).disableSelection();
 	    $('li').toggle();
+	  });
+
+	  $(".menu").click(function(){
+		  	if($(".container-fluid").hasClass(".boxforlinks")){
+		  		$(".boxforlinks").addClass("in");
+		  	}
+		  	else{
+		  		$(".boxforlinks").removeClass("in");
+		  		$(".boxforlinks").addClass("out");
+		  	}
 	  });
 
 	  </script>
