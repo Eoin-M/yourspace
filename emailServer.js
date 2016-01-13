@@ -63,13 +63,13 @@ function getNewToken(oauth2Client, listEmailsFn, req, res) {
    
 	if (userCode == null)
 	{
-		var custEvents = [];
+		var custEmails = [];
 		var tempObj = {}
 		tempObj.auth = false;
 		tempObj.link = authUrl;
-		custEvents[0] = tempObj;
+		custEmails[0] = tempObj;
 		res.setHeader('Content-Type', 'application/json');
-		res.send(custEvents);
+		res.send(custEmails);
 	}
 	else
 	{
@@ -145,7 +145,7 @@ function listEvents(auth, req, res)
 				{
 					if (err) 
 					{
-						console.log('ln:159 Calendar error: ' + err);
+						console.log('ln:159 Email error: ' + err);
 						messagesComplete++;
 						return;
 					}

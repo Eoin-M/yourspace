@@ -1,12 +1,25 @@
 <html ng-app="myemail">
+
 <head>
-	<style>
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css" />
+    <style>
+		
+		.starredEmail
+		{
+			background-color: #FBD75B !important;
+		}
+        .unreadEmail
+		{
+			font-weight: bold;
+		}
+		
 		
 	</style>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
-	<script>
-	var calendar = angular.module('myemail', []);
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
+    <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script>
+        var calendar = angular.module('myemail', []);
 	calendar.controller('mainController', function ($scope, $http)
 	{
 		$scope.getEmails=function()
@@ -17,6 +30,7 @@
 			.success(function(data)
 			{
                 var emails = [];
+                var errCnt = 0;
                 data.splice(0, 1);
                 for( var i = 0; i < data.length; i++)
                 {
@@ -26,7 +40,10 @@
                     tempObject.id = data[i].id;
                     tempObject.url = "https://mail.google.com/mail/u/0/#inbox/"+tempObject.id;
                     tempObject.unixTime = data[i].internalDate;//in milliseconds
-                    tempObject.from = parseEmailHeaders(data[i], "From");
+                    //tempObject.from = parseEmailHeaders(data[i], "From");
+                    var from =  parseEmailHeaders(data[i], "From");
+                    tempObject.senderName = getEmailName(from);
+                    tempObject.senderEmail = getSendersEmail(from);
                     tempObject.subject = parseEmailHeaders(data[i], "Subject");
                     tempObject.unread = isInArray("UNREAD", data[i].labelIds);
                     tempObject.star = isInArray("STARRED", data[i].labelIds);
@@ -40,24 +57,25 @@
                         {
                             if (data[i].payload.mimeType === "text/html")
                             {// 10/100 only have a HTML version
-                                tempObject.content = "There is no text version of this email, please view it in GMails's actual client"+
-                                " at "+tempObject.url;
+                                tempObject.content = tempObject.snippet + "There is no text version of the rest of this email. ";
+                                errCnt++;
                             }
                             else
                             {
                                 try{// 2/100
-                                    tempObject.content = atob(data[i].payload.body.data);
+                                    tempObject.content = (b64_to_utf8(data[i].payload.body.data));
                                 }
                                 catch(err)
                                 {// 1/100 was caught id:151d03bf2aff6e69
-                                    tempObject.content = "We cannot parse this email, please view it in GMails's actual client"+
-                                    " at "+tempObject.url;
+                                    tempObject.content = tempObject.snippet + "... We cannot parse the remainder of this email. ";
+                                    errCnt++;
                                 }
                             }
                         }
                         else
                         {// 0/100 
-                            tempObject.content = "We cannot parse this email, please view it in GMails's actual client at "+tempObject.url;
+                            tempObject.content = tempObject.snippet + "... We cannot parse the remainder of this email. ";
+                            errCnt++;
                         }
                     }
                     else
@@ -65,29 +83,30 @@
                         if (data[i].payload.parts[0].body.data === undefined)
                         {
                             try{// 36/100 tried
-                                tempObject.content = atob(data[i].payload.parts[0].parts[0].body.data);
+                                tempObject.content = b64_to_utf8(data[i].payload.parts[0].parts[0].body.data);
                             }
                             catch(err)
                             {// 28/100 were caught
-                                tempObject.content = "We cannot parse this email, please view it in GMails's actual client"+
-                                " at "+tempObject.url;
+                                tempObject.content = tempObject.snippet + "... We cannot parse the remainder of this email. ";
+                                errCnt++
                             }
                         }
                         else
                         {
                             try{// 52/100 tried
-                                tempObject.content = atob(data[i].payload.parts[0].body.data);
+                                tempObject.content = b64_to_utf8(data[i].payload.parts[0].body.data);
                             }
                             catch(err)
                             {// 32/100 were caught
-                                tempObject.content = "We cannot parse this email, please view it in GMails's actual client"+
-                                " at "+tempObject.url;
+                                tempObject.content = tempObject.snippet + "... We cannot parse the remainder of this email. ";
+                                errCnt++;
                             }
                         }
                     }
                     emails.push(tempObject);
                     //console.dir(data[i].payload);
                 }
+                //console.log(errCnt);
                 $scope.emails = emails;
                 
 			}).error(function(data){
@@ -95,6 +114,19 @@
 				console.dir(data);
 			});
 		};
+        
+        $scope.getEmailStyle = function(email)
+        {
+            var style ="";
+            if (email.unread === true) style+= " unreadEmail";
+            if (email.star === true) style+= " starredEmail";
+            return style;
+        }
+        $scope.readEmail = function(email)
+        {
+            email.unread = false;
+            //TODO if it was unread change gmail's read status
+        }
 	});
 	
     function parseEmailHeaders(email, target)
@@ -111,23 +143,59 @@
         if (array.indexOf(target) === -1) return false;
         else return true;
     }
-	</script>
+    
+    function b64_to_utf8( str ) 
+    {
+        return atob(str);//71 errors
+        //return decodeURIComponent(window.atob(str));//77 errors
+        //return decodeURIComponent(escape(window.atob(str)));//71 errors
+        //return decodeURIComponent(encodeURIComponent(window.atob(str)));//71 errors
+    }
+    function getEmailName(from)
+    {
+        if (from.indexOf("<") < 1) return from;//no name there, use email
+        else
+        {
+            var name;
+            name = from.slice(0, from.indexOf("<"));
+            return name.replace(/"/g, "");
+        }
+    }
+    function getSendersEmail(from)
+    {
+        if (from.indexOf("<") < 1) return from;//no name there, just email 
+        else
+        {
+            var email;
+            email = from.slice(from.indexOf("<")+1, from.length-1);
+            return email.replace(/ /g, "");
+        }
+    }
+    </script>
 </head>
-<body ng-controller="mainController" >
-	<div ng-init="getEmails()" class="mainEmailDiv">
-		<div ng-repeat="email in emails | orderBy: '-unixTime' track by email.id">
-			<div><strong>SNIPPET:</strong>{{email.snippet}}...</div>
-            <div><strong>BODY:</strong>{{email.content}}</div>
-            <div><strong>FROM:</strong> {{email.from}}</div>
-            <div><strong>Subject:</strong> {{email.subject}}</div>
-            <div><strong>ID:</strong> {{email.id}}</div>
-            <div><strong>Unix:</strong> {{email.unixTime}}</div>
-            <div><strong>Url:</strong> {{email.url}}</div>
-            <div><strong>Unread:</strong> {{email.unread}}</div>
-            <div><strong>Star:</strong> {{email.star}}</div>
-            <div><strong>Important:</strong> {{email.important}}</div>
-            <hr>
-		</div>
-	</div>
+
+<body ng-controller="mainController">
+    <div ng-init="getEmails()" class="mainEmailDiv">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div ng-repeat="email in emails | orderBy: '-unixTime' track by email.id">
+                <div class="panel panel-default">
+                    <div class="panel-heading" ng-class="getEmailStyle(email)" role="tab" ng-attr-id="{{ 'heading' + email.id }}">
+                        <span class="panel-title">
+                            <a role="button" ng-click="readEmail(email)" data-toggle="collapse" data-parent="#accordion" ng-href="#collapse{{email.id}}" aria-expanded="false">
+                            {{email.senderName}} : {{email.subject}} 
+                            </a>
+                        </span>
+                    </div>
+                    <div ng-attr-id="collapse{{email.id}}" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            {{email.content}}
+                            <br><a ng-href= {{email.url}}>Open this in Gmails's web app</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
