@@ -118,35 +118,38 @@
 		    	height: 500px;
 		    	width: 300px;
 		    	overflow: hidden;
-		    	margin-left: 1030px;
+		    	margin-left: 1050px;
 		    	border-bottom-left-radius: 150px;
 		    	border-top-left-radius: 150px;
 		    	background-color: #0A031F;
 		    	opacity: 0.7;
 		    	position: absolute;
 		    }
-		    .boxforlinks #in{
+		    /* in an out are clases*/
+		    .in{
 		    	animation-name: menuslidein;
-		    	animation-duration: 2.5s;
+		    	animation-duration: 0.5s;
 		    }
 		    @keyframes menuslidein{
-		    	from{ right: -50%;}
+		    	from{ right: -200px;}
 		    	to{ right: 0%;}
 		    }
-		    .boxforlinks #out{
+		    .out{
 		    	animation-name: menuslideout;
-		    	animation-duration: 2.5s;
+		    	animation-duration: 0.5s;
 		    }
 		    @keyframes menuslideout{
 		    	from{ right: 0%;}
-		    	to{ right: -50%;}
+		    	to{ right: -200px;}
 		    }
-		    body { 
+		    html, body { 
 			  background: url(http://p1.pichost.me/i/39/1629941.jpg) no-repeat center center fixed; 
 			  -webkit-background-size: cover;
 			  -moz-background-size: cover;
 			  -o-background-size: cover;
 			  background-size: cover;
+			  max-width: 100%;
+			  overflow-x: hidden;
 			}
 			p{
 				font-size: 20px;
@@ -200,12 +203,12 @@
 	  });
 
 	  $(".menu").click(function(){
-		  	if($(".container-fluid").hasClass(".boxforlinks")){
-		  		$(".boxforlinks").addClass("in");
+		  	if($(".boxforlinks").hasClass("out")){
+		  		$(".boxforlinks").removeClass("in");
 		  	}
 		  	else{
-		  		$(".boxforlinks").removeClass("in");
-		  		$(".boxforlinks").addClass("out");
+		  		$(".boxforlinks").removeClass("out");
+		  		$(".boxforlinks").addClass("in");
 		  	}
 	  });
 
