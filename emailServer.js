@@ -25,7 +25,7 @@ var EM_TOKEN_PATH = EM_TOKEN_DIR + 'gmail-nodejs-quickstart.json';
 */
 var userCode = null;
 
-function authorize(listEventsFn, req, res) {
+function authorize(req, res, numEmails) {
   
 	//var clientSecret = "Check dropbox";
 	//var clientId = "Check dropbox";
@@ -40,20 +40,20 @@ function authorize(listEventsFn, req, res) {
 		if (err) 
 		{
 			console.log("getting new token ------------------------------------------");
-			getNewToken(oauth2Client, listEventsFn, req, res);
+			getNewToken(oauth2Client, req, res, numEmails);
 		} 
 		else 
 		{
 			console.log("getting oldtoken ------------------------------------------");
 			oauth2Client.credentials = JSON.parse(token);
 			console.log(token +"--------------------------------------------------------");
-			listEventsFn(oauth2Client, req, res);
+			listEmails(oauth2Client, req, res, numEmails);
 		}
 	});
 }
 
 
-function getNewToken(oauth2Client, listEmailsFn, req, res) {
+function getNewToken(oauth2Client, listEmailsFn, req, res, numEmails) {
 	var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 	var authUrl = oauth2Client.generateAuthUrl(
 	{
@@ -82,7 +82,7 @@ function getNewToken(oauth2Client, listEmailsFn, req, res) {
 			}
 			oauth2Client.credentials = token;
 			storeToken(token);
-			listEmailsFn(oauth2Client, req, res);
+			listEmails(oauth2Client, req, res, numEmails);
 		});
 	}
 }
@@ -105,14 +105,16 @@ function storeToken(token) {
 }
 
 
-function listEvents(auth, req, res) 
+function listEmails(auth, req, res, numEmails) 
 {
    var custEmails = [];
    var gmail = google.gmail('v1');
+   //console.log();
     gmail.users.messages.list({
         auth: auth,
         userId: 'me',
         labelIds: 'INBOX',
+        maxResults: numEmails,
     }, function(err, response) {
         if (err) 
 		{
@@ -182,14 +184,14 @@ app.get('/', function (req,res)
 app.post('/nextEmails', function (req, res)
 {
 	console.log("hit");
-    
+    var numEmails = req.body.maxResults;
 	fs.readFile('client_secret.json', function processClientSecrets(err, content) 
 	{
 		if (err) 
 		{
 			console.log('Error loading client secret file: ' + err);
 		}
-		authorize(listEvents, req, res);
+		authorize(req, res, numEmails);
 	});
 });
 

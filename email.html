@@ -1,20 +1,18 @@
+<!DOCTYPE html>
 <html ng-app="myemail">
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css" />
     <style>
-		
-		.starredEmail
-		{
-			background-color: #FBD75B !important;
-		}
-        .unreadEmail
-		{
-			font-weight: bold;
-		}
-		
-		
-	</style>
+        .starredEmail {
+            color: #FBD75B !important;
+        }
+        
+        .unreadEmail {
+            font-weight: bold;
+        }
+    </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
     <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -22,15 +20,19 @@
         var calendar = angular.module('myemail', []);
 	calendar.controller('mainController', function ($scope, $http)
 	{
-		$scope.getEmails=function()
+		$scope.getEmails=function(numEmails)
 		{
 			console.log("entered getEmails");
 			$scope.emailAuth = true;//to hide the button
-			$http.post('/nextEmails', JSON.stringify({code: null}))
+			$http.post('/nextEmails', JSON.stringify({maxResults: numEmails, code: null}))
 			.success(function(data)
 			{
                 var emails = [];
                 var errCnt = 0;
+                if (!data[0].auth)
+                {
+                    alert(data[0].link);
+                }
                 data.splice(0, 1);
                 for( var i = 0; i < data.length; i++)
                 {
@@ -40,7 +42,6 @@
                     tempObject.id = data[i].id;
                     tempObject.url = "https://mail.google.com/mail/u/0/#inbox/"+tempObject.id;
                     tempObject.unixTime = data[i].internalDate;//in milliseconds
-                    //tempObject.from = parseEmailHeaders(data[i], "From");
                     var from =  parseEmailHeaders(data[i], "From");
                     tempObject.senderName = getEmailName(from);
                     tempObject.senderEmail = getSendersEmail(from);
@@ -108,6 +109,7 @@
                 }
                 //console.log(errCnt);
                 $scope.emails = emails;
+                document.getElementById("loadMoreEmailsButton").className="text-centre show";
                 
 			}).error(function(data){
 				console.error("An error occured. Server returned: ");
@@ -119,13 +121,49 @@
         {
             var style ="";
             if (email.unread === true) style+= " unreadEmail";
-            if (email.star === true) style+= " starredEmail";
             return style;
         }
         $scope.readEmail = function(email)
         {
             email.unread = false;
             //TODO if it was unread change gmail's read status
+            //https://developers.google.com/gmail/api/v1/reference/users/messages/modify
+        }
+        $scope.setEmailStar = function(email)
+        {
+            email.star =!email.star;
+            //TODO change email's status
+            //https://developers.google.com/gmail/api/v1/reference/users/messages/modify
+        }
+        $scope.getEmailStar = function(email)
+        {
+            style = "glyphicon";
+            if(email.star === true) style+= " glyphicon-star starredEmail"
+            else style+= " glyphicon-star-empty"
+            return style;
+        }
+        $scope.composeEmail= function (to, subject, message)
+        {
+            $("#emailTo").val(to);
+            $("#emailSubject").val(subject);
+            $("#emailMessage").val(message);
+            $('#emailModal').modal();
+            console.log(to === null);
+            console.log(subject === null);
+            console.log(message === null);
+            
+            /*if (to === null) 
+            {
+                document.getElementById("emailTo").focus();
+            }
+            else if (subject === null) 
+            {
+                document.getElementById("emailSubject").focus();
+            }
+            else if (message === null) 
+            {
+                document.getElementById("emailMessage").focus();
+            }*/
         }
 	});
 	
@@ -171,27 +209,90 @@
             return email.replace(/ /g, "");
         }
     }
+    function sendEmail()
+    {
+        var to = document.getElementById("emailTo").value;
+        var subject = document.getElementById("emailTo").value;
+        var message = document.getElementById("emailTo").value;
+        //TODO send to server
+        //http://stackoverflow.com/questions/25207217/failed-sending-mail-through-google-api-in-nodejs
+    }
+    $('#emailModal').on('shown.bs.modal', function () {
+        $('#emailMessage').focus();
+    })
     </script>
 </head>
 
 <body ng-controller="mainController">
-    <div ng-init="getEmails()" class="mainEmailDiv">
-        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-            <div ng-repeat="email in emails | orderBy: '-unixTime' track by email.id">
-                <div class="panel panel-default">
-                    <div class="panel-heading" ng-class="getEmailStyle(email)" role="tab" ng-attr-id="{{ 'heading' + email.id }}">
-                        <span class="panel-title">
-                            <a role="button" ng-click="readEmail(email)" data-toggle="collapse" data-parent="#accordion" ng-href="#collapse{{email.id}}" aria-expanded="false">
-                            {{email.senderName}} : {{email.subject}} 
-                            </a>
+    <div class="container">
+        <div class="col-md-6">
+            <div class="panel panel-primary" ng-init="getEmails(10)">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Panel primary</h3>
+                </div>
+                <div class="panel-body panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div ng-repeat="email in emails | orderBy: '-unixTime' track by email.id">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" ng-class="getEmailStyle(email)" role="tab" ng-attr-id="heading{{email.id}}">
+                                <span class="panel-title">
+                                    <span ng-class="getEmailStar(email)" ng-click="setEmailStar(email)"></span>
+                                    <a role="button" ng-click="readEmail(email)" data-toggle="collapse" data-parent="#accordion" ng-href="#collapse{{email.id}}"
+                                        aria-expanded="false" aria-controls="collapse{{email.id}}">
+                                        {{email.senderName}} : {{email.subject}} 
+                                    </a>
+                                </span>
+                            </div>
+                            <div ng-attr-id="collapse{{email.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{email.id}}">
+                                <div class="panel-body">
+                                    <span class="">{{email.unixTime | date:'HH:mm EEE d MMM'}} from {{email.senderEmail}}<span>
+                                    <a href="#" ng-click="composeEmail(email.senderEmail,email.subject,null)" class="btn btn-xs replyButton">
+                                        Reply <span class="glyphicon glyphicon-comment">
+                                    </a><hr>
+                                    {{email.content}}
+                                    <br><a ng-href= {{email.url}}>Open this in Gmails's web app</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="text-center">
+                        <span class="hidden" id="loadMoreEmailsButton" ng-click="getEmails(emails.length +10-0)">
+                            <span class="btn btn-xs btn-default"> Load More <span class="glyphicon glyphicon-refresh"></span></span>
                         </span>
                     </div>
-                    <div ng-attr-id="collapse{{email.id}}" class="panel-collapse collapse" role="tabpanel">
-                        <div class="panel-body">
-                            {{email.content}}
-                            <br><a ng-href= {{email.url}}>Open this in Gmails's web app</a>
-                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button btn-xs" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Compose</h4>
                     </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="to" class="control-label">To:</label>
+                                <input type="email" class="form-control" id="emailTo">
+                            </div>
+                            <div class="subject">
+                                <label for="subject" class="control-label">Subject:</label>
+                                <input type="text" class="form-control" id="emailSubject">
+                            </div>
+                            <div class="message">
+                                <label for="message" class="control-label">Message:</label>
+                                <textarea class="form-control" id="emailMessage"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Close <span class="glyphicon glyphicon-trash">
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="sendEmail()">
+                        Send message <span class="glyphicon glyphicon-send">
+                    </button>
                 </div>
             </div>
         </div>
