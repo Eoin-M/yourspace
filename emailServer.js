@@ -25,7 +25,7 @@ var EM_TOKEN_PATH = EM_TOKEN_DIR + 'gmail-nodejs-quickstart.json';
 */
 var userCode = null;
 
-function authorize(req, res, numEmails) {
+function authorize(req, res, callBackFn) {
   
 	//var clientSecret = "Check dropbox";
 	//var clientId = "Check dropbox";
@@ -40,21 +40,24 @@ function authorize(req, res, numEmails) {
 		if (err) 
 		{
 			console.log("getting new token ------------------------------------------");
-			getNewToken(oauth2Client, req, res, numEmails);
+			getNewToken(oauth2Client, callBackFn, req, res);
 		} 
 		else 
 		{
 			console.log("getting oldtoken ------------------------------------------");
 			oauth2Client.credentials = JSON.parse(token);
 			console.log(token +"--------------------------------------------------------");
-			listEmails(oauth2Client, req, res, numEmails);
+			callBackFn(oauth2Client, req, res);
 		}
 	});
 }
 
 
-function getNewToken(oauth2Client, listEmailsFn, req, res, numEmails) {
-	var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
+function getNewToken(oauth2Client, callBackFn, req, res) {
+	var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly',
+        "https://www.googleapis.com/auth/gmail.modify", 
+        "https://www.googleapis.com/auth/gmail.compose",
+        "https://www.googleapis.com/auth/gmail.send"];
 	var authUrl = oauth2Client.generateAuthUrl(
 	{
 		access_type: 'offline',
@@ -82,7 +85,7 @@ function getNewToken(oauth2Client, listEmailsFn, req, res, numEmails) {
 			}
 			oauth2Client.credentials = token;
 			storeToken(token);
-			listEmails(oauth2Client, req, res, numEmails);
+			callBackFn(oauth2Client, req, res);
 		});
 	}
 }
@@ -105,7 +108,7 @@ function storeToken(token) {
 }
 
 
-function listEmails(auth, req, res, numEmails) 
+function listEmails(auth, req, res) 
 {
    var custEmails = [];
    var gmail = google.gmail('v1');
@@ -114,7 +117,7 @@ function listEmails(auth, req, res, numEmails)
         auth: auth,
         userId: 'me',
         labelIds: 'INBOX',
-        maxResults: numEmails,
+        maxResults: req.body.maxResults,
     }, function(err, response) {
         if (err) 
 		{
@@ -172,7 +175,105 @@ function returnEmData(emailsAry, req, res)
 	res.send(emailsAry);
 } 
       
+function markAsRead(auth, req, res)
+{
+    var gmail = google.gmail('v1');
+    console.log(req.body.id);
+    gmail.users.messages.modify({
+        auth: auth,
+        id: req.body.id,
+        userId: 'me',
+        resource:
+            {
+                "removeLabelIds": [
+                    "UNREAD"
+                ]
+            }
+        
+    }, function(err, response) {
+        if (err) 
+		{
+			console.log('...The API returned an error: ' + err);
+            res.setHeader('Content-Type', 'application/json');
+	        res.send(err);
+			return;
+        }
+        res.setHeader('Content-Type', 'application/json');
+	    res.send(response);
+	});
+}
 
+function emailStarred(auth, req, res)
+{
+    var gmail = google.gmail('v1');
+    console.log(req.body.id);
+    var add = null, rmv=null;
+    if (req.body.add === true)
+    {
+        add = "STARRED";
+    }
+    else
+    {
+        rmv = "STARRED";
+    }
+    gmail.users.messages.modify({
+        auth: auth,
+        id: req.body.id,
+        userId: 'me',
+        resource:
+            {
+                addLabelIds:[add],
+                removeLabelIds: [rmv]
+            }
+        
+    }, function(err, response) {
+        if (err) 
+		{
+			console.log('...The API returned an error: ' + err);
+            res.setHeader('Content-Type', 'application/json');
+	        res.send(err);
+			return;
+        }
+        res.setHeader('Content-Type', 'application/json');
+	    res.send(response);
+	});
+}
+
+function sendEmail(auth, req, res)
+{
+    var gmail = google.gmail('v1');
+    
+    //reference http://stackoverflow.com/questions/25207217/failed-sending-mail-through-google-api-in-nodejs?answertab=active#tab-top
+    var email_attributes = [];
+    email_attributes.push("To: "+req.body.to);
+    email_attributes.push("MIME-Version: 1.0");
+    email_attributes.push("Subject: "+req.body.subject);
+    email_attributes.push("");
+    email_attributes.push(req.body.message +"\r\nSent from Yourspace");
+    var email =email_attributes.join("\r\n").trim();
+
+    var base64EncodedEmail = new Buffer(email).toString('base64');
+    
+    gmail.users.messages.send({
+        auth: auth,
+        userId: 'me',
+        resource: 
+        {
+            raw: base64EncodedEmail
+        }
+        
+    }, function(err, response) {
+        if (err) 
+		{
+			console.log('...The API returned an error: ' + err);
+            res.setHeader('Content-Type', 'application/json');
+	        res.send(err);
+			return;
+        }
+        res.setHeader('Content-Type', 'application/json');
+	    res.send(response);
+	});    
+}
 
 app.get('/', function (req,res)
 {
@@ -184,14 +285,46 @@ app.get('/', function (req,res)
 app.post('/nextEmails', function (req, res)
 {
 	console.log("hit");
-    var numEmails = req.body.maxResults;
 	fs.readFile('client_secret.json', function processClientSecrets(err, content) 
 	{
 		if (err) 
 		{
 			console.log('Error loading client secret file: ' + err);
 		}
-		authorize(req, res, numEmails);
+		authorize(req, res, listEmails);
+	});
+});
+
+app.post('/sendEmail', function (req, res)
+{
+	console.log("hit");
+	fs.readFile('client_secret.json', function processClientSecrets(err, content) 
+	{
+		if (err) 
+		{
+			console.log('Error loading client secret file: ' + err);
+		}
+		authorize(req, res, sendEmail);
+	});
+});
+
+app.post('/modifyEmails', function (req, res)
+{
+	console.log("hit");
+	fs.readFile('client_secret.json', function processClientSecrets(err, content) 
+	{
+		if (err) 
+		{
+			console.log('Error loading client secret file: ' + err);
+		}
+        else if(req.body.status === "UNREAD")
+        {
+            authorize(req, res, markAsRead, null);
+        }
+		else if(req.body.status === "STARRED")
+        {
+            authorize(req, res, emailStarred, null);
+        }
 	});
 });
 

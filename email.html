@@ -12,6 +12,14 @@
         .unreadEmail {
             font-weight: bold;
         }
+        #emailSentSuccess
+        {
+            display: none;
+        }
+        .hideAlert
+        {
+            display: none;
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
@@ -31,12 +39,13 @@
                 var errCnt = 0;
                 if (!data[0].auth)
                 {
-                    alert(data[0].link);
+                    prompt("no",data[0].link);
+                    //TODO testing, won't use in actual version
                 }
                 data.splice(0, 1);
                 for( var i = 0; i < data.length; i++)
                 {
-                    //console.dir(data[i]);
+                    console.dir(data[i]);
                     var tempObject = {};
                     tempObject.snippet = data[i].snippet;
                     tempObject.id = data[i].id;
@@ -125,15 +134,45 @@
         }
         $scope.readEmail = function(email)
         {
-            email.unread = false;
-            //TODO if it was unread change gmail's read status
-            //https://developers.google.com/gmail/api/v1/reference/users/messages/modify
+            if(email.unread === true)
+            {
+                email.unread = false;
+                $http.post('/modifyEmails', JSON.stringify(
+                    {
+                        id: email.id,
+                        status: "UNREAD",
+                        add: false,
+                    })
+                )
+                .success(function(data)
+                {
+                    console.log("successs");
+                }).error(function(data){
+                    console.error("An error occured. Server returned: ");
+                    console.dir(data);
+                });
+            }
+            
         }
         $scope.setEmailStar = function(email)
         {
-            email.star =!email.star;
-            //TODO change email's status
-            //https://developers.google.com/gmail/api/v1/reference/users/messages/modify
+            email.star =!email.star;//changes the local email's star first
+
+            $http.post('/modifyEmails', JSON.stringify(
+                {
+                    id: email.id,
+                    status: "STARRED",
+                    add: email.star,//if the email has just been starred it's starred label should be added
+                })
+            )
+            .success(function(data)
+            {
+                console.log("successs");
+                console.dir(data);
+            }).error(function(data){
+                console.error("An error occured. Server returned: ");
+                console.dir(data);
+            });
         }
         $scope.getEmailStar = function(email)
         {
@@ -148,6 +187,34 @@
             $("#emailSubject").val(subject);
             $("#emailMessage").val(message);
             $('#emailModal').modal();
+        }
+        $scope.sendEmail=function()
+        {
+            var to = document.getElementById("emailTo").value;
+            var sub = document.getElementById("emailSubject").value;
+            var mes = document.getElementById("emailMessage").value;
+            //TODO send to server
+            
+            $http.post('/sendEmail', JSON.stringify(
+                {
+                    to: to,
+                    subject : sub,
+                    message: mes
+                })
+            )
+            .success(function(data)
+            {
+                console.dir(data);
+                console.log("successfully sent");
+                $('#emailSentError').hide();
+                $('#emailSentSuccess').show();
+            }).error(function(data){
+                console.error("An error occured. Server returned: ");
+                console.dir(data);
+                $('#emailSentError').show();
+            });
+            
+            //http://stackoverflow.com/questions/25207217/failed-sending-mail-through-google-api-in-nodejs
         }
 	});
 	
@@ -193,17 +260,8 @@
             return email.replace(/ /g, "");
         }
     }
-    function sendEmail()
-    {
-        var to = document.getElementById("emailTo").value;
-        var subject = document.getElementById("emailTo").value;
-        var message = document.getElementById("emailTo").value;
-        //TODO send to server
-        //http://stackoverflow.com/questions/25207217/failed-sending-mail-through-google-api-in-nodejs
-    }
-    $('#emailModal').on('shown.bs.modal', function () {
-        $('#emailMessage').focus();
-    })
+    
+    
     </script>
 </head>
 
@@ -225,8 +283,8 @@
                             <div class="panel-heading" ng-class="getEmailStyle(email)" role="tab" ng-attr-id="heading{{email.id}}">
                                 <span class="panel-title">
                                     <span ng-class="getEmailStar(email)" ng-click="setEmailStar(email)"></span>
-                                <a role="button" ng-click="readEmail(email)" data-toggle="collapse" data-parent="#accordion" ng-href="#collapse{{email.id}}"
-                                aria-expanded="false" aria-controls="collapse{{email.id}}">
+                                    <a role="button" ng-click="readEmail(email)" data-toggle="collapse" data-parent="#accordion" ng-href="#collapse{{email.id}}"
+                                    aria-expanded="false" aria-controls="collapse{{email.id}}">
                                         {{email.senderName}} : {{email.subject}} 
                                     </a>
                                 </span>
@@ -238,7 +296,7 @@
                                         Reply <span class="glyphicon glyphicon-comment"></span>
                                     </a>
                                     <hr> {{email.content}}
-                                    <br><a ng-href={ {email.url}}>Open this in Gmails's web app</a>
+                                    <br><a ng-href={{email.url}}>Open this in Gmails's web app</a>
                                 </div>
                             </div>
                         </div>
@@ -279,10 +337,20 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">
                             Close <span class="glyphicon glyphicon-trash"></span>
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="sendEmail()">
+                        <button type="button" class="btn btn-primary" id="sendEmailBtn" ng-click="sendEmail()">
                             Send message <span class="glyphicon glyphicon-send"></span>
                         </button>
                     </div>
+                    
+                    <div class="alert alert-dismissible alert-success fade in hideAlert" id="emailSentSuccess">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        Your email was sent successfully.
+                    </div>
+                    <div class="alert alert-dismissible alert-success fade in hideAlert" id="emailSentError">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        Error: Your email could not be sent.
+                    </div>
+                    
                 </div>
             </div>
         </div>
