@@ -10,7 +10,7 @@
         }
         
         .unreadEmail {
-            font-weight: bold;
+            font-weight: bold !important;
         }
         #emailSentSuccess
         {
@@ -20,12 +20,22 @@
         {
             display: none;
         }
+        .accordion-toggle:focus
+        {
+            outline: none;
+        }
+        .accordion-toggle 
+        {
+            cursor: pointer;
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.0.3/ui-bootstrap-tpls.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
     <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script>
-        var calendar = angular.module('myemail', []);
+    var calendar = angular.module('myemail', ['ngAnimate','ui.bootstrap']);
 	calendar.controller('mainController', function ($scope, $http)
 	{
 		$scope.getEmails=function(numEmails)
@@ -278,37 +288,48 @@
                     </h3>
                 </div>
                 <div class="panel-body panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div ng-repeat="email in emails | orderBy: '-unixTime' track by email.id">
-                        <div class="panel panel-default">
-                            <div class="panel-heading" ng-class="getEmailStyle(email)" role="tab" ng-attr-id="heading{{email.id}}">
-                                <span class="panel-title">
+                    
+                    <uib-accordion>
+                        <!--<div ng-repeat="email in emails" >
+                           <div class="panel panel-default" >
+                                <div class="panel-heading">
                                     <span ng-class="getEmailStar(email)" ng-click="setEmailStar(email)"></span>
-                                    <a role="button" ng-click="readEmail(email)" data-toggle="collapse" data-parent="#accordion" ng-href="#collapse{{email.id}}"
-                                    aria-expanded="false" aria-controls="collapse{{email.id}}">
-                                        {{email.senderName}} : {{email.subject}} 
-                                    </a>
-                                </span>
-                            </div>
-                            <div ng-attr-id="collapse{{email.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{email.id}}">
-                                <div class="panel-body">
-                                    <span class="">{{email.unixTime | date:'HH:mm EEE d MMM'}} from {{email.senderEmail}}</span>
-                                    <a href="#" ng-click="composeEmail(email.senderEmail,email.subject,null)" class="btn btn-xs replyButton">
-                                        Reply <span class="glyphicon glyphicon-comment"></span>
-                                    </a>
-                                    <hr> {{email.content}}
-                                    <br><a ng-href={{email.url}}>Open this in Gmails's web app</a>
+                                    <span class="panel-title" ng-class="getEmailStyle(email)">
+                                        <a href tabindex="0" class="accordion-toggle" ng-click="toggleOpen()">
+                                            <span>{{email.senderName}} : {{email.subject}}</span>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="panel-collapse collapse" uib-collapse="!isOpen">
+                                    <div class="panel-body" style="text-align: right">
+                                        <span class="">{{email.unixTime | date:'HH:mm EEE d MMM'}} from {{email.senderEmail}}</span>
+                                        <a href="#" ng-click="composeEmail(email.senderEmail,email.subject,null)" class="btn btn-xs replyButton">
+                                            Reply <span class="glyphicon glyphicon-comment"></span>
+                                        </a>
+                                        <hr>{{email.content}}
+                                        <br><a ng-href={{email.url}}>Open this in Gmails's web app</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                    </div>
-                    <div class="text-center">
+                            
+                        </div>-->
+                        <uib-accordion-group heading="{{email.subject}}" ng-repeat="email in emails">
+                            {{email.content}}
+                        </uib-accordion-group>
+                    </uib-accordion>
+                    
+                    <span class="text-center">
                         <span class="hidden" id="loadMoreEmailsButton" ng-click="getEmails(emails.length +10-0)">
                             <span class="btn btn-xs btn-default"> Load More <span class="glyphicon glyphicon-refresh"></span></span>
                         </span>
-                    </div>
+                    </span>
                 </div>
             </div>
+            
+ 
+
+                
+            
         </div>
         <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
             <div class="modal-dialog" role="document">
@@ -355,6 +376,8 @@
             </div>
         </div>
     </div>
+    
+    
 </body>
 
 </html>
