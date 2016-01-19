@@ -55,7 +55,7 @@
                 data.splice(0, 1);
                 for( var i = 0; i < data.length; i++)
                 {
-                    console.dir(data[i]);
+                    //console.dir(data[i]);
                     var tempObject = {};
                     tempObject.snippet = data[i].snippet;
                     tempObject.id = data[i].id;
@@ -164,8 +164,12 @@
             }
             
         }
-        $scope.setEmailStar = function(email)
+        $scope.setEmailStar = function($event, email)
         {
+            if($event){//stops accordion from opening when they star an email
+                $event.stopPropagation();
+                $event.preventDefault();
+            }
             email.star =!email.star;//changes the local email's star first
 
             $http.post('/modifyEmails', JSON.stringify(
@@ -273,6 +277,20 @@
     
     
     </script>
+    <script type="text/ng-template" id="group-template.html">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href class="accordion-toggle" ng-click="toggleOpen()"  uib-accordion-transclude="heading">
+                        <span ng-class="getEmailStyle(email)" >{{heading}}</span>
+                    </a>
+                </h4>
+            </div>
+            <div class="panel-collapse collapse" uib-collapse="!isOpen">
+                <div class="panel-body" ng-transclude></div>
+            </div>
+        </div>
+    </script>
 </head>
 
 <body ng-controller="mainController">
@@ -290,34 +308,24 @@
                 <div class="panel-body panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     
                     <uib-accordion>
-                        <!--<div ng-repeat="email in emails" >
-                           <div class="panel panel-default" >
-                                <div class="panel-heading">
-                                    <span ng-class="getEmailStar(email)" ng-click="setEmailStar(email)"></span>
-                                    <span class="panel-title" ng-class="getEmailStyle(email)">
-                                        <a href tabindex="0" class="accordion-toggle" ng-click="toggleOpen()">
-                                            <span>{{email.senderName}} : {{email.subject}}</span>
-                                        </a>
-                                    </span>
-                                </div>
-                                <div class="panel-collapse collapse" uib-collapse="!isOpen">
-                                    <div class="panel-body" style="text-align: right">
-                                        <span class="">{{email.unixTime | date:'HH:mm EEE d MMM'}} from {{email.senderEmail}}</span>
-                                        <a href="#" ng-click="composeEmail(email.senderEmail,email.subject,null)" class="btn btn-xs replyButton">
-                                            Reply <span class="glyphicon glyphicon-comment"></span>
-                                        </a>
-                                        <hr>{{email.content}}
-                                        <br><a ng-href={{email.url}}>Open this in Gmails's web app</a>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>-->
-                        <uib-accordion-group heading="{{email.subject}}" ng-repeat="email in emails">
-                            {{email.content}}
-                        </uib-accordion-group>
+                        <div ng-repeat="email in emails  | orderBy: '-unixTime' track by email.id" >
+                            <uib-accordion-group  template-url="group-template.html">
+                                <uib-accordion-heading ><!--start accordion row header-->
+                                     <span ng-class="getEmailStar(email)" ng-click="setEmailStar($event, email)"></span>
+                                     <span ng-class="getEmailStyle(email)" ng-click="readEmail(email)">{{email.subject }}</span>
+                                </uib-accordion-heading><!--end accordion row header-->
+                                
+                                <!--start accordion row content-->
+                                <span class="">{{email.unixTime | date:'HH:mm EEE d MMM'}} from {{email.senderEmail}}</span>
+                                <a href="#" ng-click="composeEmail(email.senderEmail,email.subject,null)" class="btn btn-xs replyButton">
+                                    Reply <span class="glyphicon glyphicon-comment"></span>
+                                </a><hr>
+                                {{email.content}}
+                                <br><a ng-href={{email.url}} target="blank">Open this in Gmails's web app</a>
+                                
+                            </uib-accordion-group>
+                        </div>
                     </uib-accordion>
-                    
                     <span class="text-center">
                         <span class="hidden" id="loadMoreEmailsButton" ng-click="getEmails(emails.length +10-0)">
                             <span class="btn btn-xs btn-default"> Load More <span class="glyphicon glyphicon-refresh"></span></span>
