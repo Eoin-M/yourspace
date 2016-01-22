@@ -1,16 +1,18 @@
+<!DOCTYPE html>
 <html ng-app="calendar">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css" />
 	<style>
-		.mainCalendarDiv
+		/*.mainCalendarDiv
 		{
 			display: inline-block;
 			outline: #D1E0E0 solid;
-		}
+		}*/
 		.individualEvent
 		{
-			outline: #D1E0E0 solid;
-			padding: 5px;
-			position: relative;
+			margin-bottom: 8px;
+            padding: 5px;
 		}
 		/*Colours for google calendar events as per google's style guidelines*/
 		.redEvent
@@ -20,6 +22,7 @@
 		.blueEvent
 		{
 			background-color: #A4BDFC;
+            color: #edbd54;
 		}
 		.darkblueEvent
 		{
@@ -57,22 +60,34 @@
 		{ 
 			background-color: #E1E1E1; 
 		}
+        .blackTxt
+        {
+            color:black;
+        }
 	</style>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-touch.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.0.3/ui-bootstrap-tpls.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
+    <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
 	<script>
-	var calendar = angular.module('calendar', ['ngTouch']);
+	var calendar = angular.module('calendar', ['ngAnimate', 'ui.bootstrap']);
 	calendar.controller('mainController', function ($scope, $http, $sce)
 	{
-		$scope.getEvents=function()
+		$scope.getEvents=function(numEvents)
 		{
 			
-			console.log("entered getEvents");
+			console.log("entered getEvents"+numEvents);
 			$scope.calAuth = true;//to hide the button
-			$http.post('/nextEvents', JSON.stringify({code: null}))
+			$http.post('/nextEvents', JSON.stringify(
+                {
+                    numEvents: numEvents,
+                    code: null
+                })
+            )
 			.success(function(data)
 			{
+                console.dir(data);
 				//var temp = data[0].auth;
 				if (!data[0].auth)
 				{
@@ -81,7 +96,6 @@
 				}
 				else
 				{
-					
 					data.splice(0, 1)//gets rid of first entry which isn't an event
 					console.dir(data);
 					
@@ -137,22 +151,125 @@
 			retStr += " individualEvent";
 			return retStr;
 		}
-		
+		$scope.createEvent = function()
+        {
+            $('#calendarModal').modal();
+        }
+        
+        var now = new Date();
+        $scope.eventFromTime = now;
+        $scope.eventUntilTime = new Date().setHours(now.getHours()+1);
+        
+        $scope.chooseDateFromPopup = {
+            opened: false
+        };
+        $scope.chooseDateUntilPopup = {
+            opened: false
+        };
+        $scope.chooseDate = function(popup) {
+            console.log("open");
+            if (popup == "From") $scope.chooseDateFromPopup.opened = true;
+            else if (popup == "Until") $scope.chooseDateUntilPopup.opened = true;
+            
+        };
 	});
 	
 	</script>
 </head>
-<body ng-controller="mainController" >
-	<div ng-init="getEvents()" class="mainCalendarDiv">
-		<a ng-href="{{ calAuthLink }}" ng-hide="calAuth"> Use calendar</a>
-		
-		<div ng-repeat="event in events | orderBy: 'start' " ng-class="setEventClass(event.colorID)"> <!---->
-			<div ><a ng-href="{{ event.link }}" target="_blank">{{ event.description}}</a></div>
-			<span>{{ event.start | date:'HH:mm EEE d MMM'}}</span>
-			<!-- <div>{{ event.end | date:'HH:mm EEE d MMM'}}</div>-->
-			<div>for {{ event.diff }} minutes</div>
-			<div ng-hide=!(event.location) >in {{ event.location }}</div>
-		</div>
-	</div>
+<body ng-controller="mainController" class="container-fluid">
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="panel panel-primary" ng-init="getEvents(5)">
+            <div class="panel-heading">
+                <h3 class="panel-title">Calendar
+                    <span class="glyphicon glyphicon-remove pull-right"></span>
+                    <span class="glyphicon glyphicon-resize-small pull-right">&nbsp;</span>
+                    <span class="glyphicon glyphicon-repeat pull-right" ng-click="getEvents(events.length)">&nbsp;</span>
+                    <span class="glyphicon glyphicon-pencil pull-right" ng-click="createEvent()">&nbsp;</span>
+                </h3>
+            </div>
+            <div class="panel-body panel-group">
+                <a ng-href="{{ calAuthLink }}" ng-hide="calAuth"> Use calendar</a>
+                
+                <div ng-repeat="event in events | orderBy: 'start' "> <!---->
+                    <div class="panel panel-default" >
+                        <div class="panel-body" ng-class="setEventClass(event.colorID)">
+                            <div><strong><a class="blackTxt" ng-href="{{ event.link }}" target="_blank">{{ event.description}}</a></strong></div>
+                            <span>{{ event.start | date:'HH:mm EEE d MMM'}}</span><br>
+                            <span>for {{ event.diff }} minutes</span>
+                            
+                            <span ng-hide=!(event.location) >in {{ event.location }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <span class="text-center" id="loadMoreEventsButton" ng-click="getEvents(events.length +5-0)">
+                        <span class="btn btn-xs btn-default"> Load More <span class="glyphicon glyphicon-refresh"></span></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="calendarModal" tabindex="-1" role="dialog" aria-labelledby="calendarModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button btn-xs" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">Create Event</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div>
+                                <label for="summary" class="control-label">Summary:</label>
+                                <input type="text" class="form-control" id="calendarSummary">
+                            </div>
+                            
+                            <br>
+                            <div class="col-md-6">
+                                <div class="well well-sm">
+                                    <label for="from" class="control-label">From:</label>
+                                    <uib-timepicker ng-model="eventFromTime" hour-step="1" minute-step="5" show-meridian="true"></uib-timepicker>
+                                    <span class="input-group">
+                                        <input type="text" class="form-control" ng-model="eventsFromTime" uib-datepicker-popup is-open="chooseDateFromPopup.opened"  ng-required="true" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="chooseDate('From')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="well well-sm">
+                                    <label for="Until" class="control-label">Until:</label>
+                                    <uib-timepicker ng-model="eventUntilTime" hour-step="1" minute-step="5" show-meridian="true"></uib-timepicker>
+                                    <span class="input-group">
+                                        <input type="text" class="form-control" ng-model="eventsUntilTime" uib-datepicker-popup is-open="chooseDateUntilPopup.opened"  ng-required="true" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="chooseDate('Until')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="location" class="control-label">Location:</label>
+                                <input type="text" class="form-control" id="calendarLocation">
+                            </div>
+                            
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Close <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <button type="button" class="btn btn-primary" id="sendEmailBtn" ng-click="sendEmail()">
+                        Add to Calendar <span class="glyphicon glyphicon-floppy-disk"></span>
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
 </body>
 </html>

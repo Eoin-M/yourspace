@@ -23,72 +23,66 @@ var CAL_TOKEN_PATH = CAL_TOKEN_DIR + 'calendar-nodejs-quickstart.json';
 *They will eventually be gotten from MongoDB when that's working but for now they're stored locally
 *
 */
+var userCode = null;
 
-var CAL_REQ;//calendar request global variable
-var CAL_RES;//calendar response global variable
-var usersCode = null;
-
-
-function authorize(callback) {
+function authorize(callbackFn, req, res) {
   
-
 	//var clientSecret = "Check dropbox";
-	//var clientId = "check dropbox";
+	//var clientId = "Check dropbox";
 	  
 	var redirectUrl = "http://localhost:8080";
 	var auth = new googleAuth();
 	var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
 
 	// Check if we have previously stored a token.
-	//console.log(CAL_TOKEN_PATH +"=============================================");
 	fs.readFile(CAL_TOKEN_PATH, function(err, token) 
 	{
 		if (err) 
 		{
 			console.log("getting new token ------------------------------------------");
-			getNewToken(oauth2Client, callback);
+			getNewToken(oauth2Client, callbackFn, req, res);
 		} 
 		else 
 		{
 			console.log("getting oldtoken ------------------------------------------");
 			oauth2Client.credentials = JSON.parse(token);
 			console.log(token +"--------------------------------------------------------");
-			callback(oauth2Client);
+			callbackFn(oauth2Client, req, res);
 		}
 	});
 }
 
 
-function getNewToken(oauth2Client, callback) {
+function getNewToken(oauth2Client, callbackFn, req, res) {
 	var SCOPES = ['https://www.googleapis.com/auth/calendar'];
 	var authUrl = oauth2Client.generateAuthUrl(
 	{
 		access_type: 'offline',
 		scope: SCOPES
 	});
-	if (usersCode == null)
+   
+	if (userCode == null)
 	{
 		var custEvents = [];
 		var tempObj = {}
 		tempObj.auth = false;
 		tempObj.link = authUrl;
 		custEvents[0] = tempObj;
-		CAL_RES.setHeader('Content-Type', 'application/json');
-		CAL_RES.send(custEvents);
+		res.setHeader('Content-Type', 'application/json');
+		res.send(custEvents);
 	}
 	else
 	{
-		oauth2Client.getToken(usersCode, function(err, token) 
+		oauth2Client.getToken(userCode, function(err, token) 
 		{
 			if (err) 
 			{
-				console.log("code" +usersCode);
 				console.log('Error while trying to retrieve access token', err);
 				return;
 			}
 			oauth2Client.credentials = token;
 			storeToken(token);
-			callback(oauth2Client);
+			callbackFn(oauth2Client, req, res);
 		});
 	}
 }
@@ -111,7 +105,7 @@ function storeToken(token) {
 }
 
 
-function listEvents(auth) 
+function listEvents(auth, req, res) 
 {
    debugger;
    var calendar = google.calendar('v3');
@@ -150,8 +144,7 @@ function listEvents(auth)
 				  auth: auth,
 				  calendarId: calendars[i].id,
 				  timeMin: (new Date()).toISOString(),//today is the min date
-				  //TODO add in min and max dates so we get one day's events
-				  maxResults: 5,//number of events returned
+				  maxResults: req.body.numEvents,//number of events returned
 				  singleEvents: true,
 				  orderBy: 'startTime'
 				}, 
@@ -167,10 +160,8 @@ function listEvents(auth)
 					var events = response.items;
 					if (events != null)
 					{
-						
 						for (var j = 0; j < events.length; j++) 
 						{
-							
 							var eventObj = {};
 							var event = events[j];
 							//console.log("EVENTS===" +events[j]);
@@ -206,12 +197,10 @@ function listEvents(auth)
 						calComplete++;
 						console.log("No events in calendar "+response);
 					}
-					//console.log("-------------"+calComplete+"   "+calendars.length);
 					if (calComplete == calendars.length)
 					{
-						returnCalData(custEvents);
+						returnCalData(custEvents, req, res, req.body.numEvents);
 					}
-					
 				}
             )}
         }
@@ -219,18 +208,31 @@ function listEvents(auth)
 }
   
   
-function returnCalData(eventsAry)
+function returnCalData(eventsAry, req, res, numEvents)
 {
+    var authObj = eventsAry.splice(0,1);
+    eventsAry.sort(function (a, b) {
+    if (a.start > b.start) {
+        return 1;
+    }
+    if (a.start < b.start) {
+        return -1;
+    }
+    // a must be equal to b
+    return 0;
+    });
+    eventsAry = eventsAry.splice(0,numEvents);
+    eventsAry.unshift(authObj[0]);
 	console.log(util.format(eventsAry).yellow);
-	CAL_RES.setHeader('Content-Type', 'application/json');
-	CAL_RES.send(eventsAry);
+	res.setHeader('Content-Type', 'application/json');
+	res.send(eventsAry);
 } 
       
 
 
 app.get('/', function (req,res)
 {
-	usersCode = req.query.code;//reference: http://javascriptplayground.com/blog/2013/06/node-and-google-oauth/
+    userCode = req.query.code;
 	console.log("user connnected");
 	res.sendfile("calendar.html");
 });
@@ -238,16 +240,14 @@ app.get('/', function (req,res)
 app.post('/nextEvents', function (req, res)
 {
 	console.log("hit");
-	CAL_REQ = req;
-	CAL_RES = res;
-	
+    
 	fs.readFile('client_secret.json', function processClientSecrets(err, content) 
 	{
 		if (err) 
 		{
 			console.log('Error loading client secret file: ' + err);
 		}
-		authorize(listEvents);
+		authorize(listEvents, req, res);
 	});
 });
 
