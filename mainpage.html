@@ -1,274 +1,257 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-	<head >
-	  <meta charset="utf-8">
-	  <!-- jqery -->
-	  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-	  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	  <link rel="stylesheet" href="/resources/demos/style.css">
-	  <!-- bootstrap-->
-	  <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
 
-	  <!-- navbar-->
-	  	<div class="container-fluid">
-	  		<a class="navbar-brand" href="#">Brand</a>
-	  
-			<div class="menu" onclick="$('.boxforlinks').toggle();">
-			 	Hi, You
-			</div>
-			
-			<div class="bar">
-			 	<div class="bartext">Current position: Galway Ireland</div>
-			</div>
-			<div class="boxforlinks">
-				<div class="downlinks">
-					<div><a href="#" onclick="$('#1').toggle();" class="btn btn-primary" data-target="#blue"><p>Blue</p></a></div>
-					<div><a href="#" onclick="$('#2').toggle();" class="btn btn-info" data-target="#violet"><p>Violet</p></a></div>
-					<div><a href="#" onclick="$('#3').toggle();" class="btn btn-warning"  data-target="#orange"><p>Orange</p></a></div>
-					<div><a href="#" onclick="$('#4').toggle();" class="btn btn-success"  data-target="#green"><p>Green</p></a></div>
-					<div><a href="#" onclick="$('#5').toggle();" class="btn btn-danger" data-target="#red"><p>Red</p></a></div>
-				</div>
-			</div>
-	  	</div> <!-- end navbar-->
+<head>
+    <title>MEAN </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css"/>
+    <script src="https://bootswatch.com/bower_components/jquery/dist/jquery.js"></script>
+    <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
 
-	  
-	  
+    <link href='https://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
 
+    <script type="text/javascript">
+      $(document).ready(function(){
+        // Collapse accordion every time dropdown is shown
+        $('.dropdown-accordion').on('show.bs.dropdown', function (event) {
+          var accordion = $(this).find($(this).data('accordion'));
+          accordion.find('.panel-collapse.in').collapse('hide');
+        });
 
-	  <style> 
-		    #sortable { 
-		    	list-style-type: none; 
-		    	margin: 0; 
-		    	padding: 0; 
-		    	width: 100%; 
-		    	opacity: 0.8;
-		    }
-		    #sortable li { 
-		    	margin: 5px 5px 5px 5px; 
-		    	padding: 1px; 
-		    	float: left; 
-		    	width: 200px; 
-		    	height: 350px; 
-		    	font-size: 20px; 
-		    	text-align: center; 
-		    	border-radius: 5px;
-		    	overflow: hidden;
-		    	border: 1px solid #ffff99;
-		    }
-		    body{
-		    	/* previously #172C4F
-		    	background-color:  #E2F7D7;*/
-		    }
-		    .btn{
-		    	margin: 10px;
-		    	height: 50px;
-		    	width: 200px;
-		    	border-radius: 10px;
-		    	overflow: hidden;
-		    }
-		    .panel{
-		    	cursor: move;
-		    }
-		    .bar{
-		    	margin-top: 15px;
-		    	margin-left: 90px;
-		    	height: 50px;
-		    	width: 85%;
-		    	background-color: #0A031F;
-		    	color: #fff;
-		    	opacity: 0.7;
-		    	overflow: hidden;
-		    }
-		    .bartext{
-		    	margin-top: 10px;
-		    	margin-left: 15px;
-		    }
-		    .menu{
-		    	height: 40px;
-		    	width: 100px;
-		    	border-left: 1px solid #fff;
-		    	border-right: 1px solid #fff;
-		    	margin-top: 10px;
-		    	margin-left: 84%;
-		    	overflow: hidden;
-		    	color: white;
-		    	text-align: center;
-		    	padding-top: 5px;
-		    }
-		    .menu:hover{
-		    	font-size: 20px;
-		    	padding-top: -15px;
-		    }
-		    .navbar-brand{
-		    	color: white;
-		    	margin-top: 0px;
-		    	margin-left: 75px;
-		    	font-size: 45px;
-		    }
-		    .downlinks{
-		    	/*border: 1px solid white;*/
-		    	float: right;
-		    	margin-left: 55px;
-		    	margin-top: 80px;
-		    }
-		    .boxforlinks{
-		    	display: none;
-		    	border: 1px solid white;
-		    	height: 500px;
-		    	width: 300px;
-		    	overflow: hidden;
-		    	margin-left: 1050px;
-		    	border-bottom-left-radius: 150px;
-		    	border-top-left-radius: 150px;
-		    	background-color: #0A031F;
-		    	opacity: 0.7;
-		    	position: absolute;
-		    }
-		    /* in an out are clases*/
-		    .in{
-		    	animation-name: menuslidein;
-		    	animation-duration: 0.5s;
-		    }
-		    @keyframes menuslidein{
-		    	from{ right: -200px;}
-		    	to{ right: 0%;}
-		    }
-		    .out{
-		    	animation-name: menuslideout;
-		    	animation-duration: 0.5s;
-		    }
-		    @keyframes menuslideout{
-		    	from{ right: 0%;}
-		    	to{ right: -200px;}
-		    }
-		    html, body { 
-			  background: url(http://p1.pichost.me/i/39/1629941.jpg) no-repeat center center fixed; 
-			  -webkit-background-size: cover;
-			  -moz-background-size: cover;
-			  -o-background-size: cover;
-			  background-size: cover;
-			  max-width: 100%;
-			  overflow-x: hidden;
-			}
-			p{
-				font-size: 20px;
-			}
+        // Prevent dropdown to be closed when we click on an accordion link
+        $('.dropdown-accordion').on('click', 'a[data-toggle="collapse"]', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          $($(this).data('parent')).find('.panel-collapse.in').collapse('hide');
+          $($(this).attr('href')).collapse('show');
+        });
+      });
+    </script>
 
-		    /* this makes all of them visible at the start
-		    li{
-		    	display: none;
-		    }
-		    */
-/* 
-			#blue{
-				height: 250px;
-				width: 350px;
-				border: 1px solid #ffff99;
-				border-top: 50%;
-				float: left;
-				margin: 5px 5px 5px 5px;
-				background-color: #E0F2F5;
-				border-radius: 12px;
-				overflow: hidden;
-				text-align: center; 
-				padding: 0px;
-			}*/
+    <style type="text/css">
+      body{
+        background: url("http://www.img.lirent.net/2014/10/Material-Wallpaper-22-Android-Lollipop-wallpapers.png");
+      }
+      .dropdown-accordion .panel-heading {
+        padding: 0;
+      }
+      .dropdown-accordion .panel-heading a {
+        display: block;
+        padding: 10px 15px;
+      }
+      .panel-heading{
+        border-radius: 0px;
+      }
+      .glyphicon { 
+        margin-right:10px; 
+        margin-left: 4px;
+      }
+      .dropdown-menu{
+        background-color: #093170; /*dark navy*/
+      }
+      .navbar{
+        background-color: #093170; /*dark navy*/
+      }
+      .navbar-brand{
+        font-family: Lato;
+      }
+      .navbar-text{
+        color: #e3f2fd;
+      }
+      .dropdown-menu{ /*actual dropdown*/
+        width: 250px;
+      }
+      .lil{/*the heading in the dropdown*/
+        width: 90%;
+        margin-left: 5%;
+        background-color: #b2ebf2; /*bluey*/
+        border-radius: 0px;
+        font-family: Lato;
+        font-size: 20px;
+        color: white;
+      }
+      #droptitle{/*the bg in the heading in the dropdown(at the sides)*/
+        background-color:  #093170; /*dark navy*/
+      }
+      .mod{/*module name*/
+        font-family: Lato;
+        font-size: 120%;
+        margin-left: 2px;
+        color: white;
+      }
+      .opt{/*the div surrounding the module name*/
+        margin-top: -5px;
+        margin-bottom: -5px;
+        border-radius: 0px;
+        background-color: #ef9a9a; /*light reddy*/
+      }
+      #dropmodbg{/* the background of the module names*/
+        background-color: #093170; /*dark navy*/
+      }
+    </style>
+</head>
 
-	  </style>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-	  <script>
-	  $(function() {
-	    $( "#sortable" ).sortable({
-	    	cursor: 'move',
-	    	handle: '.panel-heading',
-	    	placeholder: 'placeholder',
-	    	forcePlaceholderSize: true,
-	    	opacity: 0.4,
-	    	stop: function(event, ui){
-				$(ui.item).find('#sortable').click();
-				var sortorder='';
-				$('#sortable').each(function(){
-					
-					    var itemorder=$(this).sortable('toArray');
-						sortorder+=itemorder.toString();
-						
-				});
-				alert('SortOrder: '+sortorder);
-				/*Pass sortorder variable to server using ajax to save state*/
-			}
-	    });
-	    $( "#sortable" ).disableSelection();
-	    $('li').toggle();
-	  });
+                <a class="navbar-brand" href="index.html">YOURSPACE</a>
+                <p class="navbar-text hidden-xs">Welcome to the MEAN project</p>
+            </div>
+<!--navbar -------------------------------------------------------------------- -->
+            <div class="dropdown dropdown-accordion" data-accordion="#accordion" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                          <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi, You<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 
-	  $(".menu").click(function(){
-		  	if($(".boxforlinks").hasClass("out")){
-		  		$(".boxforlinks").removeClass("in");
-		  	}
-		  	else{
-		  		$(".boxforlinks").removeClass("out");
-		  		$(".boxforlinks").addClass("in");
-		  	}
-	  });
+                          <div class="panel-group" id="accordion">
 
-	  </script>
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 id="droptitle" class="panel-title">
+                                  <a class="lil" href="#collapseOne" data-toggle="collapse" data-parent="#accordion"><span class="glyphicon glyphicon-user">
+                                </span>Account</a>
+                                </h4>
+                              </div>
+                              <div class="panel-collapse collapse" id="collapseOne">
+                                <div id="dropmodbg" class="panel-body">
+                                  <div class="opt"><a class="mod" href="#">Profile</a></div><br>
+                                  <div class="opt"><a class="mod" href="#">Change Password</a></div><br>
+                                  <div class="opt"><a class="mod" href="#">Log Out</a></div><br>
+                                  <div class="opt"><a class="mod" href="#">Deleate Account</a></div>
+                                </div>
+                              </div>
+                            </div>
 
-	</head>
-	<body>
-	 
-		<ul id="sortable">
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 id="droptitle" class="panel-title">
+                                  <a class="lil" href="#collapseTwo" data-toggle="collapse" data-parent="#accordion"><span class="glyphicon glyphicon-th">
+                                </span>Modules</a>
+                                </h4>
+                              </div>
+                              <div class="panel-collapse collapse" id="collapseTwo">
+                                <div id="dropmodbg" class="panel-body">
+                                  <div class="opt"><a class="mod" href="#">Weather</a></div><br>
+                                  <div class="opt"><a class="mod" href="#">News</a></div><br>
+                                  <div class="opt"><a class="mod" href="#">Calendar</a></div>
+                                </div>
+                              </div>
+                            </div>
 
-		    <li class="ui-state-default" id="1">
-			  	<div id="blue" >	
-					<div class="panel panel-primary">
-				      <div class="panel-heading">Module 1</div>
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 id="droptitle" class="panel-title">
+                                  <a class="lil" href="#collapseThree" data-toggle="collapse" data-parent="#accordion">The MEAN Team</a>
+                                </h4>
+                              </div>
+                              <div class="panel-collapse collapse" id="collapseThree">
+                                <div id="dropmodbg" class="panel-body">
+                                  <div class="opt"><span class="glyphicon glyphicon-user"></span><a class="mod" href="#">About Us</a></div><br>
+                                  <div class="opt"><span class="glyphicon glyphicon-tasks"></span><a class="mod" href="#">Our Vision</a></div><br>
+                                  <div class="opt"><span class="glyphicon glyphicon-usd"></span><a class="mod" href="#">Goals</a></div>
+                                </div>
+                              </div>
+                            </div>
 
-				    </div>
-				</div>
-		    </li>
+                          </div><!-- end accordion-->
 
-		    <li class="ui-state-default" id="2">
-		    	<div id="violet" >	
-					<div class="panel panel-info">
-				      <div class="panel-heading">Module 2</div>
-				    </div>
-				</div>
-		    </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-		    <li class="ui-state-default" id="3">
-		    	<div id="orange" >	
-					<div class="panel panel-warning">
-				      <div class="panel-heading">Module 3</div>
-				    </div>
-				</div>
-		    </li>
+    <div id="mainContent" class="container">
 
-		    <li class="ui-state-default" id="4">
-		    	<div id="green" >	
-					<div class="panel panel-success">
-				      <div class="panel-heading">Module 4</div>
-				    </div>
-				</div>
-		    </li>
+        <div class="row">
+            <div class=" col-md-3 col-sm-6">
+                <div class="panel panel-success ">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Google</h3>
+                    </div>
+                    <div class="panel-body">
+                        <img class="center-block img-responsive" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google">
+                        <form class="form-horizontal" method="get" action="https://www.google.com/search">
+                            <input type="text" class="form-control" name="q" value="" placeholder="Search Google">
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-		    <li class="ui-state-default" id="5">
-		    	<div id="red" >	
-					<div class="panel panel-danger">
-				      <div class="panel-heading">Module 5</div>
-				    </div>
-				</div>
-		    </li>
-<!-- 
-		    <li class="ui-state-default" id="6"></li>
-		    <li class="ui-state-default" id="7"></li>
-		    <li class="ui-state-default" id="8"></li>
-		    <li class="ui-state-default" id="9"></li>
-		    <li class="ui-state-default" id="10"></li>
-		    <li class="ui-state-default" id="11"></li>
-		    -->
-		</ul>
-	 
-	 
-	</body>
+            
+            
+            <div class=" col-md-3 col-sm-6">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Bing</h3>
+                    </div>
+                    <div class="panel-body">
+                        <img class="center-block img-responsive" src="http://rack.1.mshcdn.com/media/ZgkyMDEzLzA5LzE2L2JjL0Jpbmdsb2dvb3JhLmFkYjJkLnBuZwpwCXRodW1iCTEyMDB4OTYwMD4/996d9598/35b/Bing-logo-orange-RGB.png" alt="Bing">
+                        <form class="form-horizontal" method="get" action="http://www.bing.com/search">
+                            <input type="text" class="form-control" name="q" value="" placeholder="Search Bing">
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class=" col-md-3 col-sm-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Yahoo</h3>
+                    </div>
+                    <div class="panel-body">
+                        <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Yahoo_Logo.svg/2000px-Yahoo_Logo.svg.png" alt="Yahoo">
+                        <form class="form-horizontal" <form method="get" action="http://search.yahoo.com/search">
+                            <input type="text" class="form-control" name="p" value="" placeholder="Search Yahoo">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class=" col-md-3 col-sm-6">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">YouTube</h3>
+                    </div>
+                    <div class="panel-body">
+                        <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/YouTube_logo_2013.svg/800px-YouTube_logo_2013.svg.png" alt="YouTube">
+                        <form class="form-horizontal" method="get" action="http://www.youtube.com/results">
+                            <input type="text" class="form-control" name="search_query" value="" placeholder="Search YouTube">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class=" col-md-3 col-sm-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Duck Duck Go</h3>
+                    </div>
+                    <div class="panel-body">
+                        <img class="center-block img-responsive" src="http://donttrack.us/common/images/ddg-home-logo.png" alt="Duck Duck Go">
+                        <form class="form-horizontal" method="get" action="https://duckduckgo.com/">
+                            <input type="text" class="form-control" name="q" value="" placeholder="Search Duck Duck Go">
+                        </form>
+                    </div>
+                </div>
+            </div>
+              
+        </div>
+    </div>
+</body>
+
 </html>
