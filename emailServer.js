@@ -26,7 +26,7 @@ var EM_TOKEN_PATH = EM_TOKEN_DIR + 'gmail-nodejs-quickstart.json';
 var userCode = null;
 
 function authorize(req, res, callBackFn) {
-  
+	
 	//var clientSecret = "Check dropbox";
 	//var clientId = "Check dropbox";
 	  
@@ -35,7 +35,7 @@ function authorize(req, res, callBackFn) {
 	var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
 
 	// Check if we have previously stored a token.
-	fs.readFile(EM_TOKEN_PATH, function(err, token) 
+	fs.readFile(EM_TOKEN_PATH, function(err, token) //MONGO read
 	{
 		if (err) 
 		{
@@ -103,7 +103,7 @@ function storeToken(token) {
 			throw err;
 		}
 	}
-	fs.writeFile(EM_TOKEN_PATH, JSON.stringify(token));
+	fs.writeFile(EM_TOKEN_PATH, JSON.stringify(token));//MONGO write
 	console.log('Token stored to ' + EM_TOKEN_PATH);
 }
 

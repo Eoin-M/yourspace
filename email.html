@@ -8,7 +8,6 @@
         .starredEmail {
             color: #FBD75B !important;
         }
-        
         .unreadEmail {
             font-weight: bold !important;
         }
@@ -35,14 +34,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
     <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script>
-    var calendar = angular.module('myemail', ['ngAnimate','ui.bootstrap']);
-	calendar.controller('mainController', function ($scope, $http)
+    var emailModule = angular.module('myemail', ['ngAnimate','ui.bootstrap']);
+	emailModule.controller('mainController', function ($scope, $http)
 	{
 		$scope.getEmails=function(numEmails)
 		{
 			console.log("entered getEmails");
 			$scope.emailAuth = true;//to hide the button
-			$http.post('/nextEmails', JSON.stringify({maxResults: numEmails, code: null}))
+			$http.post('/nextEmails', JSON.stringify(
+                {
+                    maxResults: numEmails,
+                    code: null
+                })
+            )
 			.success(function(data)
 			{
                 var emails = [];
@@ -333,12 +337,8 @@
                     </span>
                 </div>
             </div>
-            
- 
-
-                
-            
         </div>
+        
         <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -349,16 +349,18 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label for="to" class="control-label">To:</label>
-                                <input type="email" class="form-control" id="emailTo">
-                            </div>
-                            <div class="subject">
-                                <label for="subject" class="control-label">Subject:</label>
-                                <input type="text" class="form-control" id="emailSubject">
-                            </div>
-                            <div class="message">
-                                <label for="message" class="control-label">Message:</label>
-                                <textarea class="form-control" id="emailMessage"></textarea>
+                                <div>
+                                    <label for="to" class="control-label">To:</label>
+                                    <input type="email" class="form-control" id="emailTo">
+                                </div>
+                                <div>
+                                    <label for="subject" class="control-label">Subject:</label>
+                                    <input type="text" class="form-control" id="emailSubject">
+                                </div>
+                                <div>
+                                    <label for="message" class="control-label">Message:</label>
+                                    <textarea class="form-control" id="emailMessage"></textarea>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -375,7 +377,7 @@
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                         Your email was sent successfully.
                     </div>
-                    <div class="alert alert-dismissible alert-success fade in hideAlert" id="emailSentError">
+                    <div class="alert alert-dismissible alert-danger fade in hideAlert" id="emailSentError">
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                         Error: Your email could not be sent.
                     </div>
