@@ -230,11 +230,44 @@ function returnCalData(eventsAry, req, res, numEvents)
       
 function saveEvent(auth, req, res)
 {
-    //console.dir(req.body);
+    var calendar = google.calendar('v3');
     console.log(req.body.from);
     console.log(req.body.until);
     console.log(req.body.summary);
     console.log(req.body.location);
+    var event = 
+    {
+        summary: req.body.summary,
+        location: req.body.location,
+        start: 
+        {
+            dateTime: req.body.from,
+        },
+        end: 
+        {
+            dateTime: req.body.until,
+        },
+    };
+    calendar.events.insert(
+    {
+        auth: auth,
+        calendarId: 'primary',
+        resource: event,
+    }, 
+    function(err, event) 
+    {
+        if (err) 
+        {
+            console.log('There was an error contacting the Calendar service: ' + err);
+            res.sendstatus(412);
+            res.send(err);
+        }
+        else
+        {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(event);
+        }
+    });
 }
 
 app.get('/', function (req,res)

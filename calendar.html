@@ -193,11 +193,17 @@
             )
             .success(function(data)
             {
-                console.log("successs");
+                console.log("added successfully");
                 console.dir(data);
+                $scope.getEvents($scope.events.length);//refreshes the calendar
+                $scope.eventAddError = false;
+                $scope.eventAddSuccess = true;
+                
             }).error(function(data){
                 console.error("An error occured. Server returned: ");
                 console.dir(data);
+                $scope.eventAddSuccess = false;
+                $scope.eventAddError = true;
             });
         }
 	});
@@ -285,6 +291,7 @@
                             </div>
                         </div>
                     </form>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">
@@ -293,6 +300,15 @@
                     <button type="button" class="btn btn-primary" id="saveEventBtn" ng-click="saveEvent()">
                         Add to Calendar <span class="glyphicon glyphicon-floppy-disk"></span>
                     </button>
+                </div>
+                
+                <div class="alert alert-dismissible alert-success fade in hideAlert" id="eventAddSuccess" ng-show="eventAddSuccess">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    The event was added successfully
+                </div>
+                <div class="alert alert-dismissible alert-danger fade in hideAlert" id="eventAddError" ng-show="eventAddError">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Error: The event could not be added.
                 </div>
                 
             </div>
