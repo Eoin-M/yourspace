@@ -156,9 +156,10 @@
             $('#calendarModal').modal();
         }
         
-        var now = new Date();
-        $scope.eventFromTime = now;
-        $scope.eventUntilTime = new Date().setHours(now.getHours()+1);
+        $scope.eventFromTime = new Date();
+        $scope.eventUntilTime = new Date();
+        $scope.eventFromDate = new Date();
+        $scope.eventUntilDate = new Date();
         
         $scope.chooseDateFromPopup = {
             opened: false
@@ -167,11 +168,38 @@
             opened: false
         };
         $scope.chooseDate = function(popup) {
-            console.log("open");
             if (popup == "From") $scope.chooseDateFromPopup.opened = true;
             else if (popup == "Until") $scope.chooseDateUntilPopup.opened = true;
-            
         };
+        $scope.saveEvent =function()
+        {
+            //var location = document.getElementById("")
+            
+            var from = $scope.eventFromDate;
+            from.setHours( $scope.eventFromTime.getHours() );
+            from.setMinutes( $scope.eventFromTime.getMinutes() );
+            
+            var until = $scope.eventUntilDate;
+            until.setHours( $scope.eventUntilTime.getHours() );
+            until.setMinutes( $scope.eventUntilTime.getMinutes() );
+
+            $http.post('/saveEvent', JSON.stringify(
+                {
+                    from: from,
+                    until: until,
+                    summary: $scope.eventSummary,
+                    location: $scope.eventLocation
+                })
+            )
+            .success(function(data)
+            {
+                console.log("successs");
+                console.dir(data);
+            }).error(function(data){
+                console.error("An error occured. Server returned: ");
+                console.dir(data);
+            });
+        }
 	});
 	
 	</script>
@@ -222,16 +250,16 @@
                         <div class="form-group">
                             <div>
                                 <label for="summary" class="control-label">Summary:</label>
-                                <input type="text" class="form-control" id="calendarSummary">
+                                <input type="text" ng-model="eventSummary" class="form-control" id="calendarSummary">
                             </div>
                             
                             <br>
                             <div class="col-md-6">
                                 <div class="well well-sm">
-                                    <label for="from" class="control-label">From:</label>
+                                    <label for="From" class="control-label">From:</label>
                                     <uib-timepicker ng-model="eventFromTime" hour-step="1" minute-step="5" show-meridian="true"></uib-timepicker>
                                     <span class="input-group">
-                                        <input type="text" class="form-control" ng-model="eventsFromTime" uib-datepicker-popup is-open="chooseDateFromPopup.opened"  ng-required="true" close-text="Close" />
+                                        <input type="text" class="form-control" ng-model="eventFromDate" uib-datepicker-popup="MMMM dd, yyyy" is-open="chooseDateFromPopup.opened"  ng-required="true" close-text="Close" />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="chooseDate('From')"><i class="glyphicon glyphicon-calendar"></i></button>
                                         </span>
@@ -243,7 +271,7 @@
                                     <label for="Until" class="control-label">Until:</label>
                                     <uib-timepicker ng-model="eventUntilTime" hour-step="1" minute-step="5" show-meridian="true"></uib-timepicker>
                                     <span class="input-group">
-                                        <input type="text" class="form-control" ng-model="eventsUntilTime" uib-datepicker-popup is-open="chooseDateUntilPopup.opened"  ng-required="true" close-text="Close" />
+                                        <input type="text" class="form-control" ng-model="eventUntilDate" uib-datepicker-popup="MMMM dd, yyyy" is-open="chooseDateUntilPopup.opened"  ng-required="true" close-text="Close" />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="chooseDate('Until')"><i class="glyphicon glyphicon-calendar"></i></button>
                                         </span>
@@ -253,9 +281,8 @@
                             
                             <div>
                                 <label for="location" class="control-label">Location:</label>
-                                <input type="text" class="form-control" id="calendarLocation">
+                                <input type="text" ng-model="eventLocation" class="form-control" id="calendarLocation">
                             </div>
-                            
                         </div>
                     </form>
                 </div>
@@ -263,7 +290,7 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">
                         Close <span class="glyphicon glyphicon-trash"></span>
                     </button>
-                    <button type="button" class="btn btn-primary" id="sendEmailBtn" ng-click="sendEmail()">
+                    <button type="button" class="btn btn-primary" id="saveEventBtn" ng-click="saveEvent()">
                         Add to Calendar <span class="glyphicon glyphicon-floppy-disk"></span>
                     </button>
                 </div>

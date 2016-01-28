@@ -26,7 +26,7 @@ var CAL_TOKEN_PATH = CAL_TOKEN_DIR + 'calendar-nodejs-quickstart.json';
 var userCode = null;
 
 function authorize(callbackFn, req, res) {
-  
+
 	//var clientSecret = "Check dropbox";
 	//var clientId = "Check dropbox";
 	  
@@ -228,7 +228,14 @@ function returnCalData(eventsAry, req, res, numEvents)
 	res.send(eventsAry);
 } 
       
-
+function saveEvent(auth, req, res)
+{
+    //console.dir(req.body);
+    console.log(req.body.from);
+    console.log(req.body.until);
+    console.log(req.body.summary);
+    console.log(req.body.location);
+}
 
 app.get('/', function (req,res)
 {
@@ -248,6 +255,20 @@ app.post('/nextEvents', function (req, res)
 			console.log('Error loading client secret file: ' + err);
 		}
 		authorize(listEvents, req, res);
+	});
+});
+
+app.post('/saveEvent', function (req, res)
+{
+	console.log("hit");
+    
+	fs.readFile('client_secret.json', function processClientSecrets(err, content) 
+	{
+		if (err) 
+		{
+			console.log('Error loading client secret file: ' + err);
+		}
+		authorize(saveEvent, req, res);
 	});
 });
 
