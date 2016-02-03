@@ -5,11 +5,12 @@
     <title>MEAN </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    
+    <!-- below link is NEEDED for bootstrap-->
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css"/>
+    <!-- below links are NEEDED for bootstrapjQuery accordeon dropdown in top right corner-->
     <script src="https://bootswatch.com/bower_components/jquery/dist/jquery.js"></script>
     <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-
+    <!-- below link is NICE TO HAVE for a preety font-->
     <link href='https://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
 
     <script type="text/javascript">
@@ -20,14 +21,29 @@
           accordion.find('.panel-collapse.in').collapse('hide');
         });
 
-        // Prevent dropdown to be closed when we click on an accordion link
+        // Prevent dropdown to be closed when we click on an accordion heading
         $('.dropdown-accordion').on('click', 'a[data-toggle="collapse"]', function (event) {
           event.preventDefault();
           event.stopPropagation();
           $($(this).data('parent')).find('.panel-collapse.in').collapse('hide');
           $($(this).attr('href')).collapse('show');
         });
+
+        // Prevent dropdown to be closed when we click on an accordion dropdown heading thingie thingie name
+        $('.dropdown-accordion').on('click', 'div[class="opt"]', function (event) {
+          event.preventDefault(); //prevents jumping to top of page
+          event.stopPropagation();
+          $($(this).data('parent')).find('.panel-collapse.in').collapse('hide');
+          $($(this).attr('href')).collapse('show');
+        });
+
+        $("#sortable").sortable({
+         ,
+        });
+
       });
+
+
     </script>
 
     <style type="text/css">
@@ -144,9 +160,11 @@
                               </div>
                               <div class="panel-collapse collapse" id="collapseTwo">
                                 <div id="dropmodbg" class="panel-body">
-                                  <div class="opt"><a class="mod" href="#">Weather</a></div><br>
-                                  <div class="opt"><a class="mod" href="#">News</a></div><br>
-                                  <div class="opt"><a class="mod" href="#">Calendar</a></div>
+                                  <div class="opt" onclick="$('#modaule1').toggle();" href="#"><a class="mod">Google</a></div><br>
+                                  <div class="opt" onclick="$('#module2').toggle();" href="#"><a class="mod" href="#">Bing</a></div><br>
+                                  <div class="opt" onclick="$('#module3').toggle();" href="#"><a class="mod" href="#">Yahoo</a></div><br>
+                                  <div class="opt" onclick="$('#module4').toggle();" href="#"><a class="mod" href="#">Youtube</a></div><br>
+                                  <div class="opt" onclick="$('#module5').toggle();" href="#"><a class="mod" href="#">Duck Go Go</a></div>
                                 </div>
                               </div>
                             </div>
@@ -178,7 +196,8 @@
     <div id="mainContent" class="container">
 
         <div class="row">
-            <div class=" col-md-3 col-sm-6">
+          <div id="sortable" class="ui-sortable">
+            <div class=" col-md-3 col-sm-6" id="module1">
                 <div class="panel panel-success ">
                     <div class="panel-heading">
                         <h3 class="panel-title">Google</h3>
@@ -194,7 +213,7 @@
 
             
             
-            <div class=" col-md-3 col-sm-6">
+            <div class=" col-md-3 col-sm-6" id="module2">
                 <div class="panel panel-warning">
                     <div class="panel-heading">
                         <h3 class="panel-title">Bing</h3>
@@ -208,7 +227,7 @@
                 </div>
             </div>
 
-            <div class=" col-md-3 col-sm-6">
+            <div class=" col-md-3 col-sm-6" id="module3">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 class="panel-title">Yahoo</h3>
@@ -222,7 +241,7 @@
                 </div>
             </div>
             
-            <div class=" col-md-3 col-sm-6">
+            <div class=" col-md-3 col-sm-6" id="module4">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
                         <h3 class="panel-title">YouTube</h3>
@@ -236,7 +255,7 @@
                 </div>
             </div>
             
-            <div class=" col-md-3 col-sm-6">
+            <div class=" col-md-3 col-sm-6" id="module5">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Duck Duck Go</h3>
@@ -249,7 +268,7 @@
                     </div>
                 </div>
             </div>
-              
+          </div> <!-- /sortable--> 
         </div>
     </div>
 </body>
