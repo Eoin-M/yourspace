@@ -2,6 +2,8 @@
 //Check: https://developers.google.com/google-apps/calendar/v3/reference/events for events (colourID...)
 //Check: https://developers.google.com/google-apps/calendar/v3/reference/events/list for choosing what day etc.
 
+"use strict";
+
 var express = require('express');
 var app = express();
 var util = require('util');
@@ -259,8 +261,7 @@ function saveEvent(auth, req, res)
         if (err) 
         {
             console.log('There was an error contacting the Calendar service: ' + err);
-            res.sendstatus(412);
-            res.send(err);
+            res.status(412).send(err);
         }
         else
         {
