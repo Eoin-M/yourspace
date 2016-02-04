@@ -1,0 +1,123 @@
+<html ng-app="stocks">
+<head>
+	<style>
+		
+		.redStockText
+		{
+			color: red;
+		}
+		.greenStockText
+		{
+			color: green;
+		}
+		
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-touch.js"></script>
+	<script>
+    "use strict";
+	var stocks = angular.module('stocks', ['ngTouch']);
+	stocks.controller('mainController', function ($scope, $http, $interval)
+	{
+        $scope.checkStock=function()
+        {
+            for (let i = 0; i < $scope.stocks.length; i++)
+			{
+				if( $scope.stocks[i].symbol.toUpperCase() == $scope.wantedStock.toUpperCase())
+				{
+					alert("already there");
+					//TODO small notficaion to say stock is already shown
+					return;
+				}
+			}
+            var symbols = []
+            for (let j = 0; j < ($scope.stocks.length); j++)
+            {
+                symbols.push($scope.stocks[j].symbol);
+            }
+            symbols.push($scope.wantedStock.toUpperCase());
+            $scope.getStock(symbols);
+            $scope.wantedStock = "";
+        }
+        
+        $scope.initialiseStocks=function()
+        {
+            console.log('init');
+            $scope.getStock(['GOOG','APPL']);
+        }
+        
+		$scope.getStock=function(stockArray)
+		{
+			//console.log("entered getStock");
+			$http.post('/getStock', JSON.stringify(
+                {
+                    symbols: stockArray
+                })
+            )
+			.success(function(data){
+			    //console.dir(data);
+			    for(var i = 0; i < data.length; i++)
+                {
+                    if (data[i].lastTradePriceOnly === null)
+                    {
+                        console.log(data[i].symbol)
+                        data[i].symbol = data[i].symbol+" Not found";
+                        data[i].lastTradePriceOnly = "";
+				        data[i].change = "";
+                    }
+                }
+                $scope.stocks = data;
+			}).error(function(data){
+				console.error("An error occured on the server when adding stock "+$scope.wantedStock+". Server returned: ");
+				console.dir(data);
+			});
+		};
+		$scope.updateStock = $interval(function()
+		{
+            var symbols = []
+            for (let i = 0; i < ($scope.stocks.length); i++)
+            {
+                symbols.push($scope.stocks[i].symbol);
+            }
+            $scope.getStock(symbols);
+            console.log("updating:");
+            console.dir(symbols);
+			
+		}, 30000);//Updates stocks every 30 seconds
+		
+		
+		
+		$scope.setStockClass = function (input) {
+			input = input - 0;
+			if (input < 0) 
+			{
+				return  "redStockText";
+			}
+			else if (input >= 0)
+			{
+				return "greenStockText";
+			}
+		}	
+	});
+	
+	</script>
+</head>
+<body ng-controller="mainController" >
+	<div ng-init="initialiseStocks()" class="mainStockDiv"><!-- calls getMultStock() on load-->
+
+		<div ng-repeat="stock in stocks | orderBy: 'symbol' track by stock.symbol">
+		<!-- Add this to above line to enable swipe to delete ng-swipe-left="multiStocks.splice($index,1)" ng-swipe-right="multiStocks.splice($index,1)"-->
+			<span ng-click="stocks.splice($index,1)" class="closeIndStock"> X </span>
+			<div>Stock: {{ stock.symbol | uppercase}}</div><!--filter formats to uppercase-->
+			<div>Price: {{ stock.lastTradePriceOnly | currency:"$" }}</div><!--filter formats to currency-->
+			<div ng-class="setStockClass(stock.change)">Change: {{ stock.change | currency:"$" }}</div><!--chooses which style to apply-->
+		</div>
+		
+		<form ng-submit="checkStock()" class="newStockForm">
+			<input type="text" pattern="[A-Za-z].{1,6}" title="Can only contain between 2 and 7 letters" ng-model="wantedStock" placeholder="Add another stock">
+			<button>Check</button>
+		</form>
+	</div>
+</body>
+</html>
