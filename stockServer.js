@@ -34,6 +34,7 @@ app.post('/getStock', function (req, res)
 			console.log(util.format('=== %s ===', snapshot.name).cyan);
 			console.dir(snapshot);
 			var tempObj = {};
+            tempObj.name = snapshot.name;
 			tempObj.symbol = snapshot.symbol;
 			tempObj.lastTradePriceOnly = snapshot.lastTradePriceOnly;
 			tempObj.change = snapshot.change;
