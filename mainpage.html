@@ -12,6 +12,8 @@
     <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <!-- below link is NICE TO HAVE for a preety font-->
     <link href='https://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
+    <!-- below link is NEEDED for jQuery Ui to enablle the modules to be sortable-->
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 
     <script type="text/javascript">
       $(document).ready(function(){
@@ -37,8 +39,15 @@
           $($(this).attr('href')).collapse('show');
         });
 
-        $("#sortable").sortable({
-         ,
+        $('.sortable').sortable({
+         handle: "#handle",
+         cursor: 'move',
+        });
+        $( "#sortable" ).disableSelection();
+
+        $('.sortable').masonry({
+          columnWidth:120,
+          itemSelector: ".module1 .module2 .module3 .module4 .module5"
         });
 
       });
@@ -106,6 +115,16 @@
       #dropmodbg{/* the background of the module names*/
         background-color: #093170; /*dark navy*/
       }
+      .sortable{ /* takes away the bullet of an ul*/
+        list-style-type: none;
+      }
+      #module1, #module2, #module3, #module4, #module5{
+        float: left;
+        vertical-align: top;
+       /* position: absolute;
+        display: inline-block;
+        clear: left;*/
+      }
     </style>
 </head>
 
@@ -123,7 +142,7 @@
                 <a class="navbar-brand" href="index.html">YOURSPACE</a>
                 <p class="navbar-text hidden-xs">Welcome to the MEAN project</p>
             </div>
-<!--navbar -------------------------------------------------------------------- -->
+<!-- --------------------------------------------- navbar ---------------------------------------------------------------- -->
             <div class="dropdown dropdown-accordion" data-accordion="#accordion" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -160,7 +179,7 @@
                               </div>
                               <div class="panel-collapse collapse" id="collapseTwo">
                                 <div id="dropmodbg" class="panel-body">
-                                  <div class="opt" onclick="$('#modaule1').toggle();" href="#"><a class="mod">Google</a></div><br>
+                                  <div class="opt" onclick="$('#module1').toggle();" href="#"><a class="mod">Google</a></div><br>
                                   <div class="opt" onclick="$('#module2').toggle();" href="#"><a class="mod" href="#">Bing</a></div><br>
                                   <div class="opt" onclick="$('#module3').toggle();" href="#"><a class="mod" href="#">Yahoo</a></div><br>
                                   <div class="opt" onclick="$('#module4').toggle();" href="#"><a class="mod" href="#">Youtube</a></div><br>
@@ -191,83 +210,86 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav> <!-- ------------------------------------------ end navbar ------------------------------------------------- -->
 
     <div id="mainContent" class="container">
 
         <div class="row">
-          <div id="sortable" class="ui-sortable">
-            <div class=" col-md-3 col-sm-6" id="module1">
-                <div class="panel panel-success ">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Google</h3>
-                    </div>
-                    <div class="panel-body">
-                        <img class="center-block img-responsive" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google">
-                        <form class="form-horizontal" method="get" action="https://www.google.com/search">
-                            <input type="text" class="form-control" name="q" value="" placeholder="Search Google">
-                        </form>
-                    </div>
-                </div>
-            </div>
+          <div class="sortable">
+            
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module1">
+                  <div class="panel panel-success ">
+                      <div class="panel-heading" id="handle">
+                          <h3 class="panel-title">Google</h3>
+                      </div>
+                      <div class="panel-body">
+                          <img class="center-block img-responsive" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google">
+                          <form class="form-horizontal" method="get" action="https://www.google.com/search">
+                              <input type="text" class="form-control" name="q" value="" placeholder="Search Google">
+                          </form>
+                      </div>
+                  </div>
+              </div>
 
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module2">
+                  <div class="panel panel-warning ">
+                      <div class="panel-heading" id="handle">
+                          <h3 class="panel-title">Bing</h3>
+                      </div>
+                      <div class="panel-body">
+                          <img class="center-block img-responsive" src="http://rack.1.mshcdn.com/media/ZgkyMDEzLzA5LzE2L2JjL0Jpbmdsb2dvb3JhLmFkYjJkLnBuZwpwCXRodW1iCTEyMDB4OTYwMD4/996d9598/35b/Bing-logo-orange-RGB.png" alt="Bing">
+                          <form class="form-horizontal" method="get" action="http://www.bing.com/search">
+                              <input type="text" class="form-control" name="q" value="" placeholder="Search Google">
+                          </form>
+                      </div>
+                  </div>
+              </div>
+           
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module3">
+                  <div class="panel panel-info">
+                      <div class="panel-heading" id="handle">
+                          <h3 class="panel-title">Yahoo</h3>
+                      </div>
+                      <div class="panel-body">
+                          <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Yahoo_Logo.svg/2000px-Yahoo_Logo.svg.png" alt="Yahoo">
+                          <form class="form-horizontal" <form method="get" action="http://search.yahoo.com/search">
+                              <input type="text" class="form-control" name="p" value="" placeholder="Search Yahoo">
+                          </form>
+                      </div>
+                  </div>
+              </div>
             
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module4">
+                  <div class="panel panel-danger">
+                      <div class="panel-heading" id="handle">
+                          <h3 class="panel-title">YouTube</h3>
+                      </div>
+                      <div class="panel-body">
+                          <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/YouTube_logo_2013.svg/800px-YouTube_logo_2013.svg.png" alt="YouTube">
+                          <form class="form-horizontal" method="get" action="http://www.youtube.com/results">
+                              <input type="text" class="form-control" name="search_query" value="" placeholder="Search YouTube">
+                          </form>
+                      </div>
+                  </div>
+              </div>
+            </li>
             
-            <div class=" col-md-3 col-sm-6" id="module2">
-                <div class="panel panel-warning">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Bing</h3>
-                    </div>
-                    <div class="panel-body">
-                        <img class="center-block img-responsive" src="http://rack.1.mshcdn.com/media/ZgkyMDEzLzA5LzE2L2JjL0Jpbmdsb2dvb3JhLmFkYjJkLnBuZwpwCXRodW1iCTEyMDB4OTYwMD4/996d9598/35b/Bing-logo-orange-RGB.png" alt="Bing">
-                        <form class="form-horizontal" method="get" action="http://www.bing.com/search">
-                            <input type="text" class="form-control" name="q" value="" placeholder="Search Bing">
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class=" col-md-3 col-sm-6" id="module3">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Yahoo</h3>
-                    </div>
-                    <div class="panel-body">
-                        <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Yahoo_Logo.svg/2000px-Yahoo_Logo.svg.png" alt="Yahoo">
-                        <form class="form-horizontal" <form method="get" action="http://search.yahoo.com/search">
-                            <input type="text" class="form-control" name="p" value="" placeholder="Search Yahoo">
-                        </form>
-                    </div>
-                </div>
-            </div>
+            <li>
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module5">
+                  <div class="panel panel-primary">
+                      <div class="panel-heading" id="handle">
+                          <h3 class="panel-title">Duck Duck Go</h3>
+                      </div>
+                      <div class="panel-body">
+                          <img class="center-block img-responsive" src="http://donttrack.us/common/images/ddg-home-logo.png" alt="Duck Duck Go">
+                          <form class="form-horizontal" method="get" action="https://duckduckgo.com/">
+                              <input type="text" class="form-control" name="q" value="" placeholder="Search Duck Duck Go">
+                          </form>
+                      </div>
+                  </div>
+              </div>
+           
             
-            <div class=" col-md-3 col-sm-6" id="module4">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">YouTube</h3>
-                    </div>
-                    <div class="panel-body">
-                        <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/YouTube_logo_2013.svg/800px-YouTube_logo_2013.svg.png" alt="YouTube">
-                        <form class="form-horizontal" method="get" action="http://www.youtube.com/results">
-                            <input type="text" class="form-control" name="search_query" value="" placeholder="Search YouTube">
-                        </form>
-                    </div>
-                </div>
-            </div>
-            
-            <div class=" col-md-3 col-sm-6" id="module5">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Duck Duck Go</h3>
-                    </div>
-                    <div class="panel-body">
-                        <img class="center-block img-responsive" src="http://donttrack.us/common/images/ddg-home-logo.png" alt="Duck Duck Go">
-                        <form class="form-horizontal" method="get" action="https://duckduckgo.com/">
-                            <input type="text" class="form-control" name="q" value="" placeholder="Search Duck Duck Go">
-                        </form>
-                    </div>
-                </div>
-            </div>
           </div> <!-- /sortable--> 
         </div>
     </div>
