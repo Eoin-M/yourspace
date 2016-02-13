@@ -77,10 +77,17 @@
                 {
                     if (data[i].lastTradePriceOnly === null)
                     {
-                        console.log(data[i].symbol)
-                        data[i].symbol = data[i].symbol+" Not found";
-                        data[i].lastTradePriceOnly = "";
-				        data[i].change = "";
+                        $('#stockInput').popover
+                        ({
+                            content: data[i].symbol+' is not listed on a supported stock exchange',
+                            trigger: 'manual'
+                            });
+                        $('#stockInput').popover('show');
+                        setTimeout( function()
+                        {
+                            $('#stockInput').popover('hide');
+                        }, 5000);
+                        data.splice(i ,1);
                     }
                 }
                 $scope.stocks = data;
@@ -117,7 +124,7 @@
         {
             $scope.stocks.splice($scope.stocks.indexOf(stock),1);
         }
-        $scope.checkStock = function()
+        $scope.validateStock = function()
         {
             console.log("check stock")
             var valid = true;
@@ -127,11 +134,19 @@
             
             if (valid === true)
             {
+                var symbols = []
+                for (let j = 0; j < ($scope.stocks.length); j++)
+                {
+                    symbols.push($scope.stocks[j].symbol);
+                }
+                symbols.push($scope.wantedStock);
+                console.dir(symbols);
+                $scope.getStock(symbols);
                 $scope.wantedStock = "";
-                //get that stock TODO
             }
             else
             {
+                //$('#stockInput').popover('hide');
                 $('#stockInput').popover({
                     content: 'Stocks must be between 1 and 6 characters and contain only latin letters',
                     trigger: 'manual'
@@ -176,7 +191,7 @@
                         </div>
                     </div>
                 </div>
-                <form ng-submit="checkStock()" class="text-center form-group stockForm">
+                <form ng-submit="validateStock()" class="text-center form-group stockForm" autocomplete="off">
                     <div class="input-group">
                         <input type="text" id="stockInput" class="form-control" ng-model="wantedStock" 
                             placeholder="Add another stock"data-container="body" data-toggle="popover" data-placement="bottom" >
