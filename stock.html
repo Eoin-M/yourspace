@@ -117,6 +117,33 @@
         {
             $scope.stocks.splice($scope.stocks.indexOf(stock),1);
         }
+        $scope.checkStock = function()
+        {
+            console.log("check stock")
+            var valid = true;
+            valid = valid && $scope.wantedStock.length > 1;
+            valid = valid && $scope.wantedStock.length < 7;
+            valid = valid && /^[a-z]+$/i.test($scope.wantedStock);//only allows letters
+            
+            if (valid === true)
+            {
+                $scope.wantedStock = "";
+                //get that stock TODO
+            }
+            else
+            {
+                $('#stockInput').popover({
+                    content: 'Stocks must be between 1 and 6 characters and contain only latin letters',
+                    trigger: 'manual'
+                });
+                $('#stockInput').popover('show');
+                setTimeout( function()
+                {
+                    $('#stockInput').popover('hide');
+                }, 5000);
+            }
+            
+        }
 	});
 	
 	</script>
@@ -151,7 +178,8 @@
                 </div>
                 <form ng-submit="checkStock()" class="text-center form-group stockForm">
                     <div class="input-group">
-                        <input type="text" class="form-control" pattern="[A-Za-z].{1,6}" title="Can only contain between 2 and 7 letters" ng-model="wantedStock" placeholder="Add another stock">
+                        <input type="text" id="stockInput" class="form-control" ng-model="wantedStock" 
+                            placeholder="Add another stock"data-container="body" data-toggle="popover" data-placement="bottom" >
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">Go</button>
                         </span>
