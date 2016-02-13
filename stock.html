@@ -38,7 +38,7 @@
 	{
         $scope.checkStock=function()
         {
-            for (let i = 0; i < $scope.stocks.length; i++)
+            for (var i = 0; i < $scope.stocks.length; i++)
 			{
 				if( $scope.stocks[i].symbol.toUpperCase() == $scope.wantedStock.toUpperCase())
 				{
@@ -48,7 +48,7 @@
 				}
 			}
             var symbols = []
-            for (let j = 0; j < ($scope.stocks.length); j++)
+            for (var j = 0; j < ($scope.stocks.length); j++)
             {
                 symbols.push($scope.stocks[j].symbol);
             }
@@ -99,7 +99,7 @@
 		$scope.updateStock = $interval(function()
 		{
             var symbols = []
-            for (let i = 0; i < ($scope.stocks.length); i++)
+            for (var i = 0; i < ($scope.stocks.length); i++)
             {
                 symbols.push($scope.stocks[i].symbol);
             }
@@ -135,7 +135,7 @@
             if (valid === true)
             {
                 var symbols = []
-                for (let j = 0; j < ($scope.stocks.length); j++)
+                for (var j = 0; j < ($scope.stocks.length); j++)
                 {
                     symbols.push($scope.stocks[j].symbol);
                 }
