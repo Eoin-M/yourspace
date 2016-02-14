@@ -1,3 +1,5 @@
+"use strict";
+
 var express = require('express');
 var app = express();
 var util = require('util');
@@ -21,32 +23,41 @@ app.get('/', function (req,res)
 
 app.post('/getStock', function (req, res)
 {
-	console.dir(req.body.symbols);
-	var SYMBOLS = req.body.symbols;
-	var results = [];
-	
-	yahooFinance.snapshot({
-	symbols: SYMBOLS
-	}).then(function (result)
-	{
-		_.each(result, function (snapshot, symbol)
-		{
-			console.log(util.format('=== %s ===', snapshot.name).cyan);
-			console.dir(snapshot);
-			var tempObj = {};
-            tempObj.name = snapshot.name;
-			tempObj.symbol = snapshot.symbol;
-			tempObj.lastTradePriceOnly = snapshot.lastTradePriceOnly;
-			tempObj.change = snapshot.change;
-            tempObj.percentChange = snapshot.changeInPercent;
-			results.push(tempObj);
-			
-		});
-		//console.log(tempObj);
-		res.setHeader('Content-Type', 'application/json');
-		res.send(results);
-	});
+	//console.dir(req.body.symbols);
+	getStocks(req.body.symbols, function(stocks)
+    {
+        res.setHeader('Content-Type', 'application/json');
+		res.send(stocks);
+    } )
 });
+
+function getStocks(stockArray, callBackFn)
+{
+    console.log(stockArray);
+    var results = [];
+    yahooFinance.snapshot(
+    {
+        symbols: stockArray
+    }, function (err, result) 
+    {
+        if (err) 
+        { 
+            throw err; 
+        }
+        //console.dir(result);
+        for (var i = 0; i < result.length; i++)
+        {
+            var tempObj = {};
+            tempObj.name = result[i].name;
+			tempObj.symbol = result[i].symbol;
+			tempObj.lastTradePriceOnly = result[i].lastTradePriceOnly;
+			tempObj.change = result[i].change;
+            tempObj.percentChange = result[i].changeInPercent;
+			results.push(tempObj);
+        }
+        callBackFn(results);
+    });
+}
 
 app.listen(8080);
 console.log("server started");
