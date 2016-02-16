@@ -1,10 +1,13 @@
 var loc = new UserLocation;
+//var city = "new york";
 
 function myGetLocation()
 {
 	if (navigator.geolocation)//if navigator geolocation is supported then
 	{
+		console.log("1");
 		navigator.geolocation.getCurrentPosition( positionToLongLat , noLocationError );
+		console.log("7");
 		//In form of .getCurrentPosition(successFunction, failLocation)
 	}
 	else
@@ -13,21 +16,30 @@ function myGetLocation()
 		loc.isFound = false;
 		//return false;
 	}
-	//TODO wait for set time, then maybe call the map function if isFound isn't true
+	console.log("8");
+	
+	console.log("10");
+	//setTimeout(function(){angular.element(document.getElementById("divCntrl")).scope().yelpWait();} , 5000);
+//TODO wait for set time, then maybe call the map function if isFound isn't true
 }
 
 function positionToLongLat(position)
 {
+	console.log("2");
 	console.log("longtitude: "+position.coords.longitude+"\nlatitude: "+position.coords.latitude);
 	loc.long = position.coords.longitude;
 	loc.lat = position.coords.latitude;
 	loc.isFound = true;
 	runGoogleNavigatorAPI( position.coords.longitude , position.coords.latitude );
-	getWeather();//Sean's weather function is called now
+	console.log("6");
+	console.log(loc);
+	
+	
 }
 
 function noLocationError(error) //should work but I've never seen it called...
 {
+	console.log("err");
 	loc.long = null;
 	loc.lat = null;
 	loc.address = null;
@@ -54,6 +66,12 @@ function noLocationError(error) //should work but I've never seen it called...
 function runGoogleNavigatorAPI(long, lat)
 //http://stackoverflow.com/questions/6797569/get-city-name-using-geolocation source
 {
+	console.log("3");
+	if (typeof google === 'undefined') {
+		setTimeout(function() {runGoogleNavigatorAPI(long, lat)}, 50);
+		console.log("RETRY!");
+		return;
+	}
 	var geocoder = new google.maps.Geocoder();
 	var latlng = new google.maps.LatLng(lat, long);
 	geocoder.geocode({'latLng': latlng}, function(results, status)
@@ -63,7 +81,8 @@ function runGoogleNavigatorAPI(long, lat)
 			if (results[0])//if there is a result
 			{
 				loc.address = results[0].formatted_address;
-				console.log(results[0]);
+				console.log(results);
+				
 				loc.city = undefined;
 				loc.state = undefined;
 				loc.country = undefined;
@@ -77,6 +96,7 @@ function runGoogleNavigatorAPI(long, lat)
 						if (results[0].address_components[i].types[j] == "locality")
 						{
 							loc.city = results[0].address_components[i].long_name;
+							console.log("3.5");
 						}
 						else if (results[0].address_components[i].types[j] == "administrative_area_level_1")
 						{
@@ -96,6 +116,9 @@ function runGoogleNavigatorAPI(long, lat)
 						//Have state as administrative_area_level_1
 					}
 				}
+				console.log("3.75");
+				angular.element(document.getElementById("weather")).scope().weatherGet();
+				angular.element(document.getElementById("yelp")).scope().yelpWait();
 			}
 			else
 			{
@@ -115,7 +138,8 @@ function runGoogleNavigatorAPI(long, lat)
 			loc.country = null;
 		}
 	});
-	
+
+	console.log("4");
 }
 
 function initMap() 
