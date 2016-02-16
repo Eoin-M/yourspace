@@ -33,7 +33,6 @@ app.post('/getStock', function (req, res)
 
 function getStocks(stockArray, callBackFn)
 {
-    console.log(stockArray);
     var results = [];
     yahooFinance.snapshot(
     {
@@ -58,6 +57,7 @@ function getStocks(stockArray, callBackFn)
         callBackFn(results);
     });
 }
+exports.getStocks = getStocks;
 
 app.listen(8080);
 console.log("server started");
