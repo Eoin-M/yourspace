@@ -1,0 +1,37 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<span onClick="loadMenu(['twitterMenu','twitterFeed'])">
+				<i class="fa fa-bars"></i>
+			</span>
+			<a ng-href="https://twitter.com/" target="_blank">Twitter</a>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div id="twitterMenu" class="CustomMenu">
+			
+		</div>
+		<div id="twitterFeed" class="scroll">
+			<!--<div id="rssLoading" class="mdl-spinner mdl-js-spinner is-active rssLoading hidden"></div>-->
+			<div ng-repeat="tweet in tweets | orderBy:'text':true">
+				<div id="head0">
+					<div>
+						<a ng-href="{{tweet.link}}" target="_blank">
+							<img ng-src="{{tweet.user.img}}" style="float: left">
+							<strong>{{tweet.user.name}}</strong>
+							<span>{{tweet.user.screen_name}}</span>
+						</a>
+					</div>
+					<div>
+						<p>{{tweet.text}}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<button ng-click="openTwitterStream()">Get Twitter Feed</button>
+		<form class="form-horizontal" method="get" ng-click="postTweet()" target="_blank">
+			<input type="text" class="form-control" value="" placeholder="What's Happening?">
+			<button class="btn primary-btn fa fa-twitter"> Tweet</button>
+		</form>
+	</div>
+</div>

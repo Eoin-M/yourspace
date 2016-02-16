@@ -1,0 +1,74 @@
+.dropdownRss {
+	width: 100%;
+	max-height: 360px;
+	overflow: auto;
+}
+
+.dropdownMargin {
+	margin: 8px;
+}
+
+.rssP {
+	color: grey;
+	line-height: 20px !important;
+}
+
+div.title {
+	background-color: #346299;
+	padding: 8px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+div.scroll {
+	overflow: auto;
+	max-height: 405px;
+}
+
+.rss {
+	max-height: 500px;
+}
+
+div.head {
+	border-bottom: 1px dashed;
+	color: #366bad;
+	min-height: 130px;
+}
+
+.rssLoading {
+	position: absolute !important;
+	left: 50%;
+	top: 50%;
+	margin-left: -14px; /* -1 x (image width / 2) */
+	margin-top: -14px; /* -1 x (image height / 2) */
+}
+
+#newsSectionsText {
+	max-width: 90%;
+    //display: inline-block;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+a.rssTitle {
+	color: white;
+    font-size: 1.17em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+img.rssImages {
+	height: 80px;
+	float: left;
+    margin: 5px 8px 5px 0px;
+	position: relative;
+}
+
+p.date {
+	font-size: 0.65em;
+	text-align: right;
+}

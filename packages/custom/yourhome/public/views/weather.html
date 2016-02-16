@@ -1,0 +1,44 @@
+<div class="panel panel-primary " style="height: 400px">			
+	<div class="panel-heading clearfix">
+		<h3 class="panel-title pull-left"  style="padding-top: 7.5px;">Weather</h3>
+		<a class="btn pull-right" ng-class="{true: 'btn-default', false: 'btn-default'}[custom]"  ng-click="toggleTemp()">{{custom && '&deg;C' || '&deg;F'}}</a>
+	</div>
+	<div class="panel-body text-center ">
+		<div class="row" >	
+			<ul class="nav nav-tabs">
+			  <li class="col-md-3 col-sm-3 col-xs-3 active"><a data-toggle="tab" href="#1" ng-model="day1">{{day1}}</a></li>
+			  <li class="col-md-3 col-sm-3 col-xs-3 "><a data-toggle="tab" href="#2" ng-model="day2">{{day2}}</a></li>
+			  <li class="col-md-3 col-sm-3 col-xs-3 "><a data-toggle="tab" href="#3" ng-model="day3">{{day3}}</a></li>
+			  <li class="col-md-3 col-sm-3 col-xs-3 "><a data-toggle="tab" href="#4" ng-model="day4">{{day4}}</a></li>
+			</ul>
+			<div  class="col-md-3 col-sm-3 col-xs-3 svgs" ng-repeat="forecastday in data">
+				<!--<div  data-ng-include data-src="'icons/' + forecastday.icon + '.html'"> </div>-->
+				<div  data-ng-include data-src="forecastday.icon"> </div>
+				<div id="celsDiv" ng-show="custom"><h4>{{forecastday.high.celsius}}&deg; <small>{{forecastday.low.celsius}}&deg;</small></h4></div>
+				<div id="fahrDiv"  ng-hide="custom"><h4>{{forecastday.high.fahrenheit}}&deg; <small>{{forecastday.low.fahrenheit}}&deg;</small></h4></div>
+			</div>	
+			<br>
+			<div class="tab-content">
+				<p>
+				<div id="1" class="tab-pane fade in active descBox">
+					<div ng-show="custom" ng-model="day1c"><h6>{{day1c}}</h6></div>
+					<div ng-hide="custom" ng-model="day1f"><h6>{{day1f}} </h6></div>
+				</div>
+				<div id="2" class="tab-pane fade">
+					<div ng-show="custom" ng-model="day2c"><h6>{{day2c}}</h6></div>
+					<div ng-hide="custom" ng-model="day2f"><h6>{{day2f}} </h6></div>
+				</div>
+				<div id="3" class="tab-pane fade">
+					<div ng-show="custom" ng-model="day3c"><h6>{{day3c}}</h6></div>
+					<div ng-hide="custom" ng-model="day3f"><h6>{{day3f}} </h6></div>
+				</div>
+				<div id="4" class="tab-pane fade">
+					<div ng-show="custom" ng-model="day4c"><h6>{{day4c}}</h6></div>
+					<div ng-hide="custom" ng-model="day4c"><h6>{{day4f}} </h6></div>
+				</div>
+				</p>
+				
+			</div>
+		</div>
+	</div>
+</div>

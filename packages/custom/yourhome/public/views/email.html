@@ -1,0 +1,102 @@
+<script type="text/ng-template" id="group-template.html">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a href class="accordion-toggle" ng-click="toggleOpen()"  uib-accordion-transclude="heading">
+					<span ng-class="getEmailStyle(email)" >{{heading}}</span>
+				</a>
+			</h4>
+		</div>
+		<div class="panel-collapse collapse" uib-collapse="!isOpen">
+			<div class="panel-body" ng-transclude></div>
+		</div>
+	</div>
+</script>
+
+            <div class="panel panel-primary" ng-init="getEmails(10)">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Gmail Inbox
+                        <span class="glyphicon glyphicon-remove pull-right"></span>
+                        <span class="glyphicon glyphicon-resize-small pull-right">&nbsp;</span>
+                        <span class="glyphicon glyphicon-repeat pull-right" ng-click="getEmails(emails.length)">&nbsp;</span>
+                        <span class="glyphicon glyphicon-pencil pull-right" ng-click="composeEmail(null, null, null)">&nbsp;</span>
+                    </h3>
+                </div>
+                <div class="panel-body panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="scroll">
+						<uib-accordion>
+							<div ng-repeat="email in emails  | orderBy: '-unixTime' track by email.id">
+								<uib-accordion-group  template-url="group-template.html">
+									<uib-accordion-heading ><!--start accordion row header-->
+										 <span ng-class="getEmailStar(email)" ng-click="setEmailStar($event, email)"></span>
+										 <span ng-class="getEmailStyle(email)" ng-click="readEmail(email)">{{email.subject }}</span>
+									</uib-accordion-heading><!--end accordion row header-->
+									
+									<!--start accordion row content-->
+									<span class="">{{email.unixTime | date:'HH:mm EEE d MMM'}} from {{email.senderEmail}}</span>
+									<a href="#" ng-click="composeEmail(email.senderEmail,email.subject,null)" class="btn btn-xs replyButton">
+										Reply <span class="glyphicon glyphicon-comment"></span>
+									</a><hr>
+									{{email.content}}
+									<br><a ng-href={{email.url}} target="blank">Open this in Gmails's web app</a>
+									
+								</uib-accordion-group>
+							</div>
+						</uib-accordion>
+						
+						<div class="text-center">
+							<div id="loadMoreEmailsButton" ng-click="getEmails(emails.length +10-0)" ng-hide="emails === undefined">
+								<span class="btn btn-xs btn-default"> Load More <span class="glyphicon glyphicon-refresh"></span></span>
+							</div>
+							<br>
+						</div>
+					</div>
+                </div>
+            </div>
+        
+        <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button btn-xs" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Compose</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <div>
+                                    <label for="to" class="control-label">To:</label>
+                                    <input type="email" class="form-control" id="emailTo">
+                                </div>
+                                <div>
+                                    <label for="subject" class="control-label">Subject:</label>
+                                    <input type="text" class="form-control" id="emailSubject">
+                                </div>
+                                <div>
+                                    <label for="message" class="control-label">Message:</label>
+                                    <textarea class="form-control" id="emailMessage"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Close <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                        <button type="button" class="btn btn-primary" id="sendEmailBtn" ng-click="sendEmail()">
+                            Send message <span class="glyphicon glyphicon-send"></span>
+                        </button>
+                    </div>
+                    
+                    <div class="alert alert-dismissible alert-success fade in hideAlert" id="emailSentSuccess">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        Your email was sent successfully.
+                    </div>
+                    <div class="alert alert-dismissible alert-danger fade in hideAlert" id="emailSentError">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        Error: Your email could not be sent.
+                    </div>
+                    
+                </div>
+            </div>
+			</div>

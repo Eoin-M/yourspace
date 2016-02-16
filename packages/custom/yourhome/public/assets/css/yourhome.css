@@ -1,0 +1,37 @@
+.dropdown {
+	cursor: pointer;
+}
+
+.dropdownProfile {
+	margin-top: -5px;
+	margin-bottom: -5px;
+	margin-right: 10px;
+}
+
+/*.customButton {
+	color: white !important;
+	margin-top: -5px;
+	margin-left: -5px !important;
+	margin-right: 5px !important;
+	size: 50%;
+}*/
+
+.CustomMenu {
+	position: absolute;
+    background: white;
+    overflow:hidden;
+    white-space:nowrap;
+    display:inline-block;
+    width:0%;
+	height: 82%;
+	z-index: 2;
+	
+	-webkit-transition: width 0.3s ease-in-out;
+    -moz-transition: width 0.3s ease-in-out;
+    -o-transition: width 0.3s ease-in-out;
+    transition: width 0.3s ease-in-out;
+}
+
+.CustomMenuSlide {
+    width: 75%;
+}

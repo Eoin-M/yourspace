@@ -1,0 +1,60 @@
+/*.mainCalendarDiv
+		{
+			display: inline-block;
+			outline: #D1E0E0 solid;
+		}*/
+		.individualEvent
+		{
+			margin-bottom: 8px;
+            padding: 5px;
+		}
+		/*Colours for google calendar events as per google's style guidelines*/
+		.redEvent
+		{
+			background-color: #DC2127;
+		}
+		.blueEvent
+		{
+			background-color: #A4BDFC;
+            color: #edbd54;
+		}
+		.darkblueEvent
+		{
+			background-color: #5484ED;
+		}
+		.purEvent
+		{
+			background-color: #DBADFF;
+		}
+		.turqEvent
+		{
+			background-color: #7AE7BF;
+		}
+		.yelEvent
+		{
+			background-color: #FBD75B;
+		}
+		.greenEvent
+		{
+			background-color: #7AE7BF;
+		}
+		.darkgreenEvent
+		{
+			background-color: #51B749;
+		}
+		.orangeEvent
+		{
+			background-color: #FFB878;
+		}
+		.pinkEvent 
+		{ 
+			background-color: #FF887C;
+		}
+		.greyEvent 
+		{ 
+			background-color: #E1E1E1; 
+		}
+        .blackTxt
+        {
+            color:black;
+        }

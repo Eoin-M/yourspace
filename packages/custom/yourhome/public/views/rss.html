@@ -1,0 +1,45 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<span onClick="loadMenu(['rssMenu','rssFeed'])">
+				<i class="fa fa-bars"></i>
+			</span>
+			<a ng-href="{{rssLink}}" target="_blank">{{rssTitle}}</a>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div id="rssMenu" class="CustomMenu">
+			<div class="dropdown dropdownMargin btnTitles" id="newsTitles">
+				<button type="button" id="newsTitlesBtn" data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-block">
+					<span id="newsTitlesText">{{newsTitle}}</span>
+					<b class="caret"></b>
+				</button>
+				<ul class="dropdown-menu dropdownRss">
+					<li><a id="bbc" ng-click="bbc()">BBC</a></li>
+					<li><a id="cnn" ng-click="cnn()">CNN</a></li>
+					<li><a id="rte" ng-click="rte()">RTE</a></li>
+					<li><a id="sky" ng-click="sky()">Sky</a></li>
+				</ul>
+			</div>
+			<div class="dropdown dropdownMargin" id="newsSections">
+				<button type="button" id="newsSectionsBtn" data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-block disabled">
+					<span id="newsSectionsText">{{newsSection}}</span>
+					<b class="caret"></b>
+				</button>
+				<ul class="dropdown-menu dropdownRss" id="newsSectionsList"></ul>
+			</div>
+		</div>
+		<div id="rssFeed" class="scroll">
+			<div id="rssLoading" class="mdl-spinner mdl-js-spinner is-active rssLoading hidden"></div>
+			<div ng-repeat="article in articles">
+				<a id="article0" ng-href="{{article.link}}" target="_blank">
+					<div id="head0" class="head rssP">{{article.title}}<br>
+						<img ng-src="{{article.img}}" class="rssImages">
+						<p class="rssP" id="p0">{{article.summary}}</p>
+						<p class="date">{{article.date}}</p>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

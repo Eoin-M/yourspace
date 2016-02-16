@@ -1,0 +1,16 @@
+<div class="panel panel-danger">			
+	<div class="panel-heading">
+		<h3 class="panel-title">Yelp</h3>
+	</div>
+	<div class="panel-body">
+		
+		<div id="grid1" ui-grid="gridOptions" class="grid" ng-if='whenHttpRequestHasFinishedLoading'></div>
+		<form ng-submit="submit(term, place)">
+		<br>
+			<input type="text" placeholder="Find: pizza, pub..." ng-model="term" />
+			<input type="text" placeholder="Near: address, city, state..." ng-model="place" />
+			<input type="submit" id="submit" value="Submit" />
+		</form>
+	
+	</div>
+</div>

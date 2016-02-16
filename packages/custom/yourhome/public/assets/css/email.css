@@ -1,0 +1,22 @@
+.starredEmail {
+	color: #FBD75B !important;
+}
+.unreadEmail {
+	font-weight: bold !important;
+}
+#emailSentSuccess
+{
+	display: none;
+}
+.hideAlert
+{
+	display: none;
+}
+.accordion-toggle:focus
+{
+	outline: none;
+}
+.accordion-toggle 
+{
+	cursor: pointer;
+}

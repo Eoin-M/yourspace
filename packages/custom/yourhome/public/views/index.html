@@ -1,0 +1,29 @@
+<!--<link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css">-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/paper/bootstrap.css">
+<link rel="stylesheet" href="http://ui-grid.info/release/ui-grid-unstable.css" type="text/css">
+	
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
+<script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
+<script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
+<script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
+<script src="http://ui-grid.info/release/ui-grid-unstable.js"></script>
+<script src="http://danu7.it.nuigalway.ie:8620/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		myGetLocation();
+	});
+</script>
+
+<div class="" data-ng-controller="YourhomeController">
+	<div class="row">
+		<div data-ng-controller="RssController" data-ng-include="'/yourhome/views/rss.html'" id="rrs" class="rss col-md-3 col-sm-6 col-xs-12"></div>			
+		<div data-ng-controller="TwitterController" data-ng-include="'/yourhome/views/twitter.html'" id="twitter" class="col-md-3 col-sm-6 col-xs-12"></div>	
+		<div data-ng-controller="WeatherController" data-ng-include="'/yourhome/views/weather.html'" id="weather" class="col-md-4 col-sm-8 col-xs-12"></div>	
+		<div data-ng-controller="CalendarController" data-ng-include="'/yourhome/views/calendar.html'" id="calendar" class="col-md-3 col-sm-6 col-xs-12"></div>
+		<div data-ng-controller="YelpController" data-ng-include="'/yourhome/views/yelp.html'" id="yelp" class="col-md-6 col-sm-6 col-xs-12"></div>
+		<div data-ng-controller="EmailController" data-ng-include="'/yourhome/views/email.html'" class="col-md-6 col-sm-6 col-xs-12"></div>
+		<div data-ng-include="'/yourhome/views/searchEngines.html'"></div>
+	</div>
+</div>
