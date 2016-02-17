@@ -36,27 +36,6 @@
 	var stocks = angular.module('stocks', ['ngTouch']);
 	stocks.controller('mainController', function ($scope, $http, $interval)
 	{
-        $scope.checkStock=function()
-        {
-            for (var i = 0; i < $scope.stocks.length; i++)
-			{
-				if( $scope.stocks[i].symbol.toUpperCase() === $scope.wantedStock.toUpperCase())
-				{
-					alert("already there");
-					//TODO small notficaion to say stock is already shown
-					return;
-				}
-			}
-            var symbols = [];
-            for (var j = 0; j < ($scope.stocks.length); j++)
-            {
-                symbols.push($scope.stocks[j].symbol);
-            }
-            symbols.push($scope.wantedStock.toUpperCase());
-            $scope.getStock(symbols);
-            $scope.wantedStock = "";
-        };
-        
         $scope.initialiseStocks=function()
         {
             console.log('init');
@@ -79,9 +58,9 @@
                     {
                         $('#stockInput').popover
                         ({
-                            content: data[i].symbol+' is not listed on a supported stock exchange',
                             trigger: 'manual'
-                            });
+                        });
+                        $('#stockInput').attr('data-content', data[i].symbol+' is not listed on a supported stock exchange');
                         $('#stockInput').popover('show');
                         setTimeout( function()
                         {
@@ -129,6 +108,24 @@
         $scope.validateStock = function()
         {
             console.log("check stock");
+            
+            for (var i = 0; i < $scope.stocks.length; i++)
+			{
+				if( $scope.stocks[i].symbol.toUpperCase() === $scope.wantedStock.toUpperCase())
+				{
+					$('#stockInput').popover({
+                        trigger: 'manual'
+                    });
+                    $('#stockInput').attr('data-content', $scope.wantedStock+' is already listed');
+                    $('#stockInput').popover('show');
+                    setTimeout( function()
+                    {
+                        $('#stockInput').popover('hide');
+                    }, 5000);
+					return;
+				}
+			}
+            
             var valid = true;
             valid = valid && $scope.wantedStock.length > 1;
             valid = valid && $scope.wantedStock.length < 7;
@@ -150,9 +147,10 @@
             {
                 //$('#stockInput').popover('hide');
                 $('#stockInput').popover({
-                    content: 'Stocks must be between 1 and 6 characters and contain only latin letters',
                     trigger: 'manual'
                 });
+                $('#stockInput').attr('data-content','Stocks must be between 1 and 6 characters in length'+
+                 ' and contain only ISO basic latin letters');
                 $('#stockInput').popover('show');
                 setTimeout( function()
                 {
