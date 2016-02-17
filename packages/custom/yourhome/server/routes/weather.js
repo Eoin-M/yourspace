@@ -1,9 +1,10 @@
 module.exports = function(Yourhome, app, auth, database) {  
 	var getJSON =require('get-json');
+	var config = require('meanio').loadConfig();
 
 	app.post('/api/yourhome/weather', function (req, res)
 	{
-		var query ="http://api.wunderground.com/api/3db9db7515033481/forecast/q/";
+		var query = config.weather;
 		query+=req.body.country;
 		query+="/";
 		query+=req.body.city;
