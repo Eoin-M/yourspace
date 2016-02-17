@@ -28,7 +28,9 @@ var CAL_TOKEN_PATH = CAL_TOKEN_DIR + 'calendar-nodejs-quickstart.json';
 var userCode = null;
 
 function authorize(callbackFn, req, res) {
-
+  
+	var clientSecret = "bBdbvLWqthAIGgJR-z6ggCFt";
+	var clientId = "913427083839-j5s8r0i5a1dok6qps63rqehf01leetsj.apps.googleusercontent.com";
 	//var clientSecret = "Check dropbox";
 	//var clientId = "Check dropbox";
 	  
@@ -63,10 +65,10 @@ function getNewToken(oauth2Client, callbackFn, req, res) {
 		scope: SCOPES
 	});
    
-	if (userCode == null)
+	if (userCode === null)
 	{
 		var custEvents = [];
-		var tempObj = {}
+		var tempObj = {};
 		tempObj.auth = false;
 		tempObj.link = authUrl;
 		custEvents[0] = tempObj;
@@ -97,7 +99,7 @@ function storeToken(token) {
 	} 
 	catch (err) 
 	{
-		if (err.code != 'EEXIST') 
+		if (err.code !== 'EEXIST') 
 		{
 			throw err;
 		}
@@ -127,7 +129,7 @@ function listEvents(auth, req, res)
         custEvents[0] = tempObj;
         
         var calendars = response.items;
-        if (calendars.length == 0) 
+        if (calendars.length === 0) 
         {
 			console.log('No calendars found.');
         } 
@@ -160,7 +162,7 @@ function listEvents(auth, req, res)
 					}
 				  
 					var events = response.items;
-					if (events != null)
+					if (events !== null)
 					{
 						for (var j = 0; j < events.length; j++) 
 						{
@@ -172,11 +174,11 @@ function listEvents(auth, req, res)
 							var timeDiff = Math.abs(eventObj.end.getTime() - eventObj.start.getTime());
 							eventObj.diff = Math.ceil(timeDiff / (1000 * 60));
 							eventObj.description = event.summary;
-							if (event.colorId == null)
+							if (event.colorId === null)
 							{
 								event.colorId='-1';
 							}
-							if (event.location == null)
+							if (event.location === null)
 							{
 								event.location=false;
 							}
@@ -188,7 +190,7 @@ function listEvents(auth, req, res)
 							
 							//console.log(eventObj);
 						}
-						if (j ==0)
+						if (j === 0)
 						{
 							console.log("ln 204 No events were in calendar "+calendars[i]);
 						}
@@ -199,12 +201,12 @@ function listEvents(auth, req, res)
 						calComplete++;
 						console.log("No events in calendar "+response);
 					}
-					if (calComplete == calendars.length)
+					if (calComplete === calendars.length)
 					{
 						returnCalData(custEvents, req, res, req.body.numEvents);
 					}
-				}
-            )}
+				});
+            }
         }
 	});
 }

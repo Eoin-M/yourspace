@@ -40,14 +40,14 @@
         {
             for (var i = 0; i < $scope.stocks.length; i++)
 			{
-				if( $scope.stocks[i].symbol.toUpperCase() == $scope.wantedStock.toUpperCase())
+				if( $scope.stocks[i].symbol.toUpperCase() === $scope.wantedStock.toUpperCase())
 				{
 					alert("already there");
 					//TODO small notficaion to say stock is already shown
 					return;
 				}
 			}
-            var symbols = []
+            var symbols = [];
             for (var j = 0; j < ($scope.stocks.length); j++)
             {
                 symbols.push($scope.stocks[j].symbol);
@@ -55,13 +55,13 @@
             symbols.push($scope.wantedStock.toUpperCase());
             $scope.getStock(symbols);
             $scope.wantedStock = "";
-        }
+        };
         
         $scope.initialiseStocks=function()
         {
             console.log('init');
             $scope.getStock(['GOOG','AAPL']);
-        }
+        };
         
 		$scope.getStock=function(stockArray)
 		{
@@ -98,7 +98,7 @@
 		};
 		$scope.updateStock = $interval(function()
 		{
-            var symbols = []
+            var symbols = [];
             for (var i = 0; i < ($scope.stocks.length); i++)
             {
                 symbols.push($scope.stocks[i].symbol);
@@ -119,14 +119,16 @@
 			{
 				return "greenStockText";
 			}
-		}	
+		};
+        	
         $scope.removeStock = function (stock)
         {
             $scope.stocks.splice($scope.stocks.indexOf(stock),1);
-        }
+        };
+        
         $scope.validateStock = function()
         {
-            console.log("check stock")
+            console.log("check stock");
             var valid = true;
             valid = valid && $scope.wantedStock.length > 1;
             valid = valid && $scope.wantedStock.length < 7;
@@ -134,7 +136,7 @@
             
             if (valid === true)
             {
-                var symbols = []
+                var symbols = [];
                 for (var j = 0; j < ($scope.stocks.length); j++)
                 {
                     symbols.push($scope.stocks[j].symbol);
@@ -158,7 +160,7 @@
                 }, 5000);
             }
             
-        }
+        };
 	});
 	
 	</script>
@@ -202,8 +204,6 @@
                 </form>
             </div>
 		    
-                
-            
         </div>
 	</div>
 </body>

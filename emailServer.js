@@ -26,7 +26,7 @@ var EM_TOKEN_PATH = EM_TOKEN_DIR + 'gmail-nodejs-quickstart.json';
 var userCode = null;
 
 function authorize(req, res, callBackFn) {
-	
+  
 	//var clientSecret = "Check dropbox";
 	//var clientId = "Check dropbox";
 	  
@@ -64,10 +64,10 @@ function getNewToken(oauth2Client, callBackFn, req, res) {
 		scope: SCOPES
 	});
    
-	if (userCode == null)
+	if (userCode === null)
 	{
 		var custEmails = [];
-		var tempObj = {}
+		var tempObj = {};
 		tempObj.auth = false;
 		tempObj.link = authUrl;
 		custEmails[0] = tempObj;
@@ -98,7 +98,7 @@ function storeToken(token) {
 	} 
 	catch (err) 
 	{
-		if (err.code != 'EEXIST') 
+		if (err.code !== 'EEXIST') 
 		{
 			throw err;
 		}
@@ -130,7 +130,7 @@ function listEmails(auth, req, res)
         custEmails[0] = tempObj;
         
         var messages = response.messages;
-        if (messages.length == 0) 
+        if (messages.length === 0) 
         {
 			console.log('No emails found.');
         } 
@@ -160,9 +160,8 @@ function listEmails(auth, req, res)
                     {
                         returnEmData(custEmails, req, res);
                     }
-				}
-            )}
-            
+				});
+            }
         }
 	});
 }
@@ -319,11 +318,11 @@ app.post('/modifyEmails', function (req, res)
 		}
         else if(req.body.status === "UNREAD")
         {
-            authorize(req, res, markAsRead, null);
+            authorize(req, res, markAsRead);
         }
 		else if(req.body.status === "STARRED")
         {
-            authorize(req, res, emailStarred, null);
+            authorize(req, res, emailStarred);
         }
 	});
 });

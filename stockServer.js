@@ -28,7 +28,7 @@ app.post('/getStock', function (req, res)
     {
         res.setHeader('Content-Type', 'application/json');
 		res.send(stocks);
-    } )
+    });
 });
 
 function getStocks(stockArray, callBackFn)

@@ -112,7 +112,7 @@
                             catch(err)
                             {// 28/100 were caught
                                 tempObject.content = tempObject.snippet + "... We cannot parse the remainder of this email. ";
-                                errCnt++
+                                errCnt++;
                             }
                         }
                         else
@@ -145,7 +145,8 @@
             var style ="";
             if (email.unread === true) style+= " unreadEmail";
             return style;
-        }
+        };
+        
         $scope.readEmail = function(email)
         {
             if(email.unread === true)
@@ -167,7 +168,8 @@
                 });
             }
             
-        }
+        };
+        
         $scope.setEmailStar = function($event, email)
         {
             if($event){//stops accordion from opening when they star an email
@@ -191,21 +193,24 @@
                 console.error("An error occured. Server returned: ");
                 console.dir(data);
             });
-        }
+        };
+        
         $scope.getEmailStar = function(email)
         {
             style = "glyphicon";
-            if(email.star === true) style+= " glyphicon-star starredEmail"
-            else style+= " glyphicon-star-empty"
+            if(email.star === true) style+= " glyphicon-star starredEmail";
+            else style+= " glyphicon-star-empty";
             return style;
-        }
+        };
+        
         $scope.composeEmail= function (to, subject, message)
         {
             $("#emailTo").val(to);
             $("#emailSubject").val(subject);
             $("#emailMessage").val(message);
             $('#emailModal').modal();
-        }
+        };
+        
         $scope.sendEmail=function()
         {
             var to = document.getElementById("emailTo").value;
@@ -233,7 +238,7 @@
             });
             
             //http://stackoverflow.com/questions/25207217/failed-sending-mail-through-google-api-in-nodejs
-        }
+        };
 	});
 	
     function parseEmailHeaders(email, target)
@@ -386,7 +391,6 @@
             </div>
         </div>
     </div>
-    
     
 </body>
 
