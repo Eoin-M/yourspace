@@ -23,7 +23,7 @@ app.get('/', function (req,res)
 
 app.post('/getStock', function (req, res)
 {
-	//console.dir(req.body.symbols);
+	updateFavStocks(req);
 	getStocks(req.body.symbols, function(stocks)
     {
         res.setHeader('Content-Type', 'application/json');
@@ -57,7 +57,33 @@ function getStocks(stockArray, callBackFn)
         callBackFn(results);
     });
 }
+
+function updateFavStocks(req)
+{
+    /*
+    if requested stocks are the same as in the cookie
+    {
+        saveUsersNewFavStocks
+    }*/
+}
+
+function areArraysEqual(ary1, ary2)
+{
+    if (!ary1 || !ary2)
+        return false;
+
+    if (ary1.length !== ary2.length)
+        return false;
+
+    for (var i = 0; i < ary1.length; i++) {
+        if (ary1[i] !== ary2[i]) { 
+            return false;   
+        }           
+    }       
+    return true;
+}
 exports.getStocks = getStocks;
+exports.areArraysEqual = areArraysEqual;
 
 app.listen(8080);
 console.log("server started");

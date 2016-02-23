@@ -4,7 +4,7 @@ var assert = require('assert');
 var stockJS = require(loc+ "stockServer.js");
 
 describe('Stocks', function() {
-	describe('#getStocks()', function (done) {
+	describe('#getStocks()', function () {
 		it('should get 1 object from the API for one stock', function (done) {
 			stockJS.getStocks(["GOOG"], function(stocks)
 		    {
@@ -27,4 +27,35 @@ describe('Stocks', function() {
 		    });
 		});
     });
+	describe('#areArraysEqual()', function() {
+		it('should say an array is equal to itself', function () {
+			var array = [1,2,3];
+			assert.equal(stockJS.areArraysEqual(array, array), true);
+		});
+		it('should say 2 equal arrays are empty', function () {
+			var array1 = [1,2,3];
+			var array2 = [1,2,3];
+			assert.equal(stockJS.areArraysEqual(array1, array2), true);
+		});
+		it('should say 2 empty arrays are empty', function () {
+			var array1 = [];
+			var array2 = [];
+			assert.equal(stockJS.areArraysEqual(array1, array2), true);
+		});
+		it('should say 2 arrays with different lengths are unequal', function () {
+			var array1 = [1,2];
+			var array2 = [1,2,3];
+			assert.equal(stockJS.areArraysEqual(array1, array2), false);
+		});
+		it('should say an empty array is not equal to a filled array', function () {
+			var array1 = [1,2,3];
+			var array2 = [];
+			assert.equal(stockJS.areArraysEqual(array1, array2), false);
+		});
+		it('should say 2 unequal arrays of the same length are unequal', function () {
+			var array1 = [5,6,7];
+			var array2 = [1,2,3];
+			assert.equal(stockJS.areArraysEqual(array1, array2), false);
+		});
+	});
 });
