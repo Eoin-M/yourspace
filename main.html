@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>MEAN </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <!-- below link is NEEDED for bootstrap-->
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css"/>
+    <!-- below links are NEEDED for bootstrapjQuery accordeon dropdown in top right corner-->
+    <script src="https://bootswatch.com/bower_components/jquery/dist/jquery.js"></script>
+    <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <!-- below link is NICE TO HAVE for a preety font-->
+    <link href='https://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
+    <!-- below link is NEEDED for jQuery Ui to enablle the modules to be sortable-->
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <!-- below link is NEEDED for the toggle buttons within the accordeon menu -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.4/angular-material.min.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+        // Collapse accordion every time dropdown is shown
+        $('.dropdown-accordion').on('show.bs.dropdown', function (event) {
+          var accordion = $(this).find($(this).data('accordion'));
+          accordion.find('.panel-collapse.in').collapse('hide');
+        });
+
+        // Prevent dropdown to be closed when we click on an accordion heading
+        $('.dropdown-accordion').on('click', 'a[data-toggle="collapse"]', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          $($(this).data('parent')).find('.panel-collapse.in').collapse('hide');
+          $($(this).attr('href')).collapse('show');
+        });
+
+        // Prevent dropdown to be closed when we click on an accordion dropdown heading thingie thingie name
+        $('.dropdown-accordion').on('click', 'div[class="opt"]', function (event) {
+          event.preventDefault(); //prevents jumping to top of page
+          event.stopPropagation();
+          $($(this).data('parent')).find('.panel-collapse.in').collapse('hide');
+          $($(this).attr('href')).collapse('show');
+        });
+
+        $('.sortable').sortable({
+         handle: "#handle",
+         cursor: 'move',
+        });
+        $( "#sortable" ).disableSelection();
+
+        $('.sortable').masonry({
+          columnWidth:120,
+          itemSelector: ".module1 .module2 .module3 .module4 .module5"
+        });
+
+        // -------------------- davids buttons
+        $('.button').click(function(e) {
+          var top = $(this).position().top + e.offsetY,
+            left = $(this).position().left + e.offsetX;
+        })
+        //---------------------- angular buttons
+        angular.module('switchDemo1', ['ngMaterial'])
+        .controller('SwitchDemoCtrl', function($scope) {
+          $scope.data = {
+            cb1: true
+          };
+          $scope.message = 'false';
+          $scope.onChange = function(cbState) {
+            $scope.message = cbState;
+          };
+        });
+        //----------------------
+
+
+      });
+
+
+    </script>
+
+    <style type="text/css">
+      body{
+        background: url("http://www.img.lirent.net/2014/10/Material-Wallpaper-22-Android-Lollipop-wallpapers.png");
+      }
+      .dropdown-accordion .panel-heading {
+        padding: 0;
+      }
+      .dropdown-accordion .panel-heading a {
+        display: block;
+        padding: 10px 15px;
+      }
+      .panel-heading{
+        border-radius: 0px;
+      }
+      .glyphicon { 
+        margin-right:10px; 
+        margin-left: 4px;
+      }
+      .dropdown-menu{
+        background-color: #093170; /*dark navy*/
+      }
+      .navbar{
+        background-color: #093170; /*dark navy*/
+      }
+      .navbar-brand{
+        font-family: Lato;
+      }
+      .navbar-text{
+        color: #e3f2fd;
+      }
+      .dropdown-menu{ /*actual dropdown*/
+        width: 250px;
+      }
+      .lil{/*the heading in the dropdown*/
+        width: 90%;
+        margin-left: 5%;
+        background-color: #b2ebf2; /*bluey*/
+        border-radius: 0px;
+        font-family: Lato;
+        font-size: 20px;
+        color: white;
+      }
+      #droptitle{/*the bg in the heading in the dropdown(at the sides)*/
+        background-color:  #093170; /*dark navy*/
+      }
+      .mod{/*module name*/
+        font-family: Lato;
+        font-size: 120%;
+        margin-left: 2px;
+        color: white;
+      }
+      .opt{/*the div surrounding the module name*/
+        margin-top: -5px;
+        margin-bottom: -5px;
+        border-radius: 0px;
+        background-color: #ef9a9a; /*light reddy*/
+      }
+      #dropmodbg{/* the background of the module names*/
+        background-color: #093170; /*dark navy*/
+      }
+      .sortable{ /* takes away the bullet of an ul*/
+        list-style-type: none;
+        /*overflow: hidden;*/
+      }
+      .sortable { //this thing breakes and fixes the modules, it allows for them to be sorted without the module jumping but makes them all on the same line
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display:         flex;
+      }
+      #module1, #module2, #module3, #module4, #module5{
+        float: left;
+        vertical-align: top;
+        
+      }
+/* ------------- */
+      .button {
+        display: inline-block;
+        position: relative;
+        padding: 0 12px;
+        height: 36px;
+        border: none;
+        margin: 8px 0;
+        cursor: pointer;
+        border-radius: 2px;
+        font-size: 16px;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: rgba(0,0,0,0.84);
+        background: none;
+        -webkit-transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1), color 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1), color 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        outline: none;
+      }
+      .button:hover {
+        box-shadow: 0 3px 6px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.28);
+      }
+      .button:active {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+      }
+      .switch {
+        display: inline-block;
+        position: relative;
+        width: 40px;
+        height: 16px;
+        border-radius: 8px;
+        background: rgba(0,0,0,0.26);
+        -webkit-transition: background 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: background 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        vertical-align: middle;
+        cursor: pointer;
+      }
+      .switch::before {
+        content: '';
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        width: 24px;
+        height: 24px;
+        background: #fafafa;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.28);
+        border-radius: 50%;
+        -webkit-transition: left 0.28s cubic-bezier(0.4, 0, 0.2, 1), background 0.28s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: left 0.28s cubic-bezier(0.4, 0, 0.2, 1), background 0.28s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .switch:active::before {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.28), 0 0 0 20px rgba(128,128,128,0.1);
+      }
+      input:checked + .switch {
+        background: rgba(0,150,136,0.5);
+      }
+      input:checked + .switch::before {
+        left: 20px;
+        background: #009688;
+      }
+      input:checked + .switch:active::before {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.28), 0 0 0 20px rgba(0,150,136,0.2);
+      }
+
+/* ------------- */
+
+
+      .switchdemoBasicUsage .inset {
+        padding-left: 25px;
+        padding-top: 25px; }
+
+        /*--------------*/
+
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="index.html">YOURSPACE</a>
+                <p class="navbar-text hidden-xs">Welcome to the MEAN project</p>
+            </div>
+<!-- --------------------------------------------- navbar ---------------------------------------------------------------- -->
+            <div class="dropdown dropdown-accordion" data-accordion="#accordion" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                          <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi, You<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+
+                          <div class="panel-group" id="accordion">
+
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 id="droptitle" class="panel-title">
+                                  <a class="lil" href="#collapseOne" data-toggle="collapse" data-parent="#accordion"><span class="glyphicon glyphicon-user">
+                                </span>Account</a>
+                                </h4>
+                              </div>
+                              <div class="panel-collapse collapse" id="collapseOne">
+                                <div id="dropmodbg" class="panel-body">
+                                  <div class="opt"><a class="mod" href="#">Profile</a></div>
+                                  <!-- below 3 lines are responsible for the toggle button -->
+
+                                  <br>
+                                  <div class="opt"><a class="mod" href="#">Change Password</a></div><br>
+                                  <div class="opt"><a class="mod" href="#">Log Out</a></div><br>
+                                  <div class="opt"><a class="mod" href="#">Deleate Account</a></div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 id="droptitle" class="panel-title">
+                                  <a class="lil" href="#collapseTwo" data-toggle="collapse" data-parent="#accordion"><span class="glyphicon glyphicon-th">
+                                </span>Modules</a>
+                                </h4>
+                              </div>
+                              <div class="panel-collapse collapse" id="collapseTwo">
+                                <div id="dropmodbg" class="panel-body">
+                                  <div class="opt" onclick="$('#module1').toggle();" href="#"><a class="mod">Google</a></div><br>
+                                  <div class="opt" onclick="$('#module2').toggle();" href="#"><a class="mod" href="#">Bing</a></div><br>
+                                  <div class="opt" onclick="$('#module3').toggle();" href="#"><a class="mod" href="#">Yahoo</a></div><br>
+                                  <div class="opt" onclick="$('#module4').toggle();" href="#"><a class="mod" href="#">Youtube</a></div><br>
+                                  <div class="opt" onclick="$('#module5').toggle();" href="#"><a class="mod" href="#">Duck Go Go</a></div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 id="droptitle" class="panel-title">
+                                  <a class="lil" href="#collapseThree" data-toggle="collapse" data-parent="#accordion">The MEAN Team</a>
+                                </h4>
+                              </div>
+                              <div class="panel-collapse collapse" id="collapseThree">
+                                <div id="dropmodbg" class="panel-body">
+                                  <div class="opt"><span class="glyphicon glyphicon-user"></span><a class="mod" href="#">About Us</a></div><br>
+                                  <div class="opt"><span class="glyphicon glyphicon-tasks"></span><a class="mod" href="#">Our Vision</a></div><br>
+                                  <div class="opt"><span class="glyphicon glyphicon-usd"></span><a class="mod" href="#">Goals</a></div>
+                                </div>
+                              </div>
+                            </div>
+
+                          </div><!-- end accordion-->
+
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav> <!-- ------------------------------------------ end navbar ------------------------------------------------- -->
+
+    <div id="mainContent" class="container">
+
+        <div class="row">
+          <div class="sortable">
+            <!-- ------- -->
+            <div class="wrapper">
+              <input id="test" type="checkbox" hidden="hidden"/>
+              <label for="test" class="switch"></label>
+            </div>
+            <!-- ------- -->
+            <div class="inset" ng-controller="SwitchDemoCtrl" ng-cloak>
+              <md-switch ng-model="data.cb1" aria-label="Switch 1">
+                Switch 1: {{ data.cb1 }}
+              </md-switch>
+            </div>
+            <!-- -------->
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module1">
+                  <div class="panel panel-success ">
+                      <div class="panel-heading" id="handle">
+                          <h3 class="panel-title">Google</h3>
+                      </div>
+                      <div class="panel-body">
+                          <img class="center-block img-responsive" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google">
+                          <form class="form-horizontal" method="get" action="https://www.google.com/search">
+                              <input type="text" class="form-control" name="q" value="" placeholder="Search Google">
+                          </form>
+                      </div>
+                  </div>
+              </div>
+
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module2">
+                  <div class="panel panel-warning ">
+                      <div class="panel-heading" id="handle">
+                          <h3 class="panel-title">Bing</h3>
+                      </div>
+                      <div class="panel-body">
+                          <img class="center-block img-responsive" src="http://rack.1.mshcdn.com/media/ZgkyMDEzLzA5LzE2L2JjL0Jpbmdsb2dvb3JhLmFkYjJkLnBuZwpwCXRodW1iCTEyMDB4OTYwMD4/996d9598/35b/Bing-logo-orange-RGB.png" alt="Bing">
+                          <form class="form-horizontal" method="get" action="http://www.bing.com/search">
+                              <input type="text" class="form-control" name="q" value="" placeholder="Search Google">
+                          </form>
+                      </div>
+                  </div>
+              </div>
+           
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module3">
+                  <div class="panel panel-info">
+                      <div class="panel-heading" id="handle">
+                          <h3 class="panel-title">Yahoo</h3>
+                      </div>
+                      <div class="panel-body">
+                          <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Yahoo_Logo.svg/2000px-Yahoo_Logo.svg.png" alt="Yahoo">
+                          <form class="form-horizontal" <form method="get" action="http://search.yahoo.com/search">
+                              <input type="text" class="form-control" name="p" value="" placeholder="Search Yahoo">
+                          </form>
+                      </div>
+                  </div>
+              </div>
+            
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module4">
+                  <div class="panel panel-danger">
+                      <div class="panel-heading" id="handle">
+                          <h3 class="panel-title">YouTube</h3>
+                      </div>
+                      <div class="panel-body">
+                          <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/YouTube_logo_2013.svg/800px-YouTube_logo_2013.svg.png" alt="YouTube">
+                          <form class="form-horizontal" method="get" action="http://www.youtube.com/results">
+                              <input type="text" class="form-control" name="search_query" value="" placeholder="Search YouTube">
+                          </form>
+                      </div>
+                  </div>
+              </div>
+            
+            
+            
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module5">
+                  <div class="panel panel-primary">
+                      <div class="panel-heading" id="handle">
+                          <h3 class="panel-title">Duck Duck Go</h3>
+                      </div>
+                      <div class="panel-body">
+                          <img class="center-block img-responsive" src="http://donttrack.us/common/images/ddg-home-logo.png" alt="Duck Duck Go">
+                          <form class="form-horizontal" method="get" action="https://duckduckgo.com/">
+                              <input type="text" class="form-control" name="q" value="" placeholder="Search Duck Duck Go">
+                          </form>
+                      </div>
+                  </div>
+              </div>
+            
+            
+          </div> <!-- /sortable--> 
+        </div>
+    </div>
+</body>
+
+</html>
