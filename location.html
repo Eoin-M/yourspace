@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="calendar">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css" />
+		
+    <script src="http://maps.googleapis.com/maps/api/js?"></script> 
+    
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script type="text/javascript" src="location.js"></script>
+	<script>
+    "use strict";
+	
+	
+	</script>
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+</head>
+<body ng-controller="mainController" class="container-fluid">
+    <button id="saveEventBtn" type="button" class="btn btn-primary" onclick="myGetLocation()">
+        Get location <span class="glyphicon glyphicon-floppy-disk"></span>
+    </button>
+    <button id="saveEventBtn" type="button" class="btn btn-primary" onclick="manualGetLoc()">
+        Show map <span class="glyphicon glyphicon-floppy-disk"></span>
+    </button>
+            
+    
+    <div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="Map modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button btn-xs" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">Choose your location</h4>
+                </div>
+                <div class="modal-body" id="map">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Close <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <button id="saveEventBtn" type="button" class="btn btn-primary" onclick="saveEvent()">
+                        Save location <span class="glyphicon glyphicon-floppy-disk"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

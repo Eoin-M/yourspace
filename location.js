@@ -5,9 +5,7 @@ function myGetLocation()
 {
 	if (navigator.geolocation)//if navigator geolocation is supported then
 	{
-		console.log("1");
 		navigator.geolocation.getCurrentPosition( positionToLongLat , noLocationError );
-		console.log("7");
 		//In form of .getCurrentPosition(successFunction, failLocation)
 	}
 	else
@@ -16,25 +14,18 @@ function myGetLocation()
 		loc.isFound = false;
 		//return false;
 	}
-	console.log("8");
-	
-	console.log("10");
 	//setTimeout(function(){angular.element(document.getElementById("divCntrl")).scope().yelpWait();} , 5000);
 //TODO wait for set time, then maybe call the map function if isFound isn't true
 }
 
 function positionToLongLat(position)
 {
-	console.log("2");
 	console.log("longtitude: "+position.coords.longitude+"\nlatitude: "+position.coords.latitude);
 	loc.long = position.coords.longitude;
 	loc.lat = position.coords.latitude;
 	loc.isFound = true;
-	runGoogleNavigatorAPI( position.coords.longitude , position.coords.latitude );
-	console.log("6");
+	runGoogleNavigatorAPI( position.coords.longitude , position.coords.latitude);
 	console.log(loc);
-	
-	
 }
 
 function noLocationError(error) //should work but I've never seen it called...
@@ -66,9 +57,8 @@ function noLocationError(error) //should work but I've never seen it called...
 function runGoogleNavigatorAPI(long, lat)
 //http://stackoverflow.com/questions/6797569/get-city-name-using-geolocation source
 {
-	console.log("3");
 	if (typeof google === 'undefined') {
-		setTimeout(function() {runGoogleNavigatorAPI(long, lat)}, 50);
+		setTimeout(function() {runGoogleNavigatorAPI(long, lat);}, 250);
 		console.log("RETRY!");
 		return;
 	}
@@ -76,12 +66,12 @@ function runGoogleNavigatorAPI(long, lat)
 	var latlng = new google.maps.LatLng(lat, long);
 	geocoder.geocode({'latLng': latlng}, function(results, status)
 	{//start of anonymous function taken as the second input of geocoder.geocode method
-		if (status == google.maps.GeocoderStatus.OK)
+		if (status === google.maps.GeocoderStatus.OK)
 		{
 			if (results[0])//if there is a result
 			{
 				loc.address = results[0].formatted_address;
-				console.log(results);
+				console.dir(results);
 				
 				loc.city = undefined;
 				loc.state = undefined;
@@ -93,16 +83,15 @@ function runGoogleNavigatorAPI(long, lat)
 					var j = 0;
 					for (j = 0; j < results[0].address_components[i].types.length; j++)
 					{
-						if (results[0].address_components[i].types[j] == "locality")
+						if (results[0].address_components[i].types[j] === "locality")
 						{
 							loc.city = results[0].address_components[i].long_name;
-							console.log("3.5");
 						}
-						else if (results[0].address_components[i].types[j] == "administrative_area_level_1")
+						else if (results[0].address_components[i].types[j] === "administrative_area_level_1")
 						{
 							loc.state = results[0].address_components[i].long_name;
 						}
-						else if (results[0].address_components[i].types[j] == "country")
+						else if (results[0].address_components[i].types[j] === "country")
 						{
 							loc.country = results[0].address_components[i].long_name;
 						}
@@ -116,9 +105,8 @@ function runGoogleNavigatorAPI(long, lat)
 						//Have state as administrative_area_level_1
 					}
 				}
-				console.log("3.75");
-				angular.element(document.getElementById("weather")).scope().weatherGet();
-				angular.element(document.getElementById("yelp")).scope().yelpWait();
+				//angular.element(document.getElementById("weather")).scope().weatherGet();
+				//angular.element(document.getElementById("yelp")).scope().yelpWait();
 			}
 			else
 			{
@@ -138,27 +126,36 @@ function runGoogleNavigatorAPI(long, lat)
 			loc.country = null;
 		}
 	});
-
-	console.log("4");
+    return loc;
 }
 
 function initMap() 
 {
 	var myLatlng;
+    console.dir(loc);
 	if (loc.isFound) 
 	{
 		myLatlng = {lat: loc.lat, lng: loc.long};
+        console.log("loc.lat: "+loc.lat);
+        console.log("loc.long: "+loc.long);
 	}
 	else 
 	{
+        console.log("loc not found");
 		myLatlng = {lat: 0, lng: 0};
 	}
+    console.log(myLatlng);
 	var myMap = new google.maps.Map(document.getElementById('map'), 
 	{
-    	zoom: 4,
-    	center: myLatlng
+    	zoom: 5,
+    	center: myLatlng,
 	});
+    google.maps.event.addListenerOnce(myMap, 'idle', function() {
+        google.maps.event.trigger(myMap, 'resize');
+    });
+    
 
+   
 	myMap.addListener('click', function(event) 
 	{
 		var marker = new google.maps.Marker({
@@ -175,13 +172,14 @@ function initMap()
 				loc.long = event.latLng.lng();
 				loc.lat = event.latLng.lat();
 				loc.isFound = true;
+                console.log(loc);
 				runGoogleNavigatorAPI(event.latLng.lng(), event.latLng.lat());
 			}
 			else
 			{
 				marker.setMap(null);
 			}
-		}, 500)
+		}, 500);
 		
 	});
 }
@@ -189,6 +187,12 @@ function initMap()
 function showLoc()//temporary function to show off locations
 {
 	alert("full address = "+ loc.address + "\ncity = " + loc.city +"\nstate = "+ loc.state +"\ncountry = "+loc.country);
+}
+
+function manualGetLoc()
+{
+    $('#locationModal').modal();
+    initMap();
 }
 
 function UserLocation(long, lat, address, city, state, country, isFound)//A constructor function
