@@ -1,5 +1,7 @@
+"use strict";
+
 var loc = new UserLocation;
-//var city = "new york";
+var mapMarker = null;
 
 function myGetLocation()
 {
@@ -148,40 +150,25 @@ function initMap()
 	var myMap = new google.maps.Map(document.getElementById('map'), 
 	{
     	zoom: 5,
-    	center: myLatlng,
+    	center: myLatlng
 	});
     google.maps.event.addListenerOnce(myMap, 'idle', function() {
-        google.maps.event.trigger(myMap, 'resize');
+        google.maps.event.trigger(myMap, 'resize');//resizes to fix a bug in google maps
     });
     
-
-   
 	myMap.addListener('click', function(event) 
 	{
+        if (mapMarker !== null) mapMarker.setMap(null);
 		var marker = new google.maps.Marker({
 			position: event.latLng,
 			map: myMap,
 			visible: true,
 			animation: google.maps.Animation.DROP,
 		});
-		
-		setTimeout(function() //delay of 500ms to let pin dropping animation happen first
-		{
-			if (confirm("Is this your location?"))
-			{
-				loc.long = event.latLng.lng();
-				loc.lat = event.latLng.lat();
-				loc.isFound = true;
-                console.log(loc);
-				runGoogleNavigatorAPI(event.latLng.lng(), event.latLng.lat());
-			}
-			else
-			{
-				marker.setMap(null);
-			}
-		}, 500);
-		
+        mapMarker = marker;
+        console.dir(mapMarker);
 	});
+    
 }
 
 function showLoc()//temporary function to show off locations
@@ -193,6 +180,12 @@ function manualGetLoc()
 {
     $('#locationModal').modal();
     initMap();
+}
+
+function manualUpdateLoc()
+{
+    runGoogleNavigatorAPI(mapMarker.position.lng(), mapMarker.position.lat());
+    
 }
 
 function UserLocation(long, lat, address, city, state, country, isFound)//A constructor function
