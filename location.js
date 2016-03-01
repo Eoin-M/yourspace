@@ -152,6 +152,7 @@ function initMap()
     	zoom: 5,
     	center: myLatlng
 	});
+    //google.maps.event.trigger(myMap, "resize");
     google.maps.event.addListenerOnce(myMap, 'idle', function() {
         google.maps.event.trigger(myMap, 'resize');//resizes to fix a bug in google maps
     });
@@ -178,8 +179,11 @@ function showLoc()//temporary function to show off locations
 
 function manualGetLoc()
 {
+    $("#locationModal").on("shown.bs.modal", function () {
+        initMap();
+    });
     $('#locationModal').modal();
-    initMap();
+   
 }
 
 function manualUpdateLoc()
