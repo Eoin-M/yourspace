@@ -17,17 +17,17 @@ function myGetLocation()
 		//return false;
 	}
 	//setTimeout(function(){angular.element(document.getElementById("divCntrl")).scope().yelpWait();} , 5000);
-//TODO wait for set time, then maybe call the map function if isFound isn't true
+    //TODO wait for set time, then maybe call the map function if isFound isn't true
 }
 
 function positionToLongLat(position)
 {
-	console.log("longtitude: "+position.coords.longitude+"\nlatitude: "+position.coords.latitude);
+	//console.log("longtitude: "+position.coords.longitude+"\nlatitude: "+position.coords.latitude);
 	loc.long = position.coords.longitude;
 	loc.lat = position.coords.latitude;
 	loc.isFound = true;
 	runGoogleNavigatorAPI( position.coords.longitude , position.coords.latitude);
-	console.log(loc);
+	//console.log(loc);
 }
 
 function noLocationError(error) //should work but I've never seen it called...
@@ -79,11 +79,10 @@ function runGoogleNavigatorAPI(long, lat)
 				loc.state = undefined;
 				loc.country = undefined;
 				//clears the fields in case this isn't the first location checked and they keep their old values because nothing matches the categories
-				var i = 0;
-				for (i = 0; i < results[0].address_components.length; i++)
+                loc.address = results[0].formatted_address;
+				for (var i = 0; i < results[0].address_components.length; i++)
 				{
-					var j = 0;
-					for (j = 0; j < results[0].address_components[i].types.length; j++)
+					for (var j = 0; j < results[0].address_components[i].types.length; j++)
 					{
 						if (results[0].address_components[i].types[j] === "locality")
 						{
@@ -127,39 +126,52 @@ function runGoogleNavigatorAPI(long, lat)
 			loc.state = null;
 			loc.country = null;
 		}
+        console.log("Address: "+loc.address+" \nCity: "+loc.city+" \nState: "+loc.state+" \nCountry: "+loc.country);
 	});
+    
     return loc;
 }
 
 function initMap() 
 {
 	var myLatlng;
-    console.dir(loc);
+    var zoom;
 	if (loc.isFound) 
 	{
 		myLatlng = {lat: loc.lat, lng: loc.long};
-        console.log("loc.lat: "+loc.lat);
-        console.log("loc.long: "+loc.long);
-	}
+        zoom = 10;
+    }
 	else 
 	{
-        console.log("loc not found");
 		myLatlng = {lat: 0, lng: 0};
+        zoom = 5;
 	}
-    console.log(myLatlng);
 	var myMap = new google.maps.Map(document.getElementById('map'), 
 	{
-    	zoom: 5,
+    	zoom: zoom,
     	center: myLatlng
 	});
     //google.maps.event.trigger(myMap, "resize");
-    google.maps.event.addListenerOnce(myMap, 'idle', function() {
+    /*google.maps.event.addListenerOnce(myMap, 'idle', function() {
         google.maps.event.trigger(myMap, 'resize');//resizes to fix a bug in google maps
-    });
+    });*/
+    
+    if (loc.isFound)//if we know where they are drop a pin there
+    {
+        if (mapMarker !== null) mapMarker.setMap(null);//if there's already a pin clear it
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: myMap,
+            visible: true,
+            animation: google.maps.Animation.DROP,
+        });
+        mapMarker = marker;
+        mapMarker.setMap(myMap);
+    }
     
 	myMap.addListener('click', function(event) 
 	{
-        if (mapMarker !== null) mapMarker.setMap(null);
+        if (mapMarker !== null) mapMarker.setMap(null);//if there's already a pin clear it
 		var marker = new google.maps.Marker({
 			position: event.latLng,
 			map: myMap,
@@ -167,7 +179,6 @@ function initMap()
 			animation: google.maps.Animation.DROP,
 		});
         mapMarker = marker;
-        console.dir(mapMarker);
 	});
     
 }
@@ -200,6 +211,7 @@ function UserLocation(long, lat, address, city, state, country, isFound)//A cons
 	this.city = city;
 	this.state = state;
 	this.country = country;
+    this.address = address;
 	this.isFound = isFound;//boolean on whether we have longitude and latitude coordinates
 }
 
