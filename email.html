@@ -37,6 +37,7 @@
     var emailModule = angular.module('myemail', ['ngAnimate','ui.bootstrap']);
 	emailModule.controller('mainController', function ($scope, $http)
 	{
+        $scope.emailAuth = true;
 		$scope.getEmails=function(numEmails)
 		{
 			console.log("entered getEmails");
@@ -53,8 +54,9 @@
                 var errCnt = 0;
                 if (!data[0].auth)
                 {
-                    prompt("no",data[0].link);
+                    //prompt("no",data[0].link);
                     //TODO testing, won't use in actual version
+                    $scope.emailAuth = false;
                 }
                 data.splice(0, 1);
                 for( var i = 0; i < data.length; i++)
@@ -132,7 +134,7 @@
                 }
                 //console.log(errCnt);
                 $scope.emails = emails;
-                document.getElementById("loadMoreEmailsButton").className="text-centre show";
+                //document.getElementById("loadMoreEmailsButton").className="text-centre show";
                 
 			}).error(function(data){
 				console.error("An error occured. Server returned: ");
@@ -315,7 +317,9 @@
                     </h3>
                 </div>
                 <div class="panel-body panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    
+                    <div class="alert alert-warning" ng-hide="emailAuth">
+                        <strong>Log in with Google</strong>
+                    </div>
                     <uib-accordion>
                         <div ng-repeat="email in emails  | orderBy: '-unixTime' track by email.id" >
                             <uib-accordion-group  template-url="group-template.html">
@@ -335,11 +339,11 @@
                             </uib-accordion-group>
                         </div>
                     </uib-accordion>
-                    <span class="text-center">
-                        <span class="hidden" id="loadMoreEmailsButton" ng-click="getEmails(emails.length +10-0)">
+                    <div class="text-center">
+                        <span class="text-center" id="loadMoreEmailsButton" ng-click="getEmails(emails.length +10-0)" ng-hide="(emails === undefined) || (emails.length < 1)">
                             <span class="btn btn-xs btn-default"> Load More <span class="glyphicon glyphicon-refresh"></span></span>
                         </span>
-                    </span>
+                    </div>
                 </div>
             </div>
         </div>

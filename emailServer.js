@@ -26,7 +26,7 @@ var EM_TOKEN_PATH = EM_TOKEN_DIR + 'gmail-nodejs-quickstart.json';
 var userCode = null;
 
 function authorize(req, res, callBackFn) {
-  
+
 	//var clientSecret = "Check dropbox";
 	//var clientId = "Check dropbox";
 	  
@@ -63,8 +63,7 @@ function getNewToken(oauth2Client, callBackFn, req, res) {
 		access_type: 'offline',
 		scope: SCOPES
 	});
-   
-	if (userCode === null)
+	if ((req.query.code === null) || (req.query.code === undefined) || (req.query.code === {}) )
 	{
 		var custEmails = [];
 		var tempObj = {};
