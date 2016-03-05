@@ -28,9 +28,7 @@ var CAL_TOKEN_PATH = CAL_TOKEN_DIR + 'calendar-nodejs-quickstart.json';
 var userCode = null;
 
 function authorize(callbackFn, req, res) {
-  
-	var clientSecret = "bBdbvLWqthAIGgJR-z6ggCFt";
-	var clientId = "913427083839-j5s8r0i5a1dok6qps63rqehf01leetsj.apps.googleusercontent.com";
+
 	//var clientSecret = "Check dropbox";
 	//var clientId = "Check dropbox";
 	  
@@ -65,7 +63,7 @@ function getNewToken(oauth2Client, callbackFn, req, res) {
 		scope: SCOPES
 	});
    
-	if (userCode === null)
+	if ((req.query.code === null) || (req.query.code === undefined) || (req.query.code === {}) )
 	{
 		var custEvents = [];
 		var tempObj = {};
@@ -162,7 +160,7 @@ function listEvents(auth, req, res)
 					}
 				  
 					var events = response.items;
-					if (events !== null)
+					if ((events !== null) && (events !== undefined) && (events !== {}))
 					{
 						for (var j = 0; j < events.length; j++) 
 						{
