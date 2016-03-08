@@ -1,6 +1,7 @@
 "use strict";
 
 var loc = new UserLocation;
+var tempLoc = new UserLocation;
 var mapMarker = null;
 
 function myGetLocation()
@@ -26,7 +27,7 @@ function positionToLongLat(position)
 	loc.long = position.coords.longitude;
 	loc.lat = position.coords.latitude;
 	loc.isFound = true;
-	runGoogleNavigatorAPI( position.coords.longitude , position.coords.latitude);
+	runGoogleNavigatorAPI( position.coords.longitude , position.coords.latitude, loc);
 	//console.log(loc);
 }
 
@@ -56,7 +57,7 @@ function noLocationError(error) //should work but I've never seen it called...
 	}
 }
 
-function runGoogleNavigatorAPI(long, lat)
+function runGoogleNavigatorAPI(long, lat, location)
 //http://stackoverflow.com/questions/6797569/get-city-name-using-geolocation source
 {
 	if (typeof google === 'undefined') {
@@ -72,29 +73,29 @@ function runGoogleNavigatorAPI(long, lat)
 		{
 			if (results[0])//if there is a result
 			{
-				loc.address = results[0].formatted_address;
+				location.address = results[0].formatted_address;
 				console.dir(results);
 				
-				loc.city = undefined;
-				loc.state = undefined;
-				loc.country = undefined;
+				location.city = undefined;
+				location.state = undefined;
+				location.country = undefined;
 				//clears the fields in case this isn't the first location checked and they keep their old values because nothing matches the categories
-                loc.address = results[0].formatted_address;
+                location.address = results[0].formatted_address;
 				for (var i = 0; i < results[0].address_components.length; i++)
 				{
 					for (var j = 0; j < results[0].address_components[i].types.length; j++)
 					{
 						if (results[0].address_components[i].types[j] === "locality")
 						{
-							loc.city = results[0].address_components[i].long_name;
+							location.city = results[0].address_components[i].long_name;
 						}
 						else if (results[0].address_components[i].types[j] === "administrative_area_level_1")
 						{
-							loc.state = results[0].address_components[i].long_name;
+							location.state = results[0].address_components[i].long_name;
 						}
 						else if (results[0].address_components[i].types[j] === "country")
 						{
-							loc.country = results[0].address_components[i].long_name;
+							location.country = results[0].address_components[i].long_name;
 						}
 						//route means street name
 						//Galway is locality and political
@@ -106,6 +107,7 @@ function runGoogleNavigatorAPI(long, lat)
 						//Have state as administrative_area_level_1
 					}
 				}
+                document.getElementById("addressLine").innerText = location.address;
 				//angular.element(document.getElementById("weather")).scope().weatherGet();
 				//angular.element(document.getElementById("yelp")).scope().yelpWait();
 			}
@@ -178,7 +180,12 @@ function initMap()
 			visible: true,
 			animation: google.maps.Animation.DROP,
 		});
+        tempLoc.isFound = true;
+        tempLoc.lat = marker.position.lat();
+        tempLoc.lng = marker.position.lng();
+        runGoogleNavigatorAPI(marker.position.lng(), marker.position.lat(), tempLoc);
         mapMarker = marker;
+        
 	});
     
 }
@@ -199,8 +206,8 @@ function manualGetLoc()
 
 function manualUpdateLoc()
 {
-    runGoogleNavigatorAPI(mapMarker.position.lng(), mapMarker.position.lat());
-    
+    //runGoogleNavigatorAPI(mapMarker.position.lng(), mapMarker.position.lat());
+    loc = tempLoc;
 }
 
 function UserLocation(long, lat, address, city, state, country, isFound)//A constructor function
@@ -211,7 +218,6 @@ function UserLocation(long, lat, address, city, state, country, isFound)//A cons
 	this.city = city;
 	this.state = state;
 	this.country = country;
-    this.address = address;
 	this.isFound = isFound;//boolean on whether we have longitude and latitude coordinates
 }
 
