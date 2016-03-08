@@ -73,12 +73,12 @@
 	<script>
     "use strict";
 	var calendar = angular.module('calendar', ['ngAnimate', 'ui.bootstrap']);
-	calendar.controller('mainController', function ($scope, $http, $sce)
+	calendar.controller('mainController', function ($scope, $http)//$sce was removed since I don't think it's needed
 	{
         $scope.calAuth = true;
 		$scope.getEvents=function(numEvents)
 		{
-			
+			if (isNaN(numEvents)) numEvents = 5;
 			console.log("entered getEvents"+numEvents);
 			$http.post('/nextEvents', JSON.stringify(
                 {
@@ -88,7 +88,7 @@
             )
 			.success(function(data)
 			{
-                console.dir(data);
+                //console.dir(data);
 				//var temp = data[0].auth;
 				if (!data[0].auth)
 				{
@@ -97,8 +97,7 @@
 				else
 				{
 					data.splice(0, 1);//gets rid of first entry which isn't an event
-					console.dir(data);
-					
+                    //data = []; uncomment to mimic an empty calendar
 					$scope.events = data;
 				}
 				
@@ -186,7 +185,7 @@
 
                 if(from > until)
                 {
-                    console.log("Not good");
+                    //console.log("Not good");
                     document.getElementById("chooseDateSpan").classList.add("has-error");
                     document.getElementById("saveEventBtn").disabled = true;
                 }
@@ -207,8 +206,6 @@
         
         $scope.saveEvent =function()
         {
-            //var location = document.getElementById("")
-            
             var from = $scope.eventFromDate;
             from.setHours( $scope.eventFromTime.getHours() );
             from.setMinutes( $scope.eventFromTime.getMinutes() );
@@ -250,14 +247,16 @@
             <div class="panel-heading">
                 <h3 class="panel-title">Calendar
                     <span class="glyphicon glyphicon-remove pull-right"></span>
-                    <span class="glyphicon glyphicon-resize-small pull-right">&nbsp;</span>
-                    <span class="glyphicon glyphicon-repeat pull-right" ng-click="getEvents(events.length)">&nbsp;</span>
+                    <span class="glyphicon glyphicon-repeat pull-right" ng-click="getEvents(events.length);">&nbsp;</span>
                     <span class="glyphicon glyphicon-pencil pull-right" ng-click="createEvent()">&nbsp;</span>
                 </h3>
             </div>
             <div class="panel-body panel-group">
                 <div class="alert alert-warning" ng-hide="calAuth">
                     <strong>Log in with Google</strong>
+                </div>
+                <div class="alert alert-info" ng-show="events.length === 0">
+                    <strong>No events to show</strong>
                 </div>
                 <div ng-repeat="event in events | orderBy: 'start' "> <!---->
                     <div class="panel panel-default" >

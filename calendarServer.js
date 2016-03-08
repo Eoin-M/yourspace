@@ -133,7 +133,6 @@ function listEvents(auth, req, res)
         } 
         else 
         {
-			//.log(calendars);
 			var i = 0;
 			var calComplete = 0;
 			//console.log("Cal length "+calendars.length);
