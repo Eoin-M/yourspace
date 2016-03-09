@@ -1,0 +1,69 @@
+.twitterList {
+	padding-bottom: 0px;
+}
+
+.twitterIcon {
+	margin-right: 20px;
+	cursor: pointer;
+	outline: none;
+	text-decoration: none !important;
+}
+
+.twitterUsername {
+	color: #292f33;
+}
+
+.twitterUsername:hover {
+	color: #0084B4;
+	text-decoration: underline;
+}
+
+.twitterGrey {
+	color: #8899a6;
+}
+
+.twitterProfilePic {
+	float: left;
+	padding-right: 5px;
+	border-radius: 8px;
+}
+
+.twitterText {
+	margin-top: -5px;
+	min-height: 35px;
+}
+
+.twitterProfileLink:hover {
+	text-decoration: none;
+}
+
+.twitterTweet {
+	background-color: rgba(0,132,180,.8);
+    color: white;
+    margin: 5px;
+    float: right;
+}
+
+.twitterTweet:disabled {
+	cursor: auto !important;
+}
+
+.twitterLinkDisabled {
+	pointer-events: none;
+    cursor: default;
+    color: grey;
+}
+
+.twitterCount {
+	float: right;
+	margin-top: 12px;
+	margin-right: 6px;
+}
+
+.twitterGreen {
+	color: #19cf86;
+}
+
+.twitterRed {
+	color: #e81c4f;
+}

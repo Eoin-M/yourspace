@@ -11,27 +11,44 @@
 		<div id="twitterMenu" class="CustomMenu">
 			
 		</div>
-		<div id="twitterFeed" class="scroll">
+		<div id="twitterFeed" class="scroll list-group">
 			<!--<div id="rssLoading" class="mdl-spinner mdl-js-spinner is-active rssLoading hidden"></div>-->
-			<div ng-repeat="tweet in tweets | orderBy:'text':true">
-				<div id="head0">
+			<div ng-repeat="tweet in tweets">
+				<li class="list-group-item twitterList">
 					<div>
-						<a ng-href="{{tweet.link}}" target="_blank">
-							<img ng-src="{{tweet.user.img}}" style="float: left">
-							<strong>{{tweet.user.name}}</strong>
-							<span>{{tweet.user.screen_name}}</span>
+						<a ng-href="https://twitter.com/{{tweet.user.screen_name}}" target="_blank" class="twitterProfileLink">
+							<img ng-src="{{tweet.user.img}}" class="twitterProfilePic">
+							<strong class="twitterUsername">{{tweet.user.name}}</strong>
+							<span class="twitterGrey">@{{tweet.user.screen_name}}</span>
 						</a>
+						<span class="twitterGrey">- {{tweet.created_at}}</span>
 					</div>
-					<div>
-						<p>{{tweet.text}}</p>
-					</div>
-				</div>
+					<div ng-bind-html="tweet.text" class="twitterText"></div>
+					<!-- Reply Button -->
+					<a class="twitterIcon" ng-click="twitterReply(tweet)">
+						<i class="fa fa-reply" />
+					</a>
+					<!-- Retweet Button -->
+					<a class="twitterIcon" ng-class="{twitterGreen:tweet.retweeted, twitterLinkDisabled:tweet.userTweet}" ng-click="twitterRetweet(tweet)">
+						<i class="fa fa-retweet" />
+						<span>{{tweet.retweet_count}}</span>
+					</a>
+					<!-- Favorite Button -->
+					<a class="twitterIcon" ng-class="{twitterRed:tweet.favorited}">
+						<i class="fa fa-heart" />
+						<span>{{tweet.favorite_count}}</span>
+					</a>
+					<a class="twitterIcon" ng-show="tweet.userTweet" ng-click="twitterDelete(tweet)">
+						<i class="fa fa-trash" />
+					</a>
+				</li>
 			</div>
 		</div>
 		<button ng-click="openTwitterStream()">Get Twitter Feed</button>
-		<form class="form-horizontal" method="get" ng-click="postTweet()" target="_blank">
-			<input type="text" class="form-control" value="" placeholder="What's Happening?">
-			<button class="btn primary-btn fa fa-twitter"> Tweet</button>
+		<form class="form-horizontal">
+			<input type="text" class="form-control" placeholder="What's Happening?" ng-model="newTweet.tweet" ng-trim="false"/>
+			<button class="btn primary-btn fa fa-twitter twitterTweet" ng-click="postTweet()" ng-disabled="!newTweet.tweet.trim() || (140 - newTweet.tweet.length) < 0"> Tweet</button>
+			<div class="twitterGrey twitterCount" ng-class="{twitterRed:(140 - newTweet.tweet.length) <= 10}">{{140 - newTweet.tweet.length}}</div>
 		</form>
 	</div>
 </div>

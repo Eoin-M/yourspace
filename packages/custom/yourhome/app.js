@@ -20,6 +20,7 @@ Yourhome.register(function(app, auth, database) {
   Yourhome.aggregateAsset('css', 'email.css');
   Yourhome.aggregateAsset('css', 'calendar.css');
   Yourhome.aggregateAsset('css', 'weather.css');
+  Yourhome.aggregateAsset('css', 'twitter.css');
   //Yourhome.aggregateAsset('css', 'yelp.css');
   Yourhome.aggregateAsset('js', 'location.js', {weight: 1});
   

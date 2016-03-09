@@ -1,7 +1,5 @@
 var mongoose = require('mongoose'),
 		User = mongoose.model('User');
-		
-	var config = require('meanio').loadConfig();
   
 	
 module.exports = function(Yourhome, app, auth, database) {  

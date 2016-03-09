@@ -1,19 +1,114 @@
 'use strict';
 
 /* jshint -W098 */
-angular.module('mean.yourhome').controller('TwitterController', ['$scope', '$http', 'Global', 'Yourhome', 'socket',
-  function($scope, $http, Global, Yourhome, socket) {
+angular.module('mean.yourhome').controller('TwitterController', ['$scope', '$http', '$timeout', 'Global', 'Yourhome',
+  function($scope, $http, $timeout, Global, Yourhome) {
     $scope.global = Global;
+	$scope.newTweet = {};
 	var tweets = [];
+	$scope.tweets = tweets;
 	
 	$scope.openTwitterStream = function(){
-		$http.post('/api/yourhome/twitterFeed');
+		openStream();
 	}
 	
-	socket.on('tweets', function (data) {
-		console.dir(data);
-		tweets[tweets.length] = data;
-		$scope.tweets = tweets;
-	});
+	function openStream(){
+		$http.post('/api/yourhome/twitterTimeline')
+		.success(function(data){
+			tweets = data.tweets;
+			$scope.tweets = tweets;
+			console.dir(data.tweets);
+		})
+		.error(function(data){
+			tweets = [];
+			var tweetErr = {
+				text: 'Server Error! Please try again later.',
+				retweet_count: 0,
+				favorite_count: 0,
+				userTweet: true,
+				id: -1,
+				created_at: 'now'
+			};
+			tweetErr.user = {
+				name: 'YourSpace',
+				screen_name: 'yourspacewebapp'
+			};
+			tweets[0] = tweetErr;
+			$scope.tweets = tweets;
+		});
+	}
+	
+	$scope.postTweet = function(){
+		$http.post('/api/yourhome/postTweet', JSON.stringify({tweet: $scope.newTweet.tweet}))
+		.success(function(data){
+			tweets = newFirst(tweets, data.tweet);
+			$scope.tweets = tweets;
+			console.log("Post");
+		});
+		$scope.newTweet.tweet = null;
+	}
+	
+	$scope.twitterReply = function(tweet){
+		if(tweet.id == -1) return;
+		tweet.reply = $scope.newTweet.tweet;
+		$http.post('/api/yourhome/twitterReply', JSON.stringify({tweet: tweet}))
+		.success(function(data){
+			//openStream();
+		});
+	}
+	
+	$scope.twitterRetweet = function(tweet){
+		if(!tweet.retweeted){
+			$http.post('/api/yourhome/twitterRetweet', JSON.stringify({id: tweet.id_str}))
+			.success(function(data){
+				if(!isNaN(tweet.retweet_count)){
+					tweet.retweet_count++;
+				}
+				tweet.retweeted = true;
+			});
+		}
+		else {
+			$http.post('/api/yourhome/twitterUnretweet', JSON.stringify({id: tweet.id_str}))
+			.success(function(data){				
+				if(!isNaN(tweet.retweet_count)){
+					tweet.retweet_count--;
+				}
+				tweet.retweeted = false;
+			});
+		}		
+	}
+
+	function newFirst(arr, e){
+		for(var i = arr.length-1; i >= 0;  i--){
+			arr[i+1] = arr[i];
+			arr[i+1].arrayPos++;
+		}
+		arr[0] = e;
+		arr[0].arrayPos = 0;
+		return arr;
+	}
+	
+	function removeElement(arr, e){
+		for(var i = e.arrayPos; i < arr.length-1; i++){
+			arr[i] = arr[i+1];
+			arr[i].arrayPos = i;
+		}
+		arr.pop();
+		return arr;
+	}
+	
+	$scope.twitterDelete = function(tweet){
+		$http.post('/api/yourhome/twitterDelete', JSON.stringify({id: tweet.id_str}))
+		.success(function(data){
+			alert("Delete " + tweet.arrayPos);
+			tweets = removeElement(tweets, tweet);
+			console.log("Delete");
+			$scope.tweets = tweets;
+		});
+	}
+	
+	/*$timeout(function(){
+		openStream();
+	}, 10000);*/
   }
 ]);
