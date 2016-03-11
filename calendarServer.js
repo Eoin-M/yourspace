@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var fs = require('fs');
-var readline = require('readline');
+//var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 require('colors');
@@ -62,16 +62,12 @@ function getNewToken(oauth2Client, callbackFn, req, res) {
 		access_type: 'offline',
 		scope: SCOPES
 	});
-   
-	if ((req.query.code === null) || (req.query.code === undefined) || (req.query.code === {}) )
+	if (userCode == null )
 	{
-		var custEvents = [];
-		var tempObj = {};
-		tempObj.auth = false;
-		tempObj.link = authUrl;
-		custEvents[0] = tempObj;
-		res.setHeader('Content-Type', 'application/json');
-		res.send(custEvents);
+        var error = {};
+        error.message = "No Valid Google Account Found In Cookie";
+        error.authUrl = authUrl;
+        res.status(412).send(error); 
 	}
 	else
 	{
@@ -109,7 +105,6 @@ function storeToken(token) {
 
 function listEvents(auth, req, res) 
 {
-   debugger;
    var calendar = google.calendar('v3');
    var custEvents = [];//the array we'll eventually be returning to the browser
    calendar.calendarList.list(
@@ -121,10 +116,6 @@ function listEvents(auth, req, res)
 			console.log('126: Calendar not found... The API returned an error: ' + err);
 			return;
         }
-        var tempObj = {};
-        tempObj.auth = true;
-        tempObj.link = "";
-        custEvents[0] = tempObj;
         
         var calendars = response.items;
         if (calendars.length === 0) 
@@ -182,8 +173,8 @@ function listEvents(auth, req, res)
 							eventObj.colorID = event.colorId;
 							eventObj.location = event.location;
 							eventObj.link = event.htmlLink;
-							custEvents[custEvents.length] = eventObj;
-							
+							//custEvents[custEvents.length] = eventObj;
+							custEvents.push(eventObj);
 							
 							//console.log(eventObj);
 						}
@@ -211,7 +202,6 @@ function listEvents(auth, req, res)
   
 function returnCalData(eventsAry, req, res, numEvents)
 {
-    var authObj = eventsAry.splice(0,1);
     eventsAry.sort(function (a, b) {
     if (a.start > b.start) {
         return 1;
@@ -223,7 +213,6 @@ function returnCalData(eventsAry, req, res, numEvents)
     return 0;
     });
     eventsAry = eventsAry.splice(0,numEvents);
-    eventsAry.unshift(authObj[0]);
 	console.log(util.format(eventsAry).yellow);
 	res.setHeader('Content-Type', 'application/json');
 	res.send(eventsAry);
@@ -273,6 +262,7 @@ function saveEvent(auth, req, res)
 app.get('/', function (req,res)
 {
     userCode = req.query.code;
+    console.dir(req.query.code);
 	console.log("user connnected");
 	res.sendfile("calendar.html");
 });
