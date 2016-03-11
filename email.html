@@ -38,8 +38,10 @@
 	emailModule.controller('mainController', function ($scope, $http)
 	{
         $scope.emailAuth = true;
+        $scope.emailError = false;
 		$scope.getEmails=function(numEmails)
 		{
+            if (isNaN(numEmails)) numEmails = 10;
 			console.log("entered getEmails");
 			$scope.emailAuth = true;//to hide the button
 			$http.post('/nextEmails', JSON.stringify(
@@ -50,15 +52,9 @@
             )
 			.success(function(data)
 			{
+                $scope.emailAuth = true;//incase they authorised it without refreshing
+                $scope.emailError = false;//incase an error got fixed without refreshing
                 var emails = [];
-                var errCnt = 0;
-                if (!data[0].auth)
-                {
-                    //prompt("no",data[0].link);
-                    //TODO testing, won't use in actual version
-                    $scope.emailAuth = false;
-                }
-                data.splice(0, 1);
                 for( var i = 0; i < data.length; i++)
                 {
                     //console.dir(data[i]);
@@ -84,7 +80,6 @@
                             if (data[i].payload.mimeType === "text/html")
                             {// 10/100 only have a HTML version
                                 tempObject.content = tempObject.snippet + "There is no text version of the rest of this email. ";
-                                errCnt++;
                             }
                             else
                             {
@@ -94,14 +89,12 @@
                                 catch(err)
                                 {// 1/100 was caught id:151d03bf2aff6e69
                                     tempObject.content = tempObject.snippet + "... We cannot parse the remainder of this email. ";
-                                    errCnt++;
                                 }
                             }
                         }
                         else
                         {// 0/100 
                             tempObject.content = tempObject.snippet + "... We cannot parse the remainder of this email. ";
-                            errCnt++;
                         }
                     }
                     else
@@ -114,7 +107,6 @@
                             catch(err)
                             {// 28/100 were caught
                                 tempObject.content = tempObject.snippet + "... We cannot parse the remainder of this email. ";
-                                errCnt++;
                             }
                         }
                         else
@@ -125,7 +117,6 @@
                             catch(err)
                             {// 32/100 were caught
                                 tempObject.content = tempObject.snippet + "... We cannot parse the remainder of this email. ";
-                                errCnt++;
                             }
                         }
                     }
@@ -136,9 +127,18 @@
                 $scope.emails = emails;
                 //document.getElementById("loadMoreEmailsButton").className="text-centre show";
                 
-			}).error(function(data){
-				console.error("An error occured. Server returned: ");
-				console.dir(data);
+			}).error(function(data, status){
+				if (status === 412) //not signed in
+				{
+                    console.log("Sign in at : "+ data.authUrl);
+					$scope.emailAuth = false;
+				}
+                else
+                {
+                    console.error("An error occured. Server returned: ");
+				    console.dir(data);
+                    $scope.emailError = true;
+                }
 			});
 		};
         
@@ -319,6 +319,12 @@
                 <div class="panel-body panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="alert alert-warning" ng-hide="emailAuth">
                         <strong>Log in with Google</strong>
+                    </div>
+                    <div class="alert alert-info" ng-show="emails.length === 0">
+                        <strong>No emails to show</strong>
+                    </div>
+                    <div class="alert alert-danger" ng-show="emailError">
+                        <strong>Woops! Something went wrong...</strong>
                     </div>
                     <uib-accordion>
                         <div ng-repeat="email in emails  | orderBy: '-unixTime' track by email.id" >

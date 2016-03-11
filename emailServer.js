@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var fs = require('fs');
-var readline = require('readline');
+//var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 require('colors');
@@ -63,15 +63,13 @@ function getNewToken(oauth2Client, callBackFn, req, res) {
 		access_type: 'offline',
 		scope: SCOPES
 	});
-	if ((req.query.code === null) || (req.query.code === undefined) || (req.query.code === {}) )
+
+	if (userCode == null )
 	{
-		var custEmails = [];
-		var tempObj = {};
-		tempObj.auth = false;
-		tempObj.link = authUrl;
-		custEmails[0] = tempObj;
-		res.setHeader('Content-Type', 'application/json');
-		res.send(custEmails);
+        var error = {};
+        error.message = "No Valid Google Account Found In Cookie";
+        error.authUrl = authUrl;
+        res.status(412).send(error); 
 	}
 	else
 	{
@@ -123,10 +121,6 @@ function listEmails(auth, req, res)
 			console.log('Email not found... The API returned an error: ' + err);
 			return;
         }
-        var tempObj = {};
-        tempObj.auth = true;
-        tempObj.link = "";
-        custEmails[0] = tempObj;
         
         var messages = response.messages;
         if (messages.length === 0) 
@@ -153,7 +147,7 @@ function listEmails(auth, req, res)
 						messagesComplete++;
 						return;
 					}
-				    custEmails[custEmails.length] = response;
+				    custEmails.push(response);
                     messagesComplete++;
                     if (messagesComplete === messages.length)
                     {
