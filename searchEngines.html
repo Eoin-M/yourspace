@@ -7,6 +7,7 @@
     <meta charset="utf-8">
 
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <script src="https://bootswatch.com/bower_components/jquery/dist/jquery.js"></script>
     <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -19,6 +20,11 @@
             background-color: red;
             border-radius: 3px;
 		}
+        .searchIcon
+        {
+            padding-top: 10px;
+            text-align: center;
+        }
 		
 	</style>
 
@@ -59,6 +65,7 @@
     <div id="mainContent" class="container-fluid">
 
         <div class="row">
+            <!--
             <div class=" col-md-3 col-sm-6 col-xs-12">
                 <div class="panel panel-success ">
                     <div class="panel-heading">
@@ -129,46 +136,32 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </div>-->
             
             <div class=" col-md-3 col-sm-6 col-xs-12">
                 <div class="panel panel-success ">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Search</h3>
+                        <h3 class="panel-title"><i class="fa fa-search"></i>&nbsp; Search</h3>
                     </div>
                     <div class="panel-body">
                         
                         <form class="form-horizontal" method="get" action="https://www.google.com/search" target="_blank" autocomplete="off">
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">
-                                    <span style="color:#4285F4">G</span
-                                    ><span style="color:#EA4335">o</span
-                                    ><span style="color:#FBBC05">o</span
-                                    ><span style="color:#4285F4">g</span
-                                    ><span style="color:#34A853">l</span
-                                    ><span style="color:#EA4335">e</span>
+                                <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 searchIcon">
+                                    <i class="fa fa-google fa-2x"></i>
                                 </label>
-                                <div class="col-lg-9">
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                     <input type="text" class="form-control" name="q" value="" placeholder="Search Google">
-                                </div>
-                            </div>
-                        </form>
-                        
-                        <form class="form-horizontal" method="get" action="http://www.bing.com/search" target="_blank" autocomplete="off" >
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label text-center" style="color:#008272">Bing</label>
-                                <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="q" value="" placeholder="Search Bing">
                                 </div>
                             </div>
                         </form>
                         
                         <form class="form-horizontal" method="get" action="http://www.youtube.com/results" target="_blank" autocomplete="off">
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">
-                                    <strong>You</strong><span class="youtubeEnd">Tube</span>
+                                <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 searchIcon">
+                                    <i class="fa fa-youtube fa-2x"></i>
                                 </label>
-                                <div class="col-lg-9">
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                     <input type="text" class="form-control" name="search_query" value="" placeholder="Search YouTube">
                                 </div>
                             </div>
@@ -176,34 +169,36 @@
                         
                         <form class="form-horizontal" method="get" action="http://search.yahoo.com/search" target="_blank" autocomplete="off">
                             <div class="form-group">
-                                <label class="col-lg-3 control-label" style="color:#7B0099">
-                                    Yahoo!
+                                <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 searchIcon">
+                                    <i class="fa fa-yahoo fa-2x"></i>
                                 </label>
-                                <div class="col-lg-9">
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                     <input type="text" class="form-control" name="p" value="" placeholder="Search Yahoo!">
-                                </div>
-                            </div>
-                        </form>
-                        
-                        <form class="form-horizontal" method="get" action="https://duckduckgo.com/" target="_blank" autocomplete="off">
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">
-                                    <strong>DD</strong><span style="color:#009600">&nbsp;Go</span>
-                                </label>
-                                <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="q" value="" placeholder="Search Duck Duck Go">
                                 </div>
                             </div>
                         </form>
                         
                         <form class="form-horizontal" method="get" action="http://wikipedia.org/search-redirect.php" target="_blank" autocomplete="off">
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">
-                                    Wikipedia
+                                <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 searchIcon">
+                                    <i class="fa fa-wikipedia-w fa-2x"></i>
                                 </label>
-                                <div class="col-lg-9">
-                                    <input type="hidden" name="language" value="en" />
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <input type="hidden" name="language" value="en">
                                     <input type="text" class="form-control" name="search" value="" placeholder="Search Wikipedia">
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <form class="form-horizontal" action="http://www.amazon.com/exec/obidos/external-search" method="get" target="_blank" autocomplete="off">
+                            <div class="form-group">
+                                <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 searchIcon">
+                                    <i class="fa fa-amazon fa-2x"></i>
+                                </label>
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <input type="hidden" name="mode" value="blended"> 
+                                    <input type="hidden" name="tag" value="Yourspace">
+                                    <input type="text" class="form-control" name="keyword" value="" placeholder="Search Amazon">
                                 </div>
                             </div>
                         </form>
