@@ -61,7 +61,7 @@ function runGoogleNavigatorAPI(long, lat, location)
 //http://stackoverflow.com/questions/6797569/get-city-name-using-geolocation source
 {
 	if (typeof google === 'undefined') {
-		setTimeout(function() {runGoogleNavigatorAPI(long, lat);}, 250);
+		setTimeout(function() {runGoogleNavigatorAPI(long, lat, loc);}, 250);
 		console.log("RETRY!");
 		return;
 	}
