@@ -65,19 +65,19 @@ angular.module('mean.yourhome').controller('WeatherController', ['$scope', '$htt
 				{
 					for(weatherIconCounter = 0; weatherIconCounter < 4; weatherIconCounter++)
 					{
-						if(data[weatherIconCounter].icon == ("cloudy" || "mostlycloudy")){ data[weatherIconCounter].icon = "SVG/cloud.svg";}
-						else if(data[weatherIconCounter].icon == "flurries"){ data[weatherIconCounter].icon = "SVG/cloudDrizzle.svg";}
-						else if(data[weatherIconCounter].icon == "chanceflurries"){ data[weatherIconCounter].icon = "SVG/cloudDrizzleSun.svg"; }
-						else if(data[weatherIconCounter].icon == ("fog" || "hazy")){ data[weatherIconCounter].icon = "SVG/cloudFog.html";}
-						else if(data[weatherIconCounter].icon == ("chancesleet"|| "sleet")){ data[weatherIconCounter].icon = "SVG/cloudHail.svg";}
-						else if(data[weatherIconCounter].icon == "rain"){ data[weatherIconCounter].icon = "SVG/cloudRain.svg";}
-						else if(data[weatherIconCounter].icon == "chancerain"){ data[weatherIconCounter].icon = "SVG/cloudDrizzleSun.svg";}
-						else if(data[weatherIconCounter].icon == ("chancesnow"|| "snow")){data[weatherIconCounter].icon = "SVG/cloudSnow.svg";}
-						else if(data[weatherIconCounter].icon == "tstorms"){ data[weatherIconCounter].icon = "SVG/lightning.svg";}
-						else if(data[weatherIconCounter].icon == "chancetstorms"){data[weatherIconCounter].icon = "SVG/lightningSun.svg";}
-						else if(data[weatherIconCounter].icon == ("partlycloudy"|| "mostlysunny") ){ data[weatherIconCounter].icon = "SVG/partialCloud.svg";}
-						else if(data[weatherIconCounter].icon ==  ("clear"|| "sunny")){ data[weatherIconCounter].icon = "SVG/sun.svg";}
-						else { data[weatherIconCounter].icon  = "SVG/cloud.svg";}
+						if(data[weatherIconCounter].icon == ("cloudy" || "mostlycloudy")){ data[weatherIconCounter].icon = "/yourhome/assets/SVG/cloud.svg";}
+						else if(data[weatherIconCounter].icon == "flurries"){ data[weatherIconCounter].icon = "/yourhome/assets/SVG/cloudDrizzle.svg";}
+						else if(data[weatherIconCounter].icon == "chanceflurries"){ data[weatherIconCounter].icon = "/yourhome/assets/SVG/cloudDrizzleSun.svg"; }
+						else if(data[weatherIconCounter].icon == ("fog" || "hazy")){ data[weatherIconCounter].icon = "/yourhome/assets/SVG/cloudFog.html";}
+						else if(data[weatherIconCounter].icon == ("chancesleet"|| "sleet")){ data[weatherIconCounter].icon = "/yourhome/assets/SVG/cloudHail.svg";}
+						else if(data[weatherIconCounter].icon == "rain"){ data[weatherIconCounter].icon = "/yourhome/assets/SVG/cloudRain.svg";}
+						else if(data[weatherIconCounter].icon == "chancerain"){ data[weatherIconCounter].icon = "/yourhome/assets/SVG/cloudDrizzleSun.svg";}
+						else if(data[weatherIconCounter].icon == ("chancesnow"|| "snow")){data[weatherIconCounter].icon = "/yourhome/assets/SVG/cloudSnow.svg";}
+						else if(data[weatherIconCounter].icon == "tstorms"){ data[weatherIconCounter].icon = "/yourhome/assets/SVG/lightning.svg";}
+						else if(data[weatherIconCounter].icon == "chancetstorms"){data[weatherIconCounter].icon = "/yourhome/assets/SVG/lightningSun.svg";}
+						else if(data[weatherIconCounter].icon == ("partlycloudy"|| "mostlysunny") ){ data[weatherIconCounter].icon = "/yourhome/assets/SVG/partialCloud.svg";}
+						else if(data[weatherIconCounter].icon ==  ("clear"|| "sunny")){ data[weatherIconCounter].icon = "/yourhome/assets/SVG/sun.svg";}
+						else { data[weatherIconCounter].icon  = "/yourhome/assets/SVG/cloud.svg";}
 					}
 				}
 				

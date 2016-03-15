@@ -1,0 +1,46 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			<a ng-href="https://reddit.com/" target="_blank">Reddit</a>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div id="reddit" class="scroll list-group">
+			<!--<div id="rssLoading" class="mdl-spinner mdl-js-spinner is-active rssLoading hidden"></div>-->
+			<div ng-repeat="post in reddit">
+				<li class="list-group-item">
+					<div class="redditContainer">
+						<div class="redditVote">
+							<div class="redditVoteArrow"><a ng-click="redditUpVote(post.data)"><i class="fa fa-arrow-up redditGrey" ng-class="{redditUpVoteColor:post.data.likes}"></i></a></div>
+							<div class="redditGrey" ng-class="{redditDownVoteColor:post.data.likes === false, redditUpVoteColor:post.data.likes}">{{post.data.score}}</div>
+							<div class="redditVoteArrow"><a ng-click="redditDownVote(post.data)"><i class="fa fa-arrow-down redditGrey" ng-class="{redditDownVoteColor:post.data.likes === false}"></i></a></div>
+						</div>
+						<a ng-show="{{post.data.thumbnail}}" ng-href="{{post.data.url}}" target="_blank" class="redditIconContainer">
+							<img ng-src="{{post.data.thumbnail}}" class="redditIcon" />
+						</a>
+						<div>
+							<a ng-href="{{post.data.url}}" target="_blank" class="redditMainLink">{{post.data.title}}</a>
+							<a ng-href="https://www.reddit.com/domain/{{post.data.domain}}" target="_blank" class="redditDomainLink">({{post.data.domain}})</a>
+						</div>
+						<div class="redditOptions">
+							<br>
+							<p class="redditDomainLink">submitted {{post.data.created}} ago by 
+								<a ng-href="https://www.reddit.com/user/{{post.author}}">{{post.data.author}}</a> to 
+								<a>/r/{{post.data.subreddit}}</a>
+							</p>
+						</div>
+						<div class="redditOptions">
+							<a class="redditButtons">{{post.data.num_comments}} comments</a>
+							<a class="redditButtons">save</a>
+							<a class="redditButtons">save</a>
+							<a class="redditButtons">hide</a>
+							<a class="redditButtons">report</a>
+						</div>
+					</div>
+					<div class="redditClearLeft" />
+				</li>
+			</div>
+		</div>
+		<button ng-click="reddit()">Reddit!</button>
+	</div>
+</div>

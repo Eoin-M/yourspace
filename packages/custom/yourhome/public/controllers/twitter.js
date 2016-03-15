@@ -4,9 +4,9 @@
 angular.module('mean.yourhome').controller('TwitterController', ['$scope', '$http', '$timeout', 'Global', 'Yourhome',
   function($scope, $http, $timeout, Global, Yourhome) {
     $scope.global = Global;
+	$scope.replyTweet = {};
 	$scope.newTweet = {};
 	var tweets = [];
-	$scope.tweets = tweets;
 	
 	$scope.openTwitterStream = function(){
 		openStream();
@@ -27,11 +27,13 @@ angular.module('mean.yourhome').controller('TwitterController', ['$scope', '$htt
 				favorite_count: 0,
 				userTweet: true,
 				id: -1,
-				created_at: 'now'
+				created_at: 'now',
+				error: true
 			};
 			tweetErr.user = {
 				name: 'YourSpace',
-				screen_name: 'yourspacewebapp'
+				screen_name: 'yourspacewebapp',
+				img: 'http://abs.twimg.com/sticky/default_profile_images/default_profile_4_normal.png'
 			};
 			tweets[0] = tweetErr;
 			$scope.tweets = tweets;
@@ -46,15 +48,6 @@ angular.module('mean.yourhome').controller('TwitterController', ['$scope', '$htt
 			console.log("Post");
 		});
 		$scope.newTweet.tweet = null;
-	}
-	
-	$scope.twitterReply = function(tweet){
-		if(tweet.id == -1) return;
-		tweet.reply = $scope.newTweet.tweet;
-		$http.post('/api/yourhome/twitterReply', JSON.stringify({tweet: tweet}))
-		.success(function(data){
-			//openStream();
-		});
 	}
 	
 	$scope.twitterRetweet = function(tweet){
@@ -100,9 +93,34 @@ angular.module('mean.yourhome').controller('TwitterController', ['$scope', '$htt
 	$scope.twitterDelete = function(tweet){
 		$http.post('/api/yourhome/twitterDelete', JSON.stringify({id: tweet.id_str}))
 		.success(function(data){
-			alert("Delete " + tweet.arrayPos);
 			tweets = removeElement(tweets, tweet);
 			console.log("Delete");
+			$scope.tweets = tweets;
+		});
+	}
+	
+	$scope.assignReplyTweet = function(tweet){
+		$scope.replyTweet = tweet;
+		$scope.newReplyTweet = {};
+		$scope.replyPeople = '';
+		$scope.replyPeople = '@' + tweet.user.screen_name + ' ';
+		for(var i = 0; i < tweet.entities.user_mentions.length; i++){
+			$scope.replyPeople += '@';
+			$scope.replyPeople += tweet.entities.user_mentions[i].screen_name;
+			$scope.replyPeople += ' ';
+		}
+		$scope.newReplyTweet.tweet = $scope.replyPeople;
+		setTimeout(function (){
+			$('#replyTweetInput').focus();
+		}, 500);
+	}
+	
+	$scope.twitterReply = function(){
+		if($scope.replyTweet.id == -1) return;
+		$scope.replyTweet.reply = $scope.newReplyTweet.tweet;
+		$http.post('/api/yourhome/twitterReply', JSON.stringify({tweet: $scope.replyTweet}))
+		.success(function(data){
+			tweets = newFirst(tweets, data.tweet);
 			$scope.tweets = tweets;
 		});
 	}

@@ -1,0 +1,62 @@
+.redditContainer {
+}
+
+.redditIcon {
+	width: 70px;
+}
+
+.redditIconContainer {
+	float: left;
+	margin: 4px;
+	overflow: hidden;
+	max-height: 100px;
+}
+
+.redditVote {
+	float: left;
+	width: 30px;
+	margin: 5px 7px;
+}
+
+.redditGrey {
+	color: grey;
+}
+
+.redditVoteArrow {
+    width: 50%;
+	margin: -5px auto;
+	cursor: pointer;
+}
+
+.redditUpVoteColor {
+	color: #FF8B60;
+}
+
+.redditDownVoteColor {
+	color: #9494FF;
+}
+
+.redditOptions {
+	float: left;
+    margin: -8px 0px;
+	clear: left;
+}
+
+.redditClearLeft {
+	clear: left;
+}
+
+.redditMainLink {
+	line-height: 20px;
+}
+
+.redditDomainLink {
+	color: grey;
+	font-size: 0.9em;
+}
+
+.redditButtons {
+	color: grey;
+    font-weight: 500;
+    font-size: 0.85em;
+}

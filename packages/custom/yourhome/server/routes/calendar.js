@@ -4,7 +4,7 @@
 
 var mongoose = require('mongoose'),
 		User = mongoose.model('User'),
-		refresh = require('passport-oauth2-refresh');;
+		refresh = require('passport-oauth2-refresh');
 		
 	var config = require('meanio').loadConfig();
 
@@ -24,8 +24,9 @@ module.exports = function(Yourhome, app, auth, database) {
 	*
 	*/
 	function authorize(req, res, callBackFn) {
-		console.log("Google Authorize".green);
-		if (req.session && req.session.user && req.session.user.google);
+		console.log("Google Authorize".red);
+		console.log(req.user);
+		if (req && req.user && req.user.google);
 		else { res.status(412).send({ error: "No Valid Google Account Found In Cookie" }); return; }
 		var OAuth2 = google.auth.OAuth2;
 		var oauth2Client = new OAuth2(config.strategies.google.clientID, config.strategies.google.clientSecret, config.strategies.google.callbackURL);

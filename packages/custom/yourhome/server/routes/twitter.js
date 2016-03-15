@@ -15,7 +15,7 @@ module.exports = function(Yourhome, app, auth, database, http) {
 				else if(err) res.sendStatus(400);
 			});
 		}
-		else res.sendStatus(401);
+		else res.sendStatus(400);
 	});
 	
 	app.post('/api/yourhome/twitterTimeline', function(req, res){
@@ -35,18 +35,40 @@ module.exports = function(Yourhome, app, auth, database, http) {
 				else res.sendStatus(400);
 			});
 		}
-		else res.sendStatus(401);
+		else res.sendStatus(400);
 	});
 	
 	function parseTweet(req, tweet){
 		if(tweet.user.id == req.session.user.twitter.id) tweet.userTweet = true;
 		else tweet.userTweet = false;
+		if(!(tweet.retweeted_status === undefined)){
+			var user = "<a target=\"_blank\" href=\"https://twitter.com/" + tweet.user.screen_name + "\">" + tweet.user.name + "</a> Retweeted";
+			tweet = tweet.retweeted_status;
+			tweet.retweet = user;
+		}
+		if(tweet.is_quote_status){
+			if(tweet.quoted_status !== undefined) tweet.quoted_status = parseTweet(req, tweet.quoted_status);
+			else if(tweet.quoted_status_id !== undefined) {
+				var T = twitterCredentials(req);
+		
+				T.get('statuses/show/:id', {id: tweet.quoted_status_id_str}, function(err, data, response) {
+					if(!err) tweet.quoted_status = parseTweet(req, data);
+				});
+				if(tweet.quoted_status == undefined){
+					tweet.quote_unavailable = true;
+					tweet.quoted_status = {};
+					tweet.quoted_status.text = 'This Tweet is unavailable.';
+				}
+			}
+		}
 		tweet.user.img = tweet.user.profile_image_url;
+		
 		var msg = {};
+		msg.links = [];
 		msg.hashtags = tweet.entities.hashtags;
 		if(msg.hashtags.length > 0){
 			var anchor1 = "<a target=\"_blank\" href=\"https://twitter.com/hashtag/";
-			var anchor2 = "\">#"
+			var anchor2 = "\">#";
 			var anchor3 = "</a>";
 			for(var i = 0; i < msg.hashtags.length; i++){
 				var tweetText = "";
@@ -55,14 +77,15 @@ module.exports = function(Yourhome, app, auth, database, http) {
 				tweetText += anchor2;
 				tweetText += msg.hashtags[i].text;
 				tweetText += anchor3;
-				msg.hashtags[i].text = tweetText;
+				msg.hashtags[i].text = tweetText;				
+				msg.links[msg.links.length] = msg.hashtags[i];
 			}
 		}
 		
 		msg.mentions = tweet.entities.user_mentions;
 		if(msg.mentions.length > 0){
 			var anchor4 = "<a target=\"_blank\" href=\"https://twitter.com/";
-			var anchor5 = "\">@"
+			var anchor5 = "\">@";
 			var anchor6 = "</a>";
 			
 			for(var i = 0; i < msg.mentions.length; i++){
@@ -73,36 +96,82 @@ module.exports = function(Yourhome, app, auth, database, http) {
 				tweetText += msg.mentions[i].screen_name;
 				tweetText += anchor6;
 				msg.mentions[i].text = tweetText;
+				msg.links[msg.links.length] = msg.mentions[i];
 			}
+		}
+		
+		msg.urls = tweet.entities.urls;
+		if(msg.urls.length > 0){
+			var anchor1 = "<a target=\"_blank\" href=\"";
+			var anchor2 = "\">";
+			var anchor3 = "</a>";
+			for(var i = 0; i < msg.urls.length; i++){
+				var tweetText = "";
+				tweetText += anchor1;
+				tweetText += msg.urls[i].expanded_url;
+				tweetText += anchor2;
+				tweetText += msg.urls[i].display_url;
+				tweetText += anchor3;
+				msg.urls[i].text = tweetText;
+				msg.links[msg.links.length] = msg.urls[i];
+			}
+		}
+		
+		if(tweet.extended_entities !== undefined){
+			msg.media = tweet.extended_entities.media;
+			var anchor1 = "<img class=\"twitterMedia";
+			var anchor2 = "\" src=\"";
+			var anchor3 = "\"/>";
+			if(msg.media.length > 0){
+				if(msg.media.length != 4){
+					var tweetText = '';
+					if(msg.media.length != 2) tweetText = "<div class=\"twitterMedia\">";
+					else tweetText = "<div class=\"twitterMedia2\">";
+					for(var i = 0; i < msg.media.length; i++){
+						tweetText += anchor1;
+						if(msg.media.length == 1) tweetText += "100";
+						else if(msg.media.length == 2) tweetText += "50";
+						tweetText += anchor2;
+						tweetText += msg.media[i].media_url;
+						tweetText += anchor3;
+					}
+				}
+				else {
+					var tweetText = "<div class=\"twitterMedia\">";
+					tweetText += "<div class=\"twitterMedia70Container\">";
+					tweetText += "<img class=\"twitterMedia70\" src=\"" + msg.media[0].media_url + "\" /></div>";
+					tweetText += "<div class=\"twitterMedia3\">";
+					for(var i = 1; i < msg.media.length; i++){
+						tweetText += "<div class=\"twitterCalc3\">";
+						tweetText += anchor1;
+						tweetText += "30";
+						tweetText += anchor2;
+						tweetText += msg.media[i].media_url;
+						tweetText += anchor3;
+						tweetText += "</div>";
+					}
+					tweetText += "</div>";
+				}
+				tweetText += "</div>";
+				msg.media[0].text = tweetText;
+				msg.links[msg.links.length] = msg.media[0];
+			}
+		}
+		
+		if(msg.links.length > 0){
+			msg.links.sort(function(a, b){
+				var posA = a.indices[0];
+				var posB = b.indices[0];
+				
+				if(posA < posB) return -1;
+				if(posA > posB) return 1;
+				return 0;
+			});
 		}
 		
 		var h = 0;
 		var m = 0;
-		msg.links = [];
 		
-		while(h < msg.hashtags.length || m < msg.mentions.length){
-			//console.log("h: " + h + " \(" + msg.hashtags.length + "\) m: " + m + " \(" + msg.mentions.length + "\)");
-			if(h < msg.hashtags.length){
-				if(m == msg.mentions.length){
-					msg.links[h+m] = msg.hashtags[h];
-					h++;
-				}
-				else if(msg.hashtags[h].indices[0] < msg.mentions[m].indices[0]){
-					msg.links[h+m] = msg.hashtags[h];
-					h++;
-				}
-			}
-			if(m < msg.mentions.length){
-				if(h == msg.hashtags.length){
-					msg.links[h+m] = msg.mentions[m];
-					m++;
-				}
-				else if(msg.mentions[m].indices[0] < msg.hashtags[h].indices[0]){
-					msg.links[h+m] = msg.mentions[m];
-					m++;
-				}
-			}
-		}
 		tweet.links = msg.links;
 		if(tweet.links.length > 0){
 			var tweetText = tweet.text.substring(0, tweet.links[0].indices[0]);
@@ -113,8 +182,10 @@ module.exports = function(Yourhome, app, auth, database, http) {
 			}
 			tweet.text = tweetText;
 		}
+		
 		tweet.retweet_count = simplifyNumber(tweet.retweet_count);
 		tweet.favorite_count = simplifyNumber(tweet.favorite_count);
+		
 		var now = new Date();
 		var tweetDate = tweet.created_at.split(' '); //day:s month:s day:i date:s timezone:s year:i
 		tweetDate[5] = parseInt(tweetDate[5]);
@@ -175,8 +246,11 @@ module.exports = function(Yourhome, app, auth, database, http) {
 		var T = twitterCredentials(req);
 		var tweet = req.body.tweet;
 		
-		T.post('statuses/update', {in_reply_to_status_id: tweet.id_str, status: '@' + tweet.user.screen_name + ' ' + tweet.reply}, function(err, data, response){
-			if(!err) res.send(JSON.stringify({tweet: data}));
+		T.post('statuses/update', {in_reply_to_status_id: tweet.id_str, status: tweet.reply}, function(err, data, response){
+			if(!err) {
+				data = parseTweet(req, data);
+				res.send(JSON.stringify({tweet: data}));
+			}
 			else if(err) res.sendStatus(400);
 		});
 	});
@@ -186,7 +260,6 @@ module.exports = function(Yourhome, app, auth, database, http) {
 		
 		T.post('statuses/retweet/:id', {id: req.body.id}, function(err, data, response) {
 			console.log(colors.green("retweet"));
-			console.log(data);
 			if(!err) res.sendStatus(200);
 			else res.sendStatus(400);
 		});
