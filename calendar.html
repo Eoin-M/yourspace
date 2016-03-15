@@ -76,6 +76,7 @@
 	calendar.controller('mainController', function ($scope, $http)//$sce was removed since I don't think it's needed
 	{
         $scope.calAuth = true;
+        $scope.calError = false;
 		$scope.getEvents=function(numEvents)
 		{
 			if (isNaN(numEvents)) numEvents = 5;
@@ -88,23 +89,22 @@
             )
 			.success(function(data)
 			{
-                //console.dir(data);
-				//var temp = data[0].auth;
-				if (!data[0].auth)
+                $scope.calAuth = true;//incase they authorised it without refreshing
+                $scope.calError = false;//incase an error got fixed without refreshing
+				$scope.events = data;
+                
+			}).error(function(data, status){
+				if (status === 412) //not signed in
 				{
+                    console.log("Sign in at : "+ data.authUrl);
 					$scope.calAuth = false;
 				}
-				else
-				{
-					data.splice(0, 1);//gets rid of first entry which isn't an event
-                    //data = []; uncomment to mimic an empty calendar
-					$scope.events = data;
-				}
-				
-				
-			}).error(function(data){
-				console.error("An error occured. Server returned: ");
-				console.dir(data);
+                else
+                {
+                    console.error("An error occured. Server returned: ");
+				    console.dir(data);
+                    $scope.calError = true;
+                }
 			});
 		};
 		$scope.setEventClass = function(colID)
@@ -257,6 +257,9 @@
                 </div>
                 <div class="alert alert-info" ng-show="events.length === 0">
                     <strong>No events to show</strong>
+                </div>
+                <div class="alert alert-danger" ng-show="calError">
+                    <strong>Woops! Something went wrong...</strong>
                 </div>
                 <div ng-repeat="event in events | orderBy: 'start' "> <!---->
                     <div class="panel panel-default" >

@@ -108,8 +108,9 @@ function runGoogleNavigatorAPI(long, lat, location)
 					}
 				}
                 document.getElementById("addressLine").innerText = location.address;
-				//angular.element(document.getElementById("weather")).scope().weatherGet();
-				//angular.element(document.getElementById("yelp")).scope().yelpWait();
+				angular.element(document.getElementById("weather")).scope().weatherGet();
+				angular.element(document.getElementById("yelp")).scope().yelpWait();
+				angular.element(document.getElementById("jobs")).scope().jobGet();
 			}
 			else
 			{

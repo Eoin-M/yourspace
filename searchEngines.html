@@ -5,22 +5,32 @@
     <title>Hangons - A Hangouts.json parser</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <meta name="description" content="A completely client side Hangouts.json parser to convert your json file from hangouts to a preferred format">
-    <meta name="author" content="David Byrne">
-    <meta name="theme-color" content="#1AA260">
-    <link rel="icon" sizes="192x192" type="image/png" href="images/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="hangons.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <script src="https://bootswatch.com/bower_components/jquery/dist/jquery.js"></script>
     <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
-    <script src="hangons.js"></script>
+    
+    <style>
+		
+		.youtubeEnd
+		{
+			color: white;
+            background-color: red;
+            border-radius: 3px;
+		}
+        .searchIcon
+        {
+            padding-top: 10px;
+            text-align: center;
+        }
+		
+	</style>
 
 </head>
 
-<body ng-App="hangons" ng-controller="mainController" id="body">
+<body id="body">
 
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
@@ -52,17 +62,18 @@
         </div>
     </nav>
 
-    <div id="mainContent" class="container">
+    <div id="mainContent" class="container-fluid">
 
         <div class="row">
-            <div class=" col-md-3 col-sm-6">
+            <!--
+            <div class=" col-md-3 col-sm-6 col-xs-12">
                 <div class="panel panel-success ">
                     <div class="panel-heading">
                         <h3 class="panel-title">Google</h3>
                     </div>
                     <div class="panel-body">
                         <img class="center-block img-responsive" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google">
-                        <form class="form-horizontal" method="get" action="https://www.google.com/search">
+                        <form class="form-horizontal" method="get" action="https://www.google.com/search" target="_blank">
                             <input type="text" class="form-control" name="q" value="" placeholder="Search Google">
                         </form>
                     </div>
@@ -71,83 +82,131 @@
 
             
             
-            <div class=" col-md-3 col-sm-6">
+            <div class=" col-md-3 col-sm-6 col-xs-12">
                 <div class="panel panel-warning">
                     <div class="panel-heading">
                         <h3 class="panel-title">Bing</h3>
                     </div>
                     <div class="panel-body">
                         <img class="center-block img-responsive" src="http://rack.1.mshcdn.com/media/ZgkyMDEzLzA5LzE2L2JjL0Jpbmdsb2dvb3JhLmFkYjJkLnBuZwpwCXRodW1iCTEyMDB4OTYwMD4/996d9598/35b/Bing-logo-orange-RGB.png" alt="Bing">
-                        <form class="form-horizontal" method="get" action="http://www.bing.com/search">
+                        <form class="form-horizontal" method="get" action="http://www.bing.com/search" target="_blank">
                             <input type="text" class="form-control" name="q" value="" placeholder="Search Bing">
                         </form>
                     </div>
                 </div>
             </div>
 
-            <div class=" col-md-3 col-sm-6">
+            <div class=" col-md-3 col-sm-6 col-xs-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 class="panel-title">Yahoo</h3>
                     </div>
                     <div class="panel-body">
                         <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Yahoo_Logo.svg/2000px-Yahoo_Logo.svg.png" alt="Yahoo">
-                        <form class="form-horizontal" <form method="get"" action="http://search.yahoo.com/search">
+                        <form class="form-horizontal" <form method="get"" action="http://search.yahoo.com/search" target="_blank">
                             <input type="text" class="form-control" name="p" value="" placeholder="Search Yahoo">
                         </form>
                     </div>
                 </div>
             </div>
             
-            <div class=" col-md-3 col-sm-6">
+            <div class=" col-md-3 col-sm-6 col-xs-12">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
                         <h3 class="panel-title">YouTube</h3>
                     </div>
                     <div class="panel-body">
                         <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/YouTube_logo_2013.svg/800px-YouTube_logo_2013.svg.png" alt="YouTube">
-                        <form class="form-horizontal" method="get" action="http://www.youtube.com/results">
+                        <form class="form-horizontal" method="get" action="http://www.youtube.com/results" target="_blank">
                             <input type="text" class="form-control" name="search_query" value="" placeholder="Search YouTube">
                         </form>
                     </div>
                 </div>
             </div>
             
-            <div class=" col-md-3 col-sm-6">
+            <div class=" col-md-3 col-sm-6 col-xs-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Duck Duck Go</h3>
                     </div>
                     <div class="panel-body">
                         <img class="center-block img-responsive" src="http://donttrack.us/common/images/ddg-home-logo.png" alt="Duck Duck Go">
-                        <form class="form-horizontal" method="get" action="https://duckduckgo.com/">
+                        <form class="form-horizontal" method="get" action="https://duckduckgo.com/" target="_blank">
                             <input type="text" class="form-control" name="q" value="" placeholder="Search Duck Duck Go">
                         </form>
                     </div>
                 </div>
-            </div>
-                
-            <!--<div class=" col-md-3 col-sm-6">
-                <div class="panel panel-primary ">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel primary</h3>
-                    </div>
-                    <div class="panel-body">
-                        Panel content
-                    </div>
-                </div>
-            </div>
-
-            <div class=" col-md-6 col-sm-12">
-                <div class="panel panel-primary ">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel primary</h3>
-                    </div>
-                    <div class="panel-body">
-                        Panel content
-                    </div>
-                </div>
             </div>-->
+            
+            <div class=" col-md-3 col-sm-6 col-xs-12">
+                <div class="panel panel-success ">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-search"></i>&nbsp; Search</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                        <form class="form-horizontal" method="get" action="https://www.google.com/search" target="_blank" autocomplete="off">
+                            <div class="form-group">
+                                <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 searchIcon">
+                                    <i class="fa fa-google fa-2x"></i>
+                                </label>
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <input type="text" class="form-control" name="q" value="" placeholder="Search Google">
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <form class="form-horizontal" method="get" action="http://www.youtube.com/results" target="_blank" autocomplete="off">
+                            <div class="form-group">
+                                <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 searchIcon">
+                                    <i class="fa fa-youtube fa-2x"></i>
+                                </label>
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <input type="text" class="form-control" name="search_query" value="" placeholder="Search YouTube">
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <form class="form-horizontal" method="get" action="http://search.yahoo.com/search" target="_blank" autocomplete="off">
+                            <div class="form-group">
+                                <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 searchIcon">
+                                    <i class="fa fa-yahoo fa-2x"></i>
+                                </label>
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <input type="text" class="form-control" name="p" value="" placeholder="Search Yahoo!">
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <form class="form-horizontal" method="get" action="http://wikipedia.org/search-redirect.php" target="_blank" autocomplete="off">
+                            <div class="form-group">
+                                <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 searchIcon">
+                                    <i class="fa fa-wikipedia-w fa-2x"></i>
+                                </label>
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <input type="hidden" name="language" value="en">
+                                    <input type="text" class="form-control" name="search" value="" placeholder="Search Wikipedia">
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <form class="form-horizontal" action="http://www.amazon.com/exec/obidos/external-search" method="get" target="_blank" autocomplete="off">
+                            <div class="form-group">
+                                <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 searchIcon">
+                                    <i class="fa fa-amazon fa-2x"></i>
+                                </label>
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <input type="hidden" name="mode" value="blended"> 
+                                    <input type="hidden" name="tag" value="Yourspace">
+                                    <input type="text" class="form-control" name="keyword" value="" placeholder="Search Amazon">
+                                </div>
+                            </div>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 </body>

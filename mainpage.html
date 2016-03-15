@@ -4,6 +4,7 @@
 <head>
     <title>MEAN </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='shortcut icon' type='image/x-icon' href='favicon.png' />
     <meta charset="utf-8">
     <!-- below link is NEEDED for bootstrap-->
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css"/>
@@ -14,6 +15,11 @@
     <link href='https://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
     <!-- below link is NEEDED for jQuery Ui to enablle the modules to be sortable-->
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <!-- below link is NEEDED for the toggle buttons within the accordeon menu -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.4/angular-material.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.1/ui-bootstrap.js"></script>
+    
 
     <script type="text/javascript">
       $(document).ready(function(){
@@ -43,6 +49,7 @@
          handle: "#handle",
          cursor: 'move',
         });
+        
         $( "#sortable" ).disableSelection();
 
         $('.sortable').masonry({
@@ -50,14 +57,38 @@
           itemSelector: ".module1 .module2 .module3 .module4 .module5"
         });
 
+        
+        //----------------------
+
+
       });
+
+      //the below is angular and it will only work outside of document.ready              
+      /*var joApp = angular.module('classApp', []) ;
+      joApp.controller('classCtrl', ['$scope', '$http', function ($scope, $http)
+      {
+        
+      }]);*/
+      var app = angular.module('app', []);
+      app.controller('cCtrl', ['$scope', '$http', function ($scope, $http){
+        $scope.isActive = false;
+        $scope.activeButton = function() {
+          $scope.isActive = !$scope.isActive;
+        }  
+      }]);
 
 
     </script>
 
     <style type="text/css">
       body{
-        background: url("http://www.img.lirent.net/2014/10/Material-Wallpaper-22-Android-Lollipop-wallpapers.png");
+        /*previously: http://www.img.lirent.net/2014/10/Material-Wallpaper-22-Android-Lollipop-wallpapers.png*/
+        background: url("http://i0.wp.com/thezinx.com/wp-content/uploads/md-5.png") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+        max-width: 100%;
+        overflow-x: hidden;
       }
       .dropdown-accordion .panel-heading {
         padding: 0;
@@ -117,14 +148,39 @@
       }
       .sortable{ /* takes away the bullet of an ul*/
         list-style-type: none;
+        /*overflow: hidden;*/
+      }
+      .sortable { /*this thing breakes and fixes the modules, it allows for them to be sorted without the module jumping but makes them all on the same line*/
+        /*display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display:  flex;*/
       }
       #module1, #module2, #module3, #module4, #module5{
         float: left;
-        vertical-align: top;
-       /* position: absolute;
-        display: inline-block;
-        clear: left;*/
+        vertical-align: top; 
       }
+      .panel-body{/* Specifies the height of the panel body (where content goes)*/
+        height: 200px;
+      }
+
+      /*--------------*/
+      .button {
+        height: 2em;
+        width: 4em;
+        border-radius: 15px;
+        border: none;
+        padding: 3px;
+        color: #fff;
+        background: #FF735C; /*nice red*/
+        font-weight: 700;
+        border-radius: 4px;
+      }
+
+      .active {
+        background: #76FF03; /*green*/
+      }
+
     </style>
 </head>
 
@@ -162,7 +218,10 @@
                               </div>
                               <div class="panel-collapse collapse" id="collapseOne">
                                 <div id="dropmodbg" class="panel-body">
-                                  <div class="opt"><a class="mod" href="#">Profile</a></div><br>
+                                  <div class="opt"><a class="mod" href="#">Profile</a></div>
+                                  <!-- below 3 lines are responsible for the toggle button -->
+                                   
+                                  <br>
                                   <div class="opt"><a class="mod" href="#">Change Password</a></div><br>
                                   <div class="opt"><a class="mod" href="#">Log Out</a></div><br>
                                   <div class="opt"><a class="mod" href="#">Deleate Account</a></div>
@@ -216,7 +275,14 @@
 
         <div class="row">
           <div class="sortable">
+            <!-- ------- -->
+           <div ng-app="app" ng-controller="cCtrl">
+            <button class="button" ng-class="{true: 'btn-success', false: 'btn-danger'}[isActive]" ng-click="activeButton()" type="button">{{isActive && 'Visible' || 'Hidden'}}</button> 
+          </div>
+
+            <!-- ------- -->
             
+            <!-- -------->
               <div class=" col-md-3 col-sm-6 col-xs-12" id="module1">
                   <div class="panel panel-success ">
                       <div class="panel-heading" id="handle">
@@ -272,9 +338,9 @@
                       </div>
                   </div>
               </div>
-            </li>
             
-            <li>
+            
+            
               <div class=" col-md-3 col-sm-6 col-xs-12" id="module5">
                   <div class="panel panel-primary">
                       <div class="panel-heading" id="handle">
@@ -288,7 +354,7 @@
                       </div>
                   </div>
               </div>
-           
+            
             
           </div> <!-- /sortable--> 
         </div>
