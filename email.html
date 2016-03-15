@@ -30,7 +30,7 @@
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.0.3/ui-bootstrap-tpls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap-tpls.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
     <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script>
@@ -199,7 +199,7 @@
         
         $scope.getEmailStar = function(email)
         {
-            style = "glyphicon";
+            var style = "glyphicon";
             if(email.star === true) style+= " glyphicon-star starredEmail";
             else style+= " glyphicon-star-empty";
             return style;
@@ -293,7 +293,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a href class="accordion-toggle" ng-click="toggleOpen()"  uib-accordion-transclude="heading">
-                        <span ng-class="getEmailStyle(email)" >{{heading}}</span>
+                        <div uib-accordion-header ng-class="getEmailStyle(email)" >{{email.senderName}}</div>
                     </a>
                 </h4>
             </div>
