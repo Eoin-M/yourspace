@@ -2,7 +2,7 @@
 
 var express = require('express');
 var app = express();
-var util = require('util');
+//var util = require('util');
 var bodyParser = require("body-parser");
 app.set('views',__dirname);
 app.use(express.static(__dirname +'/public'));
@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 require('colors');
 
-var _ = require('lodash');
+//var _ = require('lodash');
 var yahooFinance = require('Yahoo-finance');
 
 
@@ -51,7 +51,7 @@ function getStocks(stockArray, callBackFn)
 			tempObj.symbol = result[i].symbol;
 			tempObj.lastTradePriceOnly = result[i].lastTradePriceOnly;
 			tempObj.change = result[i].change;
-            tempObj.percentChange = result[i].changeInPercent;
+            tempObj.percentChange = result[i].changeInPercent * 100;//*100 to get it in a percent
 			results.push(tempObj);
         }
         callBackFn(results);
