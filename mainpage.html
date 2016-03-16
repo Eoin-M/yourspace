@@ -159,19 +159,20 @@
       #droptitle{/*the bg in the heading in the dropdown(at the sides)*/
         background-color:  #093170; /*dark navy*/
       }
-      .mod{/*module name*/
+      .modname{/*module name*/
         font-family: Quicksand;
         font-size: 120%;
         margin-left: 2px;
-        color: white;
+        color: #093170;
+        margin-top: 2px;
       }
-      .opt{/*the div surrounding the module name*/
-        margin-top: -5px;
-        margin-bottom: -5px;
+      .opt{/*the div surrounding all the module names*/
+        margin-top: 0px;
+        margin-bottom: 0px;
         border-radius: 0px;
-        background-color: #ef9a9a; /*light reddy*/
+        background-color: #093170;
       }
-      #dropmodbg{/* the background of the module names*/
+      #dropmodbg{/* the background of the module names names- the overall thing, not just highlighter bg*/
         background-color: #093170; /*dark navy*/
       }
       .sortable{ /* takes away the bullet of an ul*/
@@ -190,6 +191,13 @@
       }
       .panel-body{/* Specifies the height of the panel body (where content goes)*/
         height: 200px;
+      }
+      input[type="checkbox"]{
+        float: right;
+      }
+      .modNameCheckBox{
+        margin-bottom: 3px;
+        background-color: #ef9a9a; /*light reddy*/
       }
     </style>
 </head>
@@ -248,16 +256,18 @@
                                 <div id="dropmodbg" class="panel-body">
                                    
                                   <div class="opt">
-                                    <span class="mod">Google</span><input type="checkbox" name="check" ng-model="showMod1">
-                                    <br>
-                                    <span class="mod">Bing</span><input type="checkbox" name="check" ng-model="showMod2">
-                                    <br>
-                                    <span class="mod">Yahoo</span><input type="checkbox" name="check" ng-model="showMod3">
-                                    <br>
-                                    <span class="mod">Youtube</span><input type="checkbox" name="check" ng-model="showMod4">
-                                    <br><!-- At least one of the module headings in the accordeon needs to have {{}} or else it only toggles 1 time and doens't work afterwards-->
-                                    <span class="mod">Duck Go GO!</span><input type="checkbox" name="check" ng-model="showMod5">{{}}
-                                    <br>
+                                    <div class="modNameCheckBox"><span class="modname">Google</span><input type="checkbox" name="check" ng-model="showMod1">
+                                    <br></div>
+                                    <div class="modNameCheckBox"><span class="modname">Bing</span><input type="checkbox" name="check" ng-model="showMod2">
+                                    <br></div>
+                                    <div class="modNameCheckBox"><span class="modname">Yahoo</span><input type="checkbox" name="check" ng-model="showMod3">
+                                    <br></div>
+                                    <div class="modNameCheckBox"><span class="modname">Youtube</span><input type="checkbox" name="check" ng-model="showMod4">
+                                    <br></div>
+                                    <div class="modNameCheckBox"><span class="modname">Duck Go GO!</span><input type="checkbox" name="check" ng-model="showMod5">
+                                    <br></div>
+                                    <!-- Needs to have {{}} or else it only toggles 1 time and doens't work afterwards-->
+                                    {{}}
                                   </div>
                                    
                                   
