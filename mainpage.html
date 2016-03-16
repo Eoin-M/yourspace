@@ -13,12 +13,11 @@
     <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <!-- below link is NICE TO HAVE for a preety font-->
     <link href='https://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Quicksand:700' rel='stylesheet' type='text/css'>
     <!-- below link is NEEDED for jQuery Ui to enablle the modules to be sortable-->
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <!-- below link is NEEDED for the toggle buttons within the accordeon menu -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.4/angular-material.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.1/ui-bootstrap.js"></script>
     
 
     <script type="text/javascript">
@@ -51,31 +50,60 @@
         });
         
         $( "#sortable" ).disableSelection();
-
+/*
         $('.sortable').masonry({
           columnWidth:120,
           itemSelector: ".module1 .module2 .module3 .module4 .module5"
-        });
-
-        
-        //----------------------
-
-
+        });*/
       });
 
-      //the below is angular and it will only work outside of document.ready              
-      /*var joApp = angular.module('classApp', []) ;
-      joApp.controller('classCtrl', ['$scope', '$http', function ($scope, $http)
-      {
-        
-      }]);*/
+      //the below is angular and it will only work outside of document.ready
+      //the below angular is for the buttons within the accordeon menu (the toggle ones)             
       var app = angular.module('app', []);
-      app.controller('cCtrl', ['$scope', '$http', function ($scope, $http){
-        $scope.isActive = false;
-        $scope.activeButton = function() {
-          $scope.isActive = !$scope.isActive;
+      //app.controller('cCtrl', ['$scope', '$http', function ($scope, $http){
+      app.controller('cCtrl', function($scope) {
+        //initialization of button states
+        $scope.showMod1 = true;
+        $scope.showMod2 = false;
+        $scope.showMod3 = false;
+        $scope.showMod4 = true;
+        $scope.showMod5 = false;
+        /*$scope.isActive = false;
+        $scope.isActive2 = false;
+        $scope.isActive3 = false;
+        $scope.isActive4 = false;
+        $scope.isActive5 = false;
+
+        //initializzation of module states
+        $scope.showMod1 = false;
+
+        $scope.activeGoogle = function() {
+            $scope.isActive = !$scope.isActive;
+            $scope.showMod1 = !$scope.showMod1;
         }  
-      }]);
+        $scope.activeBing = function() {
+            $scope.isActive2 = !$scope.isActive2;
+        }
+        $scope.activeYahoo = function() {
+            $scope.isActive3 = !$scope.isActive3;
+        } 
+        $scope.activeYoutube = function() {
+            $scope.isActive4 = !$scope.isActive4;
+        }
+         $scope.activeDuck = function() {
+            $scope.isActive5 = !$scope.isActive5;
+        }   
+        $scope.moduleToggleClass = function(){
+
+        }  */
+
+
+        /* originally
+        $scope.activeButton = function() {
+            $scope.isActive = !$scope.isActive;
+            $scope.isActive2 = !$scope.isActive2;
+        }  */
+      });
 
 
     </script>
@@ -111,7 +139,7 @@
         background-color: #093170; /*dark navy*/
       }
       .navbar-brand{
-        font-family: Lato;
+        font-family: Quicksand;
       }
       .navbar-text{
         color: #e3f2fd;
@@ -124,7 +152,7 @@
         margin-left: 5%;
         background-color: #b2ebf2; /*bluey*/
         border-radius: 0px;
-        font-family: Lato;
+        font-family: Quicksand;
         font-size: 20px;
         color: white;
       }
@@ -132,7 +160,7 @@
         background-color:  #093170; /*dark navy*/
       }
       .mod{/*module name*/
-        font-family: Lato;
+        font-family: Quicksand;
         font-size: 120%;
         margin-left: 2px;
         color: white;
@@ -156,35 +184,18 @@
         display: -ms-flexbox;
         display:  flex;*/
       }
-      #module1, #module2, #module3, #module4, #module5{
+      #module1, #module2, #module3, #module4, #module5{ /*each individual module, the outwardmost div of each module*/
         float: left;
         vertical-align: top; 
       }
       .panel-body{/* Specifies the height of the panel body (where content goes)*/
         height: 200px;
       }
-
-      /*--------------*/
-      .button {
-        height: 2em;
-        width: 4em;
-        border-radius: 15px;
-        border: none;
-        padding: 3px;
-        color: #fff;
-        background: #FF735C; /*nice red*/
-        font-weight: 700;
-        border-radius: 4px;
-      }
-
-      .active {
-        background: #76FF03; /*green*/
-      }
-
     </style>
 </head>
 
 <body>
+  <div ng-app="app" ng-controller="cCtrl">
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -218,10 +229,7 @@
                               </div>
                               <div class="panel-collapse collapse" id="collapseOne">
                                 <div id="dropmodbg" class="panel-body">
-                                  <div class="opt"><a class="mod" href="#">Profile</a></div>
-                                  <!-- below 3 lines are responsible for the toggle button -->
-                                   
-                                  <br>
+                                  <div class="opt"><a class="mod" href="#">Profile</a></div> <br>
                                   <div class="opt"><a class="mod" href="#">Change Password</a></div><br>
                                   <div class="opt"><a class="mod" href="#">Log Out</a></div><br>
                                   <div class="opt"><a class="mod" href="#">Deleate Account</a></div>
@@ -238,11 +246,28 @@
                               </div>
                               <div class="panel-collapse collapse" id="collapseTwo">
                                 <div id="dropmodbg" class="panel-body">
-                                  <div class="opt" onclick="$('#module1').toggle();" href="#"><a class="mod">Google</a></div><br>
+                                   
+                                  <div class="opt">
+                                    <span class="mod">Google</span><input type="checkbox" name="check" ng-model="showMod1">
+                                    <br>
+                                    <span class="mod">Bing</span><input type="checkbox" name="check" ng-model="showMod2">
+                                    <br>
+                                    <span class="mod">Yahoo</span><input type="checkbox" name="check" ng-model="showMod3">
+                                    <br>
+                                    <span class="mod">Youtube</span><input type="checkbox" name="check" ng-model="showMod4">
+                                    <br><!-- At least one of the module headings in the accordeon needs to have {{}} or else it only toggles 1 time and doens't work afterwards-->
+                                    <span class="mod">Duck Go GO!</span><input type="checkbox" name="check" ng-model="showMod5">{{}}
+                                    <br>
+                                  </div>
+                                   
+                                  
+
+                                  
+                                 <!--  <div class="opt" onclick="$('#module1').toggle();" href="#"><a class="mod">Google</a></div><br>
                                   <div class="opt" onclick="$('#module2').toggle();" href="#"><a class="mod" href="#">Bing</a></div><br>
                                   <div class="opt" onclick="$('#module3').toggle();" href="#"><a class="mod" href="#">Yahoo</a></div><br>
                                   <div class="opt" onclick="$('#module4').toggle();" href="#"><a class="mod" href="#">Youtube</a></div><br>
-                                  <div class="opt" onclick="$('#module5').toggle();" href="#"><a class="mod" href="#">Duck Go Go</a></div>
+                                  <div class="opt" onclick="$('#module5').toggle();" href="#"><a class="mod" href="#">Duck Go Go</a></div>-->
                                 </div>
                               </div>
                             </div>
@@ -275,15 +300,7 @@
 
         <div class="row">
           <div class="sortable">
-            <!-- ------- -->
-           <div ng-app="app" ng-controller="cCtrl">
-            <button class="button" ng-class="{true: 'btn-success', false: 'btn-danger'}[isActive]" ng-click="activeButton()" type="button">{{isActive && 'Visible' || 'Hidden'}}</button> 
-          </div>
-
-            <!-- ------- -->
-            
-            <!-- -------->
-              <div class=" col-md-3 col-sm-6 col-xs-12" id="module1">
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module1" ng-show="showMod1" >
                   <div class="panel panel-success ">
                       <div class="panel-heading" id="handle">
                           <h3 class="panel-title">Google</h3>
@@ -297,7 +314,7 @@
                   </div>
               </div>
 
-              <div class=" col-md-3 col-sm-6 col-xs-12" id="module2">
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module2" ng-show="showMod2" >
                   <div class="panel panel-warning ">
                       <div class="panel-heading" id="handle">
                           <h3 class="panel-title">Bing</h3>
@@ -311,7 +328,7 @@
                   </div>
               </div>
            
-              <div class=" col-md-3 col-sm-6 col-xs-12" id="module3">
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module3" ng-show="showMod3" >
                   <div class="panel panel-info">
                       <div class="panel-heading" id="handle">
                           <h3 class="panel-title">Yahoo</h3>
@@ -325,7 +342,7 @@
                   </div>
               </div>
             
-              <div class=" col-md-3 col-sm-6 col-xs-12" id="module4">
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module4" ng-show="showMod4" >
                   <div class="panel panel-danger">
                       <div class="panel-heading" id="handle">
                           <h3 class="panel-title">YouTube</h3>
@@ -341,7 +358,7 @@
             
             
             
-              <div class=" col-md-3 col-sm-6 col-xs-12" id="module5">
+              <div class=" col-md-3 col-sm-6 col-xs-12" id="module5" ng-show="showMod5" >
                   <div class="panel panel-primary">
                       <div class="panel-heading" id="handle">
                           <h3 class="panel-title">Duck Duck Go</h3>
@@ -357,8 +374,9 @@
             
             
           </div> <!-- /sortable--> 
-        </div>
-    </div>
+        </div><!-- end of row-->
+    </div><!-- end of container/ main page, a place for the modulse on the page-->
+  </div><!-- end of angular app -->
 </body>
 
 </html>
