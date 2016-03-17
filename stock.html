@@ -45,6 +45,7 @@
 		$scope.getStock=function(stockArray)
 		{
 			//console.log("entered getStock");
+            if (stockArray.length === 0) return;//no point bothering the server when there's no stocks to check
 			$http.post('/getStock', JSON.stringify(
                 {
                     symbols: stockArray
@@ -182,9 +183,9 @@
                             <div>Stock: {{ stock.name}}</div>
                             <div>Symbol: {{ stock.symbol | uppercase}}</div><!--filter formats to uppercase-->
                             <div>Price: {{ stock.lastTradePriceOnly | currency:"$" }}<!--filter formats to currency-->
-                                <span ng-class="setStockClass(stock.change)" class="pull-right">{{ stock.percentChange | number }}%<!--chooses which style to apply-->
-                                    <span class="glyphicon glyphicon-arrow-up" ng-hide="stock.change < 0"></span>
-                                    <span class="glyphicon glyphicon-arrow-down" ng-hide="stock.change > 0"></span>
+                                <span ng-class="setStockClass(stock.change)" class="pull-right">{{ stock.percentChange || '0' | number }}%<!--chooses which style to apply-->
+                                    <span class="glyphicon glyphicon-arrow-up" ng-hide="(stock.change == null) || (stock.change <= 0)"></span>
+                                    <span class="glyphicon glyphicon-arrow-down" ng-hide="(stock.change == null) || (stock.change >= 0)"></span>
                                 </span>
                             </div>
                             
