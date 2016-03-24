@@ -1,4 +1,4 @@
-<html ng-app="stocks">
+<html ng-app="profile">
 
 <head>
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css" />
@@ -6,12 +6,12 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-touch.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
     <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap-tpls.js"></script>
     <script>
         "use strict";
-        var profile = angular.module('stocks', []);
+        var profile = angular.module('profile', ['ngAnimate','ui.bootstrap']);
         profile.controller('mainController', function ($scope, $http)
         {
             $scope.profile = {};
@@ -31,7 +31,19 @@
                 }).error(function(data, status){
                     console.error("An error occured. Server returned: ");
                     console.dir(data);
-                    $scope.calError = true;
+                });
+            }
+            $scope.saveDetails = function()
+            {
+                var profile = $scope.profile;
+                $http.post('/saveUserDetails', JSON.stringify(profile)
+                ).success(function(data)
+                {
+                    console.log("Saved:");
+                    console.dir(data);
+                }).error(function(data, status){
+                    console.error("An error occured. Server returned: ");
+                    console.dir(data);
                 });
             }
         });
@@ -45,60 +57,60 @@
                 <form class="form-horizontal">
                     <fieldset>
                         <legend>Your Profile</legend>
-                        <div class="col-lg-6">
+                        <div class="col-xs-12 col-md-6">
                             <div class="form-group">
-                                <label for="inputEmail" class="col-lg-2 control-label">Name</label>
-                                <div class="col-lg-10">
+                                <label for="inputEmail" class="col-xs-2 col-md-2 control-label">Name</label>
+                                <div class="col-xs-10 col-md-10">
                                     <input type="text" class="form-control" id="inputEmail" placeholder="Email" ng-model="profile.name">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputEmail" class="col-lg-2 control-label">Email</label>
-                                <div class="col-lg-10">
+                                <label for="inputEmail" class="col-xs-2 col-md-2 control-label">Email</label>
+                                <div class="col-xs-10 col-md-10">
                                     <input type="text" class="form-control" id="inputEmail" placeholder="Your name" ng-model="profile.email">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-2 control-label">Add account</label>
-                                <div class="col-lg-10">
-                                    <img class="col-lg-2 img-responsive" ng-hide="profile.hasFacebook" src="https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-512.png"
+                                <label class="col-xs-2 col-md-2 control-label">Add account</label>
+                                <div class="col-xs-10 col-md-10">
+                                    <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasFacebook" src="https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-512.png"
                                     alt="Facebook" />
-                                    <img class="col-lg-2 img-responsive" ng-hide="profile.hasGoogle" src="http://vignette2.wikia.nocookie.net/logopedia/images/d/d2/Google_icon_2015.png/revision/latest?cb=20150902024016"
+                                    <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasGoogle" src="http://vignette2.wikia.nocookie.net/logopedia/images/d/d2/Google_icon_2015.png/revision/latest?cb=20150902024016"
                                     alt="Google" />
-                                    <img class="col-lg-2 img-responsive" ng-hide="profile.hasGithub" src="http://defunkt.io/blacktocat.png" alt="Github" />
-                                    <img class="col-lg-2 img-responsive" ng-hide="profile.hasReddit" src="http://icons.iconarchive.com/icons/uiconstock/socialmedia/512/Reddit-icon.png"
+                                    <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasGithub" src="http://defunkt.io/blacktocat.png" alt="Github" />
+                                    <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasReddit" src="http://icons.iconarchive.com/icons/uiconstock/socialmedia/512/Reddit-icon.png"
                                     alt="Reddit" />
-                                    <img class="col-lg-2 img-responsive" ng-hide="profile.hasInstagram" src="http://www.democrathotsprings.com/Instagram-icon-small.png"
+                                    <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasInstagram" src="http://www.democrathotsprings.com/Instagram-icon-small.png"
                                     alt="Instagram" />
-                                    <img class="col-lg-2 img-responsive" ng-hide="profile.hasTwitter" src="http://vignette4.wikia.nocookie.net/simpsons/images/1/11/Twitter_bird_icon.png/revision/latest?cb=20111228065136"
+                                    <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasTwitter" src="http://vignette4.wikia.nocookie.net/simpsons/images/1/11/Twitter_bird_icon.png/revision/latest?cb=20111228065136"
                                     alt="Twitter" />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-xs-12 col-md-6">
                             <div class="form-group">
-                                <label for="inputEmail" class="col-lg-2 control-label">Profile Picture</label>
-                                <div class="col-lg-10">
+                                <label for="inputEmail" class="col-xs-2 col-md-2 control-label">Profile Picture</label>
+                                <div class="col-xs-10 col-md-10">
                                     <img ng-src="{{profile.imageURL}}" class="img-thumbnail" alt="Profile pic">
                                     <input type="text" class="form-control" id="inputEmail" placeholder="Email" ng-model="profile.imageURL">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <div class="col-xs-12 col-md-6">
                             <uib-accordion close-others="true">
 
                                 <uib-accordion-group heading="To change your password open this" panel-class="panel-warning">
                                     <div class="form-group">
-                                        <label for="inputPassword" class="col-lg-2 control-label">Password</label>
-                                        <div class="col-lg-10">
+                                        <label for="inputPassword" class="col-xs-2 col-md-2 control-label">Password</label>
+                                        <div class="col-xs-10 col-md-10">
                                             <input type="password" class="form-control" id="inputPassword" placeholder="Password">
 
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputPassword" class="col-lg-2 control-label">Password</label>
-                                        <div class="col-lg-10">
+                                        <label for="inputPassword" class="col-xs-2 col-md-2 control-label">Password</label>
+                                        <div class="col-xs-10 col-md-10">
                                             <input type="password" class="form-control" id="inputPassword" placeholder="Password">
 
                                         </div>
@@ -117,8 +129,8 @@
                     </fieldset>
                     <div class="form-group">
                         <div class="text-center">
-                            <button type="reset" class="btn btn-default">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button class="btn btn-default">Cancel</button>
+                            <button class="btn btn-primary" ng-click="saveDetails()">Save changes</button>
                         </div>
                     </div>
                 </form>

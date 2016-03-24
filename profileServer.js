@@ -24,6 +24,18 @@ app.post('/getUserDetails', function (req, res)
     
 });
 
+app.post('/saveUserDetails', function (req, res)
+{
+	//read in details from cookie/database
+    saveUserDetails(req, function()
+    {
+        res.setHeader('Content-Type', 'application/json');
+        console.log("saved");
+		res.send();
+    })
+    
+});
+
 function getUserDetails(req, callback)
 {
     var profile = {};
@@ -37,6 +49,13 @@ function getUserDetails(req, callback)
     profile.hasGithub = false;
     profile.hasReddit = false;
     callback(profile);
+}
+
+function saveUserDetails(req, callback)
+{
+    //saveToCookie(req.body.profile);
+    callback();
+    //saveToDatabase(req.body.profile);
 }
 
 
