@@ -2,13 +2,20 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css" />
+    <style>
+        .profilePic{
+            max-height: 200px;
+            max-width: 200px;
+        }
+        
+    </style>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
     <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap-tpls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap-tpls.js"></script>
     <script>
         "use strict";
         var profile = angular.module('profile', ['ngAnimate','ui.bootstrap']);
@@ -73,17 +80,29 @@
                             <div class="form-group">
                                 <label class="col-xs-2 col-md-2 control-label">Add account</label>
                                 <div class="col-xs-10 col-md-10">
-                                    <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasFacebook" src="https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-512.png"
-                                    alt="Facebook" />
-                                    <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasGoogle" src="http://vignette2.wikia.nocookie.net/logopedia/images/d/d2/Google_icon_2015.png/revision/latest?cb=20150902024016"
-                                    alt="Google" />
-                                    <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasGithub" src="http://defunkt.io/blacktocat.png" alt="Github" />
-                                    <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasReddit" src="http://icons.iconarchive.com/icons/uiconstock/socialmedia/512/Reddit-icon.png"
-                                    alt="Reddit" />
-                                    <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasInstagram" src="http://www.democrathotsprings.com/Instagram-icon-small.png"
-                                    alt="Instagram" />
-                                    <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasTwitter" src="http://vignette4.wikia.nocookie.net/simpsons/images/1/11/Twitter_bird_icon.png/revision/latest?cb=20111228065136"
-                                    alt="Twitter" />
+                                    <a href="/api/auth/facebook">
+                                        <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasFacebook" src="https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-512.png"
+                                        alt="Facebook" />
+                                    </a>
+                                    <a href="/api/auth/google">
+                                        <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasGoogle" src="http://vignette2.wikia.nocookie.net/logopedia/images/d/d2/Google_icon_2015.png/revision/latest?cb=20150902024016"
+                                        alt="Google" />
+                                    </a>
+                                    <a href="/api/auth/github">
+                                        <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasGithub" src="http://defunkt.io/blacktocat.png" alt="Github"/>
+                                    </a>
+                                    <a href="/api/auth/reddit">
+                                        <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasReddit" src="http://icons.iconarchive.com/icons/uiconstock/socialmedia/512/Reddit-icon.png"
+                                        alt="Reddit" />
+                                    </a>
+                                    <a href="/api/auth/instagram">
+                                        <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasInstagram" src="http://www.democrathotsprings.com/Instagram-icon-small.png"
+                                        alt="Instagram" />
+                                    </a>
+                                    <a href="/api/auth/twitter">
+                                        <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasTwitter" src="http://vignette4.wikia.nocookie.net/simpsons/images/1/11/Twitter_bird_icon.png/revision/latest?cb=20111228065136"
+                                        alt="Twitter" />
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -91,7 +110,7 @@
                             <div class="form-group">
                                 <label for="inputEmail" class="col-xs-2 col-md-2 control-label">Profile Picture</label>
                                 <div class="col-xs-10 col-md-10">
-                                    <img ng-src="{{profile.imageURL}}" class="img-thumbnail" alt="Profile pic">
+                                    <img ng-src="{{profile.imageURL}}" class="img-thumbnail profilePic" alt="Profile pic">
                                     <input type="text" class="form-control" id="inputEmail" placeholder="Email" ng-model="profile.imageURL">
                                 </div>
                             </div>
