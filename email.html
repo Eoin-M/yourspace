@@ -27,6 +27,7 @@
         {
             cursor: pointer;
         }
+        
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
@@ -212,6 +213,13 @@
             $("#emailMessage").val(message);
             $('#emailModal').modal();
         };
+        /*$scope.getEmailPadding=function(email)
+        {
+            var padding = 30 - email.senderName.length;
+            padding = 10* Math.max(padding, 0);
+            var style = { "margin-left": padding + "px"};
+            return style;
+        }*/
         
         $scope.sendEmail=function()
         {
@@ -288,24 +296,11 @@
     
     
     </script>
-    <script type="text/ng-template" id="group-template.html">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a href class="accordion-toggle" ng-click="toggleOpen()"  uib-accordion-transclude="heading">
-                        <div uib-accordion-header ng-class="getEmailStyle(email)" >{{email.senderName}}</div>
-                    </a>
-                </h4>
-            </div>
-            <div class="panel-collapse collapse" uib-collapse="!isOpen">
-                <div class="panel-body" ng-transclude></div>
-            </div>
-        </div>
-    </script>
+    
 </head>
 
 <body ng-controller="mainController">
-    <div class="container">
+    <div class="container-fluid">
         <div class="col-md-6">
             <div class="panel panel-primary" ng-init="getEmails(10)">
                 <div class="panel-heading">
@@ -328,10 +323,13 @@
                     </div>
                     <uib-accordion>
                         <div ng-repeat="email in emails  | orderBy: '-unixTime' track by email.id" >
-                            <uib-accordion-group  template-url="group-template.html">
+                            <uib-accordion-group  >
                                 <uib-accordion-heading ><!--start accordion row header-->
                                      <span ng-class="getEmailStar(email)" ng-click="setEmailStar($event, email)"></span>
-                                     <span ng-class="getEmailStyle(email)" ng-click="readEmail(email)">{{email.subject }}</span>
+                                     <span ng-class="getEmailStyle(email)" ng-click="readEmail(email)">
+                                         <span> {{email.senderName}}</span>
+                                         <span> - {{email.subject }}</span>
+                                     </span>
                                 </uib-accordion-heading><!--end accordion row header-->
                                 
                                 <!--start accordion row content-->
