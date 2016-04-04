@@ -128,7 +128,7 @@
 			}
             
             var valid = true;
-            valid = valid && $scope.wantedStock.length > 1;
+            valid = valid && $scope.wantedStock.length > 0;
             valid = valid && $scope.wantedStock.length < 7;
             valid = valid && /^[a-z]+$/i.test($scope.wantedStock);//only allows letters
             
