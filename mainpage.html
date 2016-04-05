@@ -4,7 +4,7 @@
 <head>
     <title>MEAN </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel='shortcut icon' type='image/x-icon' href='favicon.png' />
+    <link rel="shortcut icon" type="'"image/x-icon"'" href="favicon.png" />
     <meta charset="utf-8">
     <!-- below link is NEEDED for bootstrap-->
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css"/>
@@ -50,11 +50,15 @@
         });
         
         $( "#sortable" ).disableSelection();
-/*
-        $('.sortable').masonry({
-          columnWidth:120,
-          itemSelector: ".module1 .module2 .module3 .module4 .module5"
-        });*/
+
+        //below makes sure that there is enough space to list out all the module names under the Module haeding
+        $("#accordeonHeading3").click(function(){
+            $(this).data('clicked', true);
+        });
+        if($('#accordeonHeading3').data('clicked')) {
+            alert('yes');
+            $('#accordeonHeading3').addClass("modulesSpace");
+        }
       });
 
       //the below is angular and it will only work outside of document.ready
@@ -68,41 +72,17 @@
         $scope.showMod3 = false;
         $scope.showMod4 = true;
         $scope.showMod5 = false;
-        /*$scope.isActive = false;
-        $scope.isActive2 = false;
-        $scope.isActive3 = false;
-        $scope.isActive4 = false;
-        $scope.isActive5 = false;
-
-        //initializzation of module states
-        $scope.showMod1 = false;
-
-        $scope.activeGoogle = function() {
-            $scope.isActive = !$scope.isActive;
-            $scope.showMod1 = !$scope.showMod1;
-        }  
-        $scope.activeBing = function() {
-            $scope.isActive2 = !$scope.isActive2;
-        }
-        $scope.activeYahoo = function() {
-            $scope.isActive3 = !$scope.isActive3;
-        } 
-        $scope.activeYoutube = function() {
-            $scope.isActive4 = !$scope.isActive4;
-        }
-         $scope.activeDuck = function() {
-            $scope.isActive5 = !$scope.isActive5;
-        }   
-        $scope.moduleToggleClass = function(){
-
-        }  */
-
-
         /* originally
         $scope.activeButton = function() {
             $scope.isActive = !$scope.isActive;
             $scope.isActive2 = !$scope.isActive2;
         }  */
+
+        $scope.marginClickfor3 = function(){
+          $scope.check = !$scope.check;
+
+        }
+        
       });
 
 
@@ -159,7 +139,7 @@
       #droptitle{/*the bg in the heading in the dropdown(at the sides)*/
         background-color:  #093170; /*dark navy*/
       }
-      .modname{/*module name*/
+      .modname{/*module name under MODULE*/
         font-family: Quicksand;
         font-size: 120%;
         margin-left: 2px;
@@ -199,6 +179,29 @@
         margin-bottom: 3px;
         background-color: #ef9a9a; /*light reddy*/
       }
+      #accbg, #meanteambg{/*the bg for the options under the account heading in the accordeon*/
+        background-color: #71F79F;
+        /*border: 2px solid white;*/
+        color: #093170;
+        margin-bottom: -5px;
+        margin-top: -5px;
+      }
+      #accoptname, #meanteamoptname{/*option name under ACCOUNT*/
+        font-family: Quicksand;
+        font-size: 18px;
+        color: #093170;
+        margin-left: 5px;
+      }
+
+      /* ****************** */
+      /*to make all the module names fit on the accordeon*/
+      #accordeonHeading3{
+       /* margin-top: 200px;*/
+      }
+      .marginCorrector{
+        margin-top: 195px;
+      }
+      /* ********************/
     </style>
 </head>
 
@@ -237,10 +240,10 @@
                               </div>
                               <div class="panel-collapse collapse" id="collapseOne">
                                 <div id="dropmodbg" class="panel-body">
-                                  <div class="opt"><a class="mod" href="#">Profile</a></div> <br>
-                                  <div class="opt"><a class="mod" href="#">Change Password</a></div><br>
-                                  <div class="opt"><a class="mod" href="#">Log Out</a></div><br>
-                                  <div class="opt"><a class="mod" href="#">Deleate Account</a></div>
+                                  <div class="opt" id="accbg"><a class="mod" id="accoptname" href="#">Profile</a></div> <br>
+                                  <div class="opt" id="accbg"><a class="mod" id="accoptname" href="#">Change Password</a></div><br>
+                                  <div class="opt" id="accbg"><a class="mod" id="accoptname" href="#">Log Out</a></div><br>
+                                  <div class="opt" id="accbg"><a class="mod" id="accoptname" href="#">Deleate Account</a></div>
                                 </div>
                               </div>
                             </div>
@@ -266,33 +269,39 @@
                                     <br></div>
                                     <div class="modNameCheckBox"><span class="modname">Duck Go GO!</span><input type="checkbox" name="check" ng-model="showMod5">
                                     <br></div>
+                                    <div class="modNameCheckBox"><span class="modname">Test6</span><input type="checkbox" name="check" ng-model="showMod5">
+                                    <br></div>
+                                    <div class="modNameCheckBox"><span class="modname">Test7</span><input type="checkbox" name="check" ng-model="showMod5">
+                                    <br></div>
+                                    <div class="modNameCheckBox"><span class="modname">Test8</span><input type="checkbox" name="check" ng-model="showMod5">
+                                    <br></div>
+                                    <div class="modNameCheckBox"><span class="modname">Test9</span><input type="checkbox" name="check" ng-model="showMod5">
+                                    <br></div>
+                                    <div class="modNameCheckBox"><span class="modname">Test10</span><input type="checkbox" name="check" ng-model="showMod5">
+                                    <br></div>
+                                    <div class="modNameCheckBox"><span class="modname">Test11</span><input type="checkbox" name="check" ng-model="showMod5">
+                                    <br></div>
+                                    <div class="modNameCheckBox"><span class="modname">Test12</span><input type="checkbox" name="check" ng-model="showMod5">
+                                    <br></div>
                                     <!-- Needs to have {{}} or else it only toggles 1 time and doens't work afterwards-->
                                     {{}}
                                   </div>
                                    
-                                  
-
-                                  
-                                 <!--  <div class="opt" onclick="$('#module1').toggle();" href="#"><a class="mod">Google</a></div><br>
-                                  <div class="opt" onclick="$('#module2').toggle();" href="#"><a class="mod" href="#">Bing</a></div><br>
-                                  <div class="opt" onclick="$('#module3').toggle();" href="#"><a class="mod" href="#">Yahoo</a></div><br>
-                                  <div class="opt" onclick="$('#module4').toggle();" href="#"><a class="mod" href="#">Youtube</a></div><br>
-                                  <div class="opt" onclick="$('#module5').toggle();" href="#"><a class="mod" href="#">Duck Go Go</a></div>-->
                                 </div>
                               </div>
                             </div>
 
                             <div class="panel panel-default">
-                              <div class="panel-heading">
+                              <div class="panel-heading" ng-click="marginClickfor3()" ng-class="{'marginCorrector' : !check}">
                                 <h4 id="droptitle" class="panel-title">
-                                  <a class="lil" href="#collapseThree" data-toggle="collapse" data-parent="#accordion">The MEAN Team</a>
+                                  <a class="lil" id="accordeonHeading3" href="#collapseThree" data-toggle="collapse" data-parent="#accordion">The MEAN Team</a>
                                 </h4>
                               </div>
                               <div class="panel-collapse collapse" id="collapseThree">
                                 <div id="dropmodbg" class="panel-body">
-                                  <div class="opt"><span class="glyphicon glyphicon-user"></span><a class="mod" href="#">About Us</a></div><br>
-                                  <div class="opt"><span class="glyphicon glyphicon-tasks"></span><a class="mod" href="#">Our Vision</a></div><br>
-                                  <div class="opt"><span class="glyphicon glyphicon-usd"></span><a class="mod" href="#">Goals</a></div>
+                                  <div class="opt" id="meanteambg"><span class="glyphicon glyphicon-user"></span><a class="mod" id="meanteamoptname" href="#">About Us</a></div><br>
+                                  <div class="opt" id="meanteambg"><span class="glyphicon glyphicon-tasks"></span><a class="mod" id="meanteamoptname" href="#">Our Vision</a></div><br>
+                                  <div class="opt" id="meanteambg"><span class="glyphicon glyphicon-usd"></span><a class="mod" id="meanteamoptname" href="#">Goals</a></div>
                                 </div>
                               </div>
                             </div>
