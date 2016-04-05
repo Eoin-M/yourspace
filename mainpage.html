@@ -21,15 +21,15 @@
     
 
     <script type="text/javascript">
-      $(document).ready(function(){
+      $(document).ready(function() {
         // Collapse accordion every time dropdown is shown
-        $('.dropdown-accordion').on('show.bs.dropdown', function (event) {
+        $('.dropdown-accordion').on('show.bs.dropdown', function(event) {
           var accordion = $(this).find($(this).data('accordion'));
           accordion.find('.panel-collapse.in').collapse('hide');
         });
 
         // Prevent dropdown to be closed when we click on an accordion heading
-        $('.dropdown-accordion').on('click', 'a[data-toggle="collapse"]', function (event) {
+        $('.dropdown-accordion').on('click', 'a[data-toggle="collapse"]', function(event) {
           event.preventDefault();
           event.stopPropagation();
           $($(this).data('parent')).find('.panel-collapse.in').collapse('hide');
@@ -37,7 +37,7 @@
         });
 
         // Prevent dropdown to be closed when we click on an accordion dropdown heading thingie thingie name
-        $('.dropdown-accordion').on('click', 'div[class="opt"]', function (event) {
+        $('.dropdown-accordion').on('click', 'div[class="opt"]', function(event) {
           event.preventDefault(); //prevents jumping to top of page
           event.stopPropagation();
           $($(this).data('parent')).find('.panel-collapse.in').collapse('hide');
@@ -45,19 +45,30 @@
         });
 
         $('.sortable').sortable({
-         handle: "#handle",
-         cursor: 'move',
+          handle: "#handle",
+          cursor: 'move',
+          opacity: 0.4,
+          stop: function(event, ui) {
+            $(ui.item).find('h3').click();
+            var sortorder = '';
+            $('.sortable').each(function() {
+              var itemorder = $(this).sortable('toArray');
+              sortorder += itemorder.toString();
+            });
+            console.log('SortOrder: ' + sortorder);
+            /*Pass sortorder variable to server using ajax to save state*/
+          }
         });
-        
-        $( "#sortable" ).disableSelection();
+
+        $('.sortable').disableSelection();
 
         //below makes sure that there is enough space to list out all the module names under the Module haeding
-        $("#accordeonHeading3").click(function(){
-            $(this).data('clicked', true);
+        $("#accordeonHeading3").click(function() {
+          $(this).data('clicked', true);
         });
-        if($('#accordeonHeading3').data('clicked')) {
-            alert('yes');
-            $('#accordeonHeading3').addClass("modulesSpace");
+        if ($('#accordeonHeading3').data('clicked')) {
+          alert('yes');
+          $('#accordeonHeading3').addClass("modulesSpace");
         }
       });
 
@@ -78,117 +89,147 @@
             $scope.isActive2 = !$scope.isActive2;
         }  */
 
-      
-        
+        $scope.marginClickfor3 = function() {
+          $scope.check = !$scope.check;
+        }
+
       });
 
 
     </script>
 
     <style type="text/css">
-      body{
-        /*previously: http://www.img.lirent.net/2014/10/Material-Wallpaper-22-Android-Lollipop-wallpapers.png*/
-        background: url("http://i0.wp.com/thezinx.com/wp-content/uploads/md-5.png") no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        background-size: cover;
-        max-width: 100%;
-        overflow-x: hidden;
-      }
-      .dropdown-accordion .panel-heading {
-        padding: 0;
-      }
-      .dropdown-accordion .panel-heading a {
-        display: block;
-        padding: 10px 15px;
-      }
-      .panel-heading{
-        border-radius: 0px;
-      }
-      .glyphicon { 
-        margin-right:10px; 
-        margin-left: 4px;
-      }
-      .dropdown-menu{
-        background-color: #093170; /*dark navy*/
-      }
-      .navbar{
-        background-color: #093170; /*dark navy*/
-      }
-      .navbar-brand{
-        font-family: Quicksand;
-      }
-      .navbar-text{
-        color: #e3f2fd;
-      }
-      .dropdown-menu{ /*actual dropdown*/
-        width: 250px;
-      }
-      .lil{/*the heading in the dropdown*/
-        width: 90%;
-        margin-left: 5%;
-        background-color: #b2ebf2; /*bluey*/
-        border-radius: 0px;
-        font-family: Quicksand;
-        font-size: 20px;
-        color: white;
-      }
-      #droptitle{/*the bg in the heading in the dropdown(at the sides)*/
-        background-color:  #093170; /*dark navy*/
-      }
-      .modname{/*module name under MODULE*/
-        font-family: Quicksand;
-        font-size: 120%;
-        margin-left: 2px;
-        color: #093170;
-        margin-top: 2px;
-      }
-      .opt{/*the div surrounding all the module names*/
-        margin-top: 0px;
-        margin-bottom: 0px;
-        border-radius: 0px;
-        background-color: #093170;
-      }
-      #dropmodbg{/* the background of the module names names- the overall thing, not just highlighter bg*/
-        background-color: #093170; /*dark navy*/
-      }
-      .sortable{ /* takes away the bullet of an ul*/
-        list-style-type: none;
-        /*overflow: hidden;*/
-      }
-      .sortable { /*this thing breakes and fixes the modules, it allows for them to be sorted without the module jumping but makes them all on the same line*/
-        /*display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display:  flex;*/
-      }
-      #module1, #module2, #module3, #module4, #module5{ /*each individual module, the outwardmost div of each module*/
-        float: left;
-        vertical-align: top; 
-      }
-      #modheight{/* Specifies the height of the panel body (where content goes)*/
-        height: 200px;
-      }
-      input[type="checkbox"]{
-        float: right;
-      }
-      .modNameCheckBox{
-        margin-bottom: 3px;
-        background-color: #ef9a9a; /*light reddy*/
-      }
-      #accbg, #meanteambg{/*the bg for the options under the account heading in the accordeon*/
-        background-color: #71F79F;
-        /*border: 2px solid white;*/
-        color: #093170;
-        margin-bottom: -5px;
-        margin-top: -5px;
-      }
-      #accoptname, #meanteamoptname{/*option name under ACCOUNT*/
-        font-family: Quicksand;
-        font-size: 18px;
-        color: #093170;
-        margin-left: 5px;
-      }
+        html, body {
+          /*previously: http://www.img.lirent.net/2014/10/Material-Wallpaper-22-Android-Lollipop-wallpapers.png http://i0.wp.com/thezinx.com/wp-content/uploads/md-5.png*/
+          background: url("http://data.hdwallpapers.im/bright_forest.jpg") no-repeat center center fixed;
+          -webkit-background-size: cover;
+          -moz-background-size: cover;
+          background-size: cover;
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+
+        .dropdown-accordion .panel-heading {
+          padding: 0;
+        }
+
+        .dropdown-accordion .panel-heading a {
+          display: block;
+          padding: 10px 15px;
+        }
+
+        .glyphicon {
+          margin-right: 10px;
+          margin-left: 4px;
+        }
+
+        .dropdown-menu {
+          background-color: #093170;
+          /*dark navy*/
+        }
+
+        .navbar {
+          background-color: #093170;
+          /*dark navy*/
+        }
+
+        .navbar-brand {
+          font-family: Quicksand;
+        }
+
+        .navbar-text {
+          color: #e3f2fd;
+        }
+
+        .dropdown-menu {
+          /*actual dropdown*/
+          width: 250px;
+        }
+
+        .lil {
+          /*the heading in the dropdown*/
+          width: 90%;
+          margin-left: 5%;
+          background-color: #b2ebf2;
+          /*bluey*/
+          border-radius: 0px;
+          font-family: Quicksand;
+          font-size: 20px;
+          color: white;
+        }
+
+        #droptitle {
+          /*the bg in the heading in the dropdown(at the sides)*/
+          background-color: #093170;
+          /*dark navy*/
+        }
+
+        .modname {
+          /*module name under MODULE*/
+          font-family: Quicksand;
+          font-size: 120%;
+          margin-left: 2px;
+          color: #093170;
+          margin-top: 2px;
+        }
+
+        .opt {
+          /*the div surrounding all the module names*/
+          margin-top: 0px;
+          margin-bottom: 0px;
+          border-radius: 0px;
+          background-color: #093170;
+        }
+
+        #dropmodbg {
+          /* the background of the module names names- the overall thing, not just highlighter bg*/
+          background-color: #093170;
+          /*dark navy*/
+        }
+
+        .sortable {
+          /* takes away the bullet of an ul*/
+          list-style-type: none;
+          /*overflow: hidden;*/
+        }
+
+        #googleM,
+        #bingM,
+        #yahooM,
+        #youtubeM,
+        #duckM {
+          /*each individual module, the outwardmost div of each module*/
+          float: left;
+          vertical-align: top;
+        }
+
+        #modheight{/* Specifies the height of the panel body (where content goes)*/
+          height: 200px;
+        }
+
+        input[type="checkbox"]{
+          float: right;
+        }
+
+        .modNameCheckBox{
+          margin-bottom: 3px;
+          background-color: #ef9a9a; /*light reddy*/
+        }
+
+        #accbg, #meanteambg{/*the bg for the options under the account heading in the accordeon*/
+          background-color: #71F79F;
+          /*border: 2px solid white;*/
+          color: #093170;
+          margin-bottom: -5px;
+          margin-top: -5px;
+        }
+        
+        #accoptname, #meanteamoptname{/*option name under ACCOUNT*/
+          font-family: Quicksand;
+          font-size: 18px;
+          color: #093170;
+          margin-left: 5px;
+        }
 
       
     </style>
@@ -196,195 +237,200 @@
 
 <body>
   <div ng-app="app" ng-controller="cCtrl">
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
 
-                <a class="navbar-brand" href="index.html">YOURSPACE</a>
-                <p class="navbar-text hidden-xs">Welcome to the MEAN project</p>
-            </div>
-<!-- --------------------------------------------- navbar ---------------------------------------------------------------- -->
-            <div class="dropdown dropdown-accordion" data-accordion="#accordion" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                          <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi, You<span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <a class="navbar-brand" href="index.html">YOURSPACE</a>
+        <p class="navbar-text hidden-xs">Welcome to the MEAN project</p>
+      </div>
+      <!-- --------------------------------------------- navbar ---------------------------------------------------------------- -->
+      <div class="dropdown dropdown-accordion" data-accordion="#accordion" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+              <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi, You<span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 
-                          <div class="panel-group" id="accordion">
+              <div class="panel-group" id="accordion">
 
-                            <div class="panel panel-default">
-                              <div class="panel-heading">
-                                <h4 id="droptitle" class="panel-title">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 id="droptitle" class="panel-title">
                                   <a class="lil" href="#collapseOne" data-toggle="collapse" data-parent="#accordion"><span class="glyphicon glyphicon-user">
                                 </span>Account</a>
                                 </h4>
-                              </div>
-                              <div class="panel-collapse collapse" id="collapseOne">
-                                <div id="dropmodbg" class="panel-body">
-                                  <div class="opt" id="accbg"><a class="mod" id="accoptname" href="#">Profile</a></div> <br>
-                                  <div class="opt" id="accbg"><a class="mod" id="accoptname" href="#">Change Password</a></div><br>
-                                  <div class="opt" id="accbg"><a class="mod" id="accoptname" href="#">Log Out</a></div><br>
-                                  <div class="opt" id="accbg"><a class="mod" id="accoptname" href="#">Deleate Account</a></div>
-                                </div>
-                              </div>
-                            </div>
+                  </div>
+                  <div class="panel-collapse collapse" id="collapseOne">
+                    <div id="dropmodbg" class="panel-body">
+                      <div class="opt" id="accbg"><a class="mod" id="accoptname" href="#">Profile</a></div> <br>
+                      <div class="opt" id="accbg"><a class="mod" id="accoptname" href="#">Change Password</a></div><br>
+                      <div class="opt" id="accbg"><a class="mod" id="accoptname" href="#">Log Out</a></div><br>
+                      <div class="opt" id="accbg"><a class="mod" id="accoptname" href="#">Deleate Account</a></div>
+                    </div>
+                  </div>
+                </div>
 
-                            <div class="panel panel-default">
-                              <div class="panel-heading">
-                                <h4 id="droptitle" class="panel-title">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 id="droptitle" class="panel-title">
                                   <a class="lil" href="#collapseTwo" data-toggle="collapse" data-parent="#accordion"><span class="glyphicon glyphicon-th">
                                 </span>Modules</a>
                                 </h4>
-                              </div>
-                              <div class="panel-collapse collapse" id="collapseTwo">
-                                <div id="dropmodbg" class="panel-body">
-                                   
-                                  <div class="opt">
-                                    <div class="modNameCheckBox"><span class="modname">Google</span><input type="checkbox" name="check" ng-model="showMod1">
-                                    <br></div>
-                                    <div class="modNameCheckBox"><span class="modname">Bing</span><input type="checkbox" name="check" ng-model="showMod2">
-                                    <br></div>
-                                    <div class="modNameCheckBox"><span class="modname">Yahoo</span><input type="checkbox" name="check" ng-model="showMod3">
-                                    <br></div>
-                                    <div class="modNameCheckBox"><span class="modname">Youtube</span><input type="checkbox" name="check" ng-model="showMod4">
-                                    <br></div>
-                                    <div class="modNameCheckBox"><span class="modname">Duck Go GO!</span><input type="checkbox" name="check" ng-model="showMod5">
-                                    <br></div>
-                                    <div class="modNameCheckBox"><span class="modname">Test6</span><input type="checkbox" name="check" ng-model="showMod5">
-                                    <br></div>
-                                    <div class="modNameCheckBox"><span class="modname">Test7</span><input type="checkbox" name="check" ng-model="showMod5">
-                                    <br></div>
-                                    <div class="modNameCheckBox"><span class="modname">Test8</span><input type="checkbox" name="check" ng-model="showMod5">
-                                    <br></div>
-                                    <div class="modNameCheckBox"><span class="modname">Test9</span><input type="checkbox" name="check" ng-model="showMod5">
-                                    <br></div>
-                                    <div class="modNameCheckBox"><span class="modname">Test10</span><input type="checkbox" name="check" ng-model="showMod5">
-                                    <br></div>
-                                    <div class="modNameCheckBox"><span class="modname">Test11</span><input type="checkbox" name="check" ng-model="showMod5">
-                                    <br></div>
-                                    <div class="modNameCheckBox"><span class="modname">Test12</span><input type="checkbox" name="check" ng-model="showMod5">
-                                    <br></div>
-                                    <!-- Needs to have {{}} or else it only toggles 1 time and doens't work afterwards-->
-                                    {{}}
-                                  </div>
-                                   
-                                </div>
-                              </div>
-                            </div>
+                  </div>
+                  <div class="panel-collapse collapse" id="collapseTwo">
+                    <div id="dropmodbg" class="panel-body">
 
-                            <div class="panel panel-default">
-                              <div class="panel-heading">
-                                <h4 id="droptitle" class="panel-title">
+                      <div class="opt">
+                        <div class="modNameCheckBox"><span class="modname">Google</span><input type="checkbox" name="check" ng-model="showMod1">
+                          <br></div>
+                        <div class="modNameCheckBox"><span class="modname">Bing</span><input type="checkbox" name="check" ng-model="showMod2">
+                          <br></div>
+                        <div class="modNameCheckBox"><span class="modname">Yahoo</span><input type="checkbox" name="check" ng-model="showMod3">
+                          <br></div>
+                        <div class="modNameCheckBox"><span class="modname">Youtube</span><input type="checkbox" name="check" ng-model="showMod4">
+                          <br></div>
+                        <div class="modNameCheckBox"><span class="modname">Duck Go GO!</span><input type="checkbox" name="check" ng-model="showMod5">
+                          <br></div>
+                        <div class="modNameCheckBox"><span class="modname">Test6</span><input type="checkbox" name="check" ng-model="showMod5">
+                          <br></div>
+                        <div class="modNameCheckBox"><span class="modname">Test7</span><input type="checkbox" name="check" ng-model="showMod5">
+                          <br></div>
+                        <div class="modNameCheckBox"><span class="modname">Test8</span><input type="checkbox" name="check" ng-model="showMod5">
+                          <br></div>
+                        <div class="modNameCheckBox"><span class="modname">Test9</span><input type="checkbox" name="check" ng-model="showMod5">
+                          <br></div>
+                        <div class="modNameCheckBox"><span class="modname">Test10</span><input type="checkbox" name="check" ng-model="showMod5">
+                          <br></div>
+                        <div class="modNameCheckBox"><span class="modname">Test11</span><input type="checkbox" name="check" ng-model="showMod5">
+                          <br></div>
+                        <div class="modNameCheckBox"><span class="modname">Test12</span><input type="checkbox" name="check" ng-model="showMod5">
+                          <br></div>
+                        <!-- Needs to have {{}} or else it only toggles 1 time and doens't work afterwards-->
+                        {{}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel panel-default">
+                  <div class="panel-heading" ng-click="marginClickfor3()" ng-class="{'marginCorrector' : !check}">
+                    <h4 id="droptitle" class="panel-title">
                                   <a class="lil" id="accordeonHeading3" href="#collapseThree" data-toggle="collapse" data-parent="#accordion">The MEAN Team</a>
                                 </h4>
-                              </div>
-                              <div class="panel-collapse collapse" id="collapseThree">
-                                <div id="dropmodbg" class="panel-body">
-                                  <div class="opt" id="meanteambg"><span class="glyphicon glyphicon-user"></span><a class="mod" id="meanteamoptname" href="#">About Us</a></div><br>
-                                  <div class="opt" id="meanteambg"><span class="glyphicon glyphicon-tasks"></span><a class="mod" id="meanteamoptname" href="#">Our Vision</a></div><br>
-                                  <div class="opt" id="meanteambg"><span class="glyphicon glyphicon-usd"></span><a class="mod" id="meanteamoptname" href="#">Goals</a></div>
-                                </div>
-                              </div>
-                            </div>
+                  </div>
+                  <div class="panel-collapse collapse" id="collapseThree">
+                    <div id="dropmodbg" class="panel-body">
+                      <div class="opt" id="meanteambg"><span class="glyphicon glyphicon-user"></span><a class="mod" id="meanteamoptname" href="#">About Us</a></div><br>
+                      <div class="opt" id="meanteambg"><span class="glyphicon glyphicon-tasks"></span><a class="mod" id="meanteamoptname" href="#">Our Vision</a></div><br>
+                      <div class="opt" id="meanteambg"><span class="glyphicon glyphicon-usd"></span><a class="mod" id="meanteamoptname" href="#">Goals</a></div>
+                    </div>
+                  </div>
+                </div>
 
-                          </div><!-- end accordion-->
+              </div>
+              <!-- end accordion-->
 
-                        </ul>
-                    </li>
-                </ul>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- ------------------------------------------ end navbar ------------------------------------------------- -->
+
+  <div id="mainContent" class="container">
+
+    <div class="row">
+      <div class="sortable">
+        <div class=" col-md-3 col-sm-6 col-xs-12" id="googleM" ng-show="showMod1">
+          <div class="panel panel-success ">
+            <div class="panel-heading" id="handle">
+              <h3 class="panel-title">Google</h3>
             </div>
+            <div class="panel-body" id="modheight">
+              <img class="center-block img-responsive" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google">
+              <form class="form-horizontal" method="get" action="https://www.google.com/search">
+                <input type="text" class="form-control" name="q" value="" placeholder="Search Google">
+              </form>
+            </div>
+          </div>
         </div>
-    </nav> <!-- ------------------------------------------ end navbar ------------------------------------------------- -->
 
-    <div id="mainContent" class="container">
+        <div class=" col-md-3 col-sm-6 col-xs-12" id="bingM" ng-show="showMod2">
+          <div class="panel panel-warning ">
+            <div class="panel-heading" id="handle">
+              <h3 class="panel-title">Bing</h3>
+            </div>
+            <div class="panel-body" id="modheight">
+              <img class="center-block img-responsive" src="http://rack.1.mshcdn.com/media/ZgkyMDEzLzA5LzE2L2JjL0Jpbmdsb2dvb3JhLmFkYjJkLnBuZwpwCXRodW1iCTEyMDB4OTYwMD4/996d9598/35b/Bing-logo-orange-RGB.png" alt="Bing">
+              <form class="form-horizontal" method="get" action="http://www.bing.com/search">
+                <input type="text" class="form-control" name="q" value="" placeholder="Search Google">
+              </form>
+            </div>
+          </div>
+        </div>
 
-        <div class="row">
-          <div class="sortable">
-              <div class=" col-md-3 col-sm-6 col-xs-12" id="module1" ng-show="showMod1" >
-                  <div class="panel panel-success ">
-                      <div class="panel-heading" id="handle">
-                          <h3 class="panel-title">Google</h3>
-                      </div>
-                      <div class="panel-body" id="modheight">
-                          <img class="center-block img-responsive" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google">
-                          <form class="form-horizontal" method="get" action="https://www.google.com/search">
-                              <input type="text" class="form-control" name="q" value="" placeholder="Search Google">
-                          </form>
-                      </div>
-                  </div>
-              </div>
+        <div class=" col-md-3 col-sm-6 col-xs-12" id="yahooM" ng-show="showMod3">
+          <div class="panel panel-info">
+            <div class="panel-heading" id="handle">
+              <h3 class="panel-title">Yahoo</h3>
+            </div>
+            <div class="panel-body" id="modheight">
+              <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Yahoo_Logo.svg/2000px-Yahoo_Logo.svg.png" alt="Yahoo">
+              <form class="form-horizontal" <form method="get" action="http://search.yahoo.com/search">
+                <input type="text" class="form-control" name="p" value="" placeholder="Search Yahoo">
+              </form>
+            </div>
+          </div>
+        </div>
 
-              <div class=" col-md-3 col-sm-6 col-xs-12" id="module2" ng-show="showMod2" >
-                  <div class="panel panel-warning ">
-                      <div class="panel-heading" id="handle">
-                          <h3 class="panel-title">Bing</h3>
-                      </div>
-                      <div class="panel-body" id="modheight">
-                          <img class="center-block img-responsive" src="http://rack.1.mshcdn.com/media/ZgkyMDEzLzA5LzE2L2JjL0Jpbmdsb2dvb3JhLmFkYjJkLnBuZwpwCXRodW1iCTEyMDB4OTYwMD4/996d9598/35b/Bing-logo-orange-RGB.png" alt="Bing">
-                          <form class="form-horizontal" method="get" action="http://www.bing.com/search">
-                              <input type="text" class="form-control" name="q" value="" placeholder="Search Google">
-                          </form>
-                      </div>
-                  </div>
-              </div>
-           
-              <div class=" col-md-3 col-sm-6 col-xs-12" id="module3" ng-show="showMod3" >
-                  <div class="panel panel-info">
-                      <div class="panel-heading" id="handle">
-                          <h3 class="panel-title">Yahoo</h3>
-                      </div>
-                      <div class="panel-body" id="modheight">
-                          <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Yahoo_Logo.svg/2000px-Yahoo_Logo.svg.png" alt="Yahoo">
-                          <form class="form-horizontal" <form method="get" action="http://search.yahoo.com/search">
-                              <input type="text" class="form-control" name="p" value="" placeholder="Search Yahoo">
-                          </form>
-                      </div>
-                  </div>
-              </div>
-            
-              <div class=" col-md-3 col-sm-6 col-xs-12" id="module4" ng-show="showMod4" >
-                  <div class="panel panel-danger">
-                      <div class="panel-heading" id="handle">
-                          <h3 class="panel-title">YouTube</h3>
-                      </div>
-                      <div class="panel-body" id="modheight">
-                          <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/YouTube_logo_2013.svg/800px-YouTube_logo_2013.svg.png" alt="YouTube">
-                          <form class="form-horizontal" method="get" action="http://www.youtube.com/results">
-                              <input type="text" class="form-control" name="search_query" value="" placeholder="Search YouTube">
-                          </form>
-                      </div>
-                  </div>
-              </div>
-            
-            
-            
-              <div class=" col-md-3 col-sm-6 col-xs-12" id="module5" ng-show="showMod5" >
-                  <div class="panel panel-primary">
-                      <div class="panel-heading" id="handle">
-                          <h3 class="panel-title">Duck Duck Go</h3>
-                      </div>
-                      <div class="panel-body" id="modheight">
-                          <img class="center-block img-responsive" src="http://donttrack.us/common/images/ddg-home-logo.png" alt="Duck Duck Go">
-                          <form class="form-horizontal" method="get" action="https://duckduckgo.com/">
-                              <input type="text" class="form-control" name="q" value="" placeholder="Search Duck Duck Go">
-                          </form>
-                      </div>
-                  </div>
-              </div>
-            
-            
-          </div> <!-- /sortable--> 
-        </div><!-- end of row-->
-    </div><!-- end of container/ main page, a place for the modulse on the page-->
-  </div><!-- end of angular app -->
+        <div class=" col-md-3 col-sm-6 col-xs-12" id="youtubeM" ng-show="showMod4">
+          <div class="panel panel-danger">
+            <div class="panel-heading" id="handle">
+              <h3 class="panel-title">YouTube</h3>
+            </div>
+            <div class="panel-body" id="modheight">
+              <img class="center-block img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/YouTube_logo_2013.svg/800px-YouTube_logo_2013.svg.png" alt="YouTube">
+              <form class="form-horizontal" method="get" action="http://www.youtube.com/results">
+                <input type="text" class="form-control" name="search_query" value="" placeholder="Search YouTube">
+              </form>
+            </div>
+          </div>
+        </div>
+
+
+        <div class=" col-md-3 col-sm-6 col-xs-12" id="duckM" ng-show="showMod5">
+          <div class="panel panel-primary">
+            <div class="panel-heading" id="handle">
+              <h3 class="panel-title">Duck Duck Go</h3>
+            </div>
+            <div class="panel-body" id="modheight">
+              <img class="center-block img-responsive" src="http://donttrack.us/common/images/ddg-home-logo.png" alt="Duck Duck Go">
+              <form class="form-horizontal" method="get" action="https://duckduckgo.com/">
+                <input type="text" class="form-control" name="q" value="" placeholder="Search Duck Duck Go">
+              </form>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <!-- /sortable-->
+    </div>
+    <!-- end of row-->
+  </div>
+  <!-- end of container/ main page, a place for the modulse on the page-->
+</div>
+<!-- end of angular app -->
 </body>
 
 </html>
