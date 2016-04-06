@@ -2,15 +2,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css" />
-    <style>
-        .profilePic{
-            max-height: 200px;
-            max-width: 200px;
-        }
-        
-    </style>
-
-
+    <link href='https://fonts.googleapis.com/css?family=Quicksand:700' rel='stylesheet' type='text/css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
@@ -25,7 +17,7 @@
             $scope.getDetails = function()
             {
                 //http post()
-                $http.post('/getUserDetails', JSON.stringify(
+                /*$http.post('/getUserDetails', JSON.stringify(
                 {
                     //
                 })
@@ -38,11 +30,23 @@
                 }).error(function(data, status){
                     console.error("An error occured. Server returned: ");
                     console.dir(data);
-                });
+                });*/
+                var profile = {};
+                profile.name = "Joe Bloggs";
+                profile.email = "joe@bloggs.eg";
+                profile.imageURL = "http://thumbs.dreamstime.com/t/pineapple-single-white-background-vector-graphics-55526274.jpg";
+                profile.hasGoogle = false;
+                profile.hasTwitter = false;
+                profile.hasFacebook = false;
+                profile.hasInstagram = false;
+                profile.hasGithub = false;
+                profile.hasReddit = false;
+                $scope.profile = profile;
+                
             }
             $scope.saveDetails = function()
             {
-                var profile = $scope.profile;
+                /*var profile = $scope.profile;
                 $http.post('/saveUserDetails', JSON.stringify(profile)
                 ).success(function(data)
                 {
@@ -51,15 +55,80 @@
                 }).error(function(data, status){
                     console.error("An error occured. Server returned: ");
                     console.dir(data);
-                });
+                });*/
             }
         });
     </script>
+     <style>
+        .profilePic{
+            max-height: 200px;
+            max-width: 200px;
+        }
+        html,
+		body {
+		  width: 100%;
+		  height: 100%;
+		  padding: 0;
+		  max-width: 100%;
+		  overflow: hidden;
+		  background: url(http://data.hdwallpapers.im/bright_forest.jpg) no-repeat center center fixed;
+		  -webkit-background-size: cover;
+		  background-size: cover;
+		}
+        #contbox {
+		  background-color: #000;
+		  opacity: 0.85;
+		  border: none;
+		}
+		legend{
+		  font: 700 25px Quicksand;
+		  color: white;
+		}
+		label{
+		  font: 700 15px Quicksand;
+		  color: white;
+		}
+		label[for=inputPassword]{
+			color: black;
+		}
+		#inputparentdiv input{
+		  background: transparent;
+		  border: 2.5px solid #71f79f;
+		  border-radius: 30px;
+		  font: 700 17px Quicksand;
+		  color: #71f79f;
+		}
+		#inputparentdiv input:hover, #inputparentdiv input:focus{
+		  border: 2.5px solid #61C6E6; /*sweet blue*/
+		  /*horizontal, vertical, blur radius, spread radius*/
+		  box-shadow: 0px 0px 5px 0.5px #61C6E6; /*sweet blue*/
+		}
+		#inputparentdiv ::-webkit-input-placeholder{ /*for the placeholders*/
+		  padding-left: 0px;
+		  color: #71f79f; /*sea green*/
+		}
+		#inputparentdiv input[type=password]{ /* for the input text under change password*/
+			color: #093170; /*navy blue*/
+			border: 2.5px solid #093170;
+		}
+		#inputparentdiv input[type=password]:hover, #inputparentdiv input[type=password]:focus{
+			box-shadow: 0px 0px 5px 0.5px #093170;
+		}
+		/*the spacing between :: and the previous element can make or break it when it comes to working... headaches*/	
+		#inputparentdiv input[type=password]::-webkit-input-placeholder{
+			color: #093170;
+		}
+		#inputparentdiv .form-control{
+			padding-left: 20px;
+		}
+
+
+    </style>
 </head>
 
 <body ng-controller="mainController" class="container">
     <div class="col-xs-12">
-        <div class="panel panel-default" ng-init="getDetails()">
+        <div class="panel panel-default" ng-init="getDetails()" id="contbox">
             <div class="panel-body">
                 <form class="form-horizontal">
                     <fieldset>
@@ -67,13 +136,13 @@
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
                                 <label for="inputEmail" class="col-xs-2 col-md-2 control-label">Name</label>
-                                <div class="col-xs-10 col-md-10">
+                                <div class="col-xs-10 col-md-10" id="inputparentdiv">
                                     <input type="text" class="form-control" id="inputEmail" placeholder="Email" ng-model="profile.name">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputEmail" class="col-xs-2 col-md-2 control-label">Email</label>
-                                <div class="col-xs-10 col-md-10">
+                                <div class="col-xs-10 col-md-10" id="inputparentdiv">
                                     <input type="text" class="form-control" id="inputEmail" placeholder="Your name" ng-model="profile.email">
                                 </div>
                             </div>
@@ -122,14 +191,14 @@
                                 <uib-accordion-group heading="To change your password open this" panel-class="panel-warning">
                                     <div class="form-group">
                                         <label for="inputPassword" class="col-xs-2 col-md-2 control-label">Password</label>
-                                        <div class="col-xs-10 col-md-10">
+                                        <div class="col-xs-10 col-md-10" id="inputparentdiv">
                                             <input type="password" class="form-control" id="inputPassword" placeholder="Password">
 
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputPassword" class="col-xs-2 col-md-2 control-label">Password</label>
-                                        <div class="col-xs-10 col-md-10">
+                                        <div class="col-xs-10 col-md-10" id="inputparentdiv">
                                             <input type="password" class="form-control" id="inputPassword" placeholder="Password">
 
                                         </div>
