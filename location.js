@@ -183,7 +183,7 @@ function initMap()
 		});
         tempLoc.isFound = true;
         tempLoc.lat = marker.position.lat();
-        tempLoc.lng = marker.position.lng();
+        tempLoc.long = marker.position.lng();
         runGoogleNavigatorAPI(marker.position.lng(), marker.position.lat(), tempLoc);
         mapMarker = marker;
         
