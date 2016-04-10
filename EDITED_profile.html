@@ -1,0 +1,251 @@
+<html ng-app="profile">
+
+<head>
+    <!-- Below link is for icons-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.css" />
+    <link href='https://fonts.googleapis.com/css?family=Quicksand:700' rel='stylesheet' type='text/css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
+    <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap-tpls.js"></script>
+    <script>
+        "use strict";
+        var profile = angular.module('profile', ['ngAnimate','ui.bootstrap']);
+        profile.controller('mainController', function ($scope, $http)
+        {
+            $scope.profile = {};
+            $scope.getDetails = function()
+            {
+                //http post()
+                /*$http.post('/getUserDetails', JSON.stringify(
+                {
+                    //
+                })
+                ).success(function(data)
+                {
+                    console.log("Server returned:");
+                    console.dir(data);
+                    $scope.profile = data;
+                    
+                }).error(function(data, status){
+                    console.error("An error occured. Server returned: ");
+                    console.dir(data);
+                });*/
+                var profile = {};
+                profile.name = "Trudi";
+                profile.surname = "Cadavan"
+                profile.email = "trudi@canavan.eg";
+                profile.imageURL = "http://thumbs.dreamstime.com/t/pineapple-single-white-background-vector-graphics-55526274.jpg";
+                profile.hasGoogle = false;
+                profile.hasTwitter = false;
+                profile.hasFacebook = false;
+                profile.hasInstagram = false;
+                profile.hasGithub = false;
+                profile.hasReddit = false;
+                $scope.profile = profile;
+                
+            }
+            $scope.saveDetails = function()
+            {
+                /*var profile = $scope.profile;
+                $http.post('/saveUserDetails', JSON.stringify(profile)
+                ).success(function(data)
+                {
+                    console.log("Saved:");
+                    console.dir(data);
+                }).error(function(data, status){
+                    console.error("An error occured. Server returned: ");
+                    console.dir(data);
+                });*/
+            }
+        });
+    </script>
+     <style>
+        .profilePic{
+            max-height: 200px;
+            max-width: 200px;
+        }
+        html,
+		body {
+		  width: 100%;
+		  height: 100%;
+		  padding: 0;
+		  max-width: 100%;
+		  overflow: hidden;
+		  background: url(http://data.hdwallpapers.im/bright_forest.jpg) no-repeat center center fixed;
+		  -webkit-background-size: cover;
+		  background-size: cover;
+		}
+        #contbox {
+		  background-color: #000;
+		  opacity: 0.85;
+		  border: none;
+		}
+		legend{
+		  font: 700 25px Quicksand;
+		  color: white;
+		}
+		label{
+		  font: 700 15px Quicksand;
+		  color: white;
+		}
+		label[for=inputPassword]{
+			color: black;
+		}
+		#inputparentdiv input{
+		  background: transparent;
+		  border: 2.5px solid #71f79f;
+		  border-radius: 30px;
+		  font: 700 17px Quicksand;
+		  color: #71f79f;
+		}
+		#inputparentdiv input:hover, #inputparentdiv input:focus{
+		  border: 2.5px solid #61C6E6; /*sweet blue*/
+		  /*horizontal, vertical, blur radius, spread radius*/
+		  box-shadow: 0px 0px 5px 0.5px #61C6E6; /*sweet blue*/
+		}
+		#inputparentdiv ::-webkit-input-placeholder{ /*for the placeholders*/
+		  padding-left: 0px;
+		  color: #71f79f; /*sea green*/
+		}
+		#inputparentdiv input[type=password]{ /* for the input text under change password*/
+			color: #093170; /*navy blue*/
+			border: 2.5px solid #093170;
+            margin-left: 10px;
+		}
+		#inputparentdiv input[type=password]:hover, #inputparentdiv input[type=password]:focus{
+			box-shadow: 0px 0px 5px 0.5px #093170;
+		}
+		/*the spacing between :: and the previous element can make or break it when it comes to working... headaches*/	
+		#inputparentdiv input[type=password]::-webkit-input-placeholder{
+			color: #093170;
+		}
+		#inputparentdiv .form-control{
+			padding-left: 20px;
+		}
+        .inputIconStyle {
+            position: absolute;
+            right: 30px;
+            top: 5px;
+            color: #71f79f;
+        }
+        #inputparentdiv input[for=inputPassword]{}
+
+
+    </style>
+</head>
+
+<body ng-controller="mainController" class="container">
+    <div class="col-xs-12">
+        <div class="panel panel-default" ng-init="getDetails()" id="contbox">
+            <div class="panel-body">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <legend>Your Profile</legend>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-xs-2 col-md-2 control-label">Name</label>
+                                <div class="col-xs-10 col-md-10" id="inputparentdiv">
+                                    <input type="text" class="form-control" id="inputEmail" placeholder="Email" ng-model="profile.name">
+                                    <i class="fa fa-user fa-2x inputIconStyle"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-xs-2 col-md-2 control-label">Surname</label>
+                                <div class="col-xs-10 col-md-10" id="inputparentdiv">
+                                    <input type="text" class="form-control" id="inputEmail" placeholder="Email" ng-model="profile.surname">
+                                    <i class="fa fa-user fa-2x inputIconStyle"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-xs-2 col-md-2 control-label">Email</label>
+                                <div class="col-xs-10 col-md-10" id="inputparentdiv">
+                                    <input type="text" class="form-control" id="inputEmail" placeholder="Your name" ng-model="profile.email">
+                                    <i class="fa fa-envelope-o fa-2x inputIconStyle"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-2 col-md-2 control-label">Add account</label>
+                                <div class="col-xs-10 col-md-10">
+                                    <a href="/api/auth/facebook">
+                                        <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasFacebook" src="https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-512.png"
+                                        alt="Facebook" />
+                                    </a>
+                                    <a href="/api/auth/google">
+                                        <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasGoogle" src="http://vignette2.wikia.nocookie.net/logopedia/images/d/d2/Google_icon_2015.png/revision/latest?cb=20150902024016"
+                                        alt="Google" />
+                                    </a>
+                                    <a href="/api/auth/github">
+                                        <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasGithub" src="http://defunkt.io/blacktocat.png" alt="Github"/>
+                                    </a>
+                                    <a href="/api/auth/reddit">
+                                        <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasReddit" src="http://icons.iconarchive.com/icons/uiconstock/socialmedia/512/Reddit-icon.png"
+                                        alt="Reddit" />
+                                    </a>
+                                    <a href="/api/auth/instagram">
+                                        <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasInstagram" src="http://www.democrathotsprings.com/Instagram-icon-small.png"
+                                        alt="Instagram" />
+                                    </a>
+                                    <a href="/api/auth/twitter">
+                                        <img class="col-xs-2 col-md-2 img-responsive" ng-hide="profile.hasTwitter" src="http://vignette4.wikia.nocookie.net/simpsons/images/1/11/Twitter_bird_icon.png/revision/latest?cb=20111228065136"
+                                        alt="Twitter" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-xs-2 col-md-2 control-label">Profile Picture</label>
+                                <div class="col-xs-10 col-md-10">
+                                    <img ng-src="{{profile.imageURL}}" class="img-thumbnail profilePic" alt="Profile pic">
+                                    <input type="text" class="form-control" id="inputEmail" placeholder="Email" ng-model="profile.imageURL">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-6">
+                            <uib-accordion close-others="true">
+
+                                <uib-accordion-group heading="To change your password open this" panel-class="panel-warning">
+                                    <div class="form-group">
+                                        <label for="inputPassword" class="col-xs-2 col-md-2 control-label">Password</label>
+                                        <div class="col-xs-10 col-md-10" id="inputparentdiv">
+                                            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword" class="col-xs-2 col-md-2 control-label">Password</label>
+                                        <div class="col-xs-10 col-md-10" id="inputparentdiv">
+                                            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+
+                                        </div>
+                                    </div>
+                                </uib-accordion-group>
+
+                                <uib-accordion-group heading="To completely delete your account open this" panel-class="panel-danger">
+                                    <strong>Caution: This action cannot be undone. Proceed with caution</strong>
+                                    <br>
+                                    <button class="btn btn-danger">Delete</button>
+                                </uib-accordion-group>
+
+                            </uib-accordion>
+                        </div>
+
+                    </fieldset>
+                    <div class="form-group">
+                        <div class="text-center">
+                            <button class="btn btn-default">Cancel</button>
+                            <button class="btn btn-primary" ng-click="saveDetails()">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
