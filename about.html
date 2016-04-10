@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <link href='https://fonts.googleapis.com/css?family=Quicksand:700' rel='stylesheet' type='text/css'>
+        <script   src="https://code.jquery.com/jquery-2.2.3.js"></script>
+        
+        <style>
+            html, body{
+            background: url("http://hddesktopwallpapers.in/wp-content/uploads/2015/06/Forest-Wallpapers-HD-A24.jpg") no-repeat center center fixed;
+            height: 100%;
+            width: 100%;
+            /*border: 2px solid yellow;*/
+            overflow-x: hidden;
+            }
+            #aboutUs{
+            width: 70%;
+            border: 2px solid black;
+            top: 50%;
+            left: 50%;
+            transform: translate(20%, 10%);
+            background-color: #000;
+            opacity: 0.8;
+            }
+            .aboutUsText{
+            margin-left: 50px;
+            font: 700 30px Quicksand;
+            color: #71F79F;
+            /*top: 5%;
+            left: 50%;
+            transform: translate(50%, -50%);*/
+            }
+            .img1, .img2, .img3, .img4{
+            height: 200px;
+            width: 200px;
+            margin-left: 20px;
+            }
+            p{
+            visibility: visible;
+            color: white;
+            font: 700 15px Quicksand;
+            }
+            .img1:hover{
+            background: url("http://cdn.theatlantic.com/assets/media/img/photo/2015/11/images-from-the-2016-sony-world-pho/s01_130921474920553591/main_900.jpg?1448476701") no-repeat center center fixed;
+            }
+            .hidden{
+            visibility: visible;
+            }
+            fieldset{
+                border-radius: 15px;
+                padding: 5px;
+                border: 5px solid #71F79F;
+            }
+            .eoin, .davida{
+                color: #ef9a9a;   
+            }
+            .jo, .seany{
+                color: #71F79F;
+            }
+
+        </style>
+    </head>
+    
+    <body ng-controller="mainController" class="container">
+        <div class="col-xs-12">
+            <div class="panel panel-default" id="aboutUs">
+                <div class="panel-body">
+                    <fieldset>
+                        <legend class="aboutUsText">About Us</legend>
+                        <img class="img1" src="https://res.cloudinary.com/airwotever/image/upload/v1395969197/default-profile-pic_hkmqpe.png" alt="" />
+                        <!-- https://res.cloudinary.com/airwotever/image/upload/v1395969197/default-profile-pic_hkmqpe.png-->
+                        <img class="img2" src="https://i1.wp.com/i.vimeocdn.com/portrait/default-red_300x300.png?ssl=1" alt="" />
+                        <img class="img3" src="https://www.commintz.com/bundles/commintzapplication/images/default-profile-large.png?v=7" alt="" />
+                        <img class="img4" src="http://wedorecover.com/images/Alcoholic.jpg" alt="" />
+                        <p class="eoin">Hi I'm eoin i like pancakes. The love for pancakes has brought me closer and closer to who I became today. As a child I'd practice making blueberry pancakes. I just like pancakes THAT much, and code... I like to code too.</p>
+
+                        <p class="jo">Hi I'm joanna i like anime. For years I locked myself up in a tiny dark room, to escape the world of reality and live, even temproarily in the fantacy world where kawaii was just another part of the everyday life and youkai lived among people.</p>
+
+                        <p class="davida"> Hi I'm davida i'm a girl in progress. From a very early age, I knew that I was different, like I was born the wrong person in the wrong body, now, in college, I finally came out as a woman and my life has been fantastic since then.</p>
+
+                        <p class="seany">Hi I'm seany i like alcohol. I don't consider myself an addict, I never will, I have the strength to stay away from it for a week so I'm all good. My mother and father have given up on me, but I assure you, I don't have a problem.</p>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html>
