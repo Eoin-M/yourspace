@@ -1,0 +1,115 @@
+<div data-ng-controller="CalendarController">
+	<div class="panel panel-primary">
+		<div class="panel-heading" id="handle" style="background-color: #9900cc">
+			<h3 class="panel-title">
+				<a href="https://www.google.com/calendar" target="_blank" style="cursor: pointer;"><span class="fa fa-calendar pull-left"></span> Calendar</a>
+				
+				<span style="cursor: pointer;"  onclick="removeTheModule('calendar')" class="glyphicon glyphicon-remove pull-right"></span>
+				<span ng-show="!calendarLoggedin" style="cursor: pointer;" class="glyphicon glyphicon-repeat pull-right" ng-click="getEvents(events.length);">&nbsp;</span>
+				<span ng-show="!calendarLoggedin" style="cursor: pointer;" class="glyphicon glyphicon-pencil pull-right" ng-click="createEvent()">&nbsp;</span>
+			</h3>
+		</div>
+		<div class="panel-body panel-group scroll">
+			<span ng-show="calendarLoggedin" class="social_icon social_icon_google">
+				<a target="_self" ng-href="/api/auth/google" class="button" href="/api/auth/google">
+					<span class="text-capitalize ng-binding">{{calendarLoggedin}} google</span>
+				</a>
+				<img src="/yourhome/assets/img/google_gif.gif" style="width: 100%" />
+			</span>
+			<div ng-if="!calendarLoggedin">
+				<div class="alert alert-info" ng-show="events.length === 0">
+					<strong>No events to show</strong>
+				</div>
+				<div ng-repeat="event in events | orderBy: 'start' "> <!---->
+					<div class="panel panel-default" >
+						<div class="panel-body" ng-class="setEventClass(event.colorID)">
+							<div><strong><a class="blackTxt" ng-href="{{ event.link }}" target="_blank">{{ event.description}}</a></strong></div>
+							<span>{{ event.start | date:'HH:mm EEE d MMM'}}</span><br>
+							<span>for {{ event.diff }} minutes</span>
+							
+							<span ng-hide=!(event.location) >in {{ event.location }}</span>
+						</div>
+					</div>
+				</div>
+				<div class="text-center">
+					<span class="text-center" id="loadMoreEventsButton" ng-click="getEvents(events.length +5-0)" ng-hide="events === undefined">
+						<span class="btn btn-xs btn-default"> Load More <span class="glyphicon glyphicon-refresh"></span></span>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+		
+	<div class="modal fade" id="calendarModal" tabindex="-1" role="dialog" aria-labelledby="calendarModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button btn-xs" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="exampleModalLabel">Create Event</h4>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<div>
+								<label for="summary" class="control-label">Summary:</label>
+								<input type="text" ng-model="event.summary" class="form-control" id="calendarSummary">
+							</div>
+							
+							<br>
+							<span id="chooseDateSpan" class="">
+								<div class="col-md-6">
+									<div class="well well-sm">
+										<label for="From" class="control-label">From:</label>
+										<uib-timepicker ng-model="event.fromTime" ng-change="validateNewEvent()" hour-step="1" minute-step="5" show-meridian="true"></uib-timepicker>
+										<span class="input-group">
+											<input type="text" class="form-control" ng-model="event.fromDate" ng-change="validateNewEvent()"uib-datepicker-popup="MMMM dd, yyyy" is-open="chooseDateFromPopup.opened"  ng-required="true" close-text="Close" />
+											<span class="input-group-btn">
+												<button type="button" class="btn btn-default" ng-click="chooseDate('From')"><i class="glyphicon glyphicon-calendar"></i></button>
+											</span>
+										</span>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="well well-sm">
+										<label for="Until" class="control-label">Until:</label>
+										<uib-timepicker ng-model="event.untilTime" ng-change="validateNewEvent()" hour-step="1" minute-step="5" show-meridian="true"></uib-timepicker>
+										<span class="input-group">
+											<input type="text" class="form-control" ng-model="event.untilDate" ng-change="validateNewEvent()" uib-datepicker-popup="MMMM dd, yyyy" is-open="chooseDateUntilPopup.opened"  ng-required="true" close-text="Close" />
+											<span class="input-group-btn">
+												<button type="button" class="btn btn-default" ng-click="chooseDate('Until')"><i class="glyphicon glyphicon-calendar"></i></button>
+											</span>
+										</span>
+									</div>
+								</div>
+							</span>
+							
+							<div>
+								<label for="location" class="control-label">Location:</label>
+								<input type="text" ng-model="event.location" class="form-control" id="calendarLocation">
+							</div>
+						</div>
+					</form>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						Close <span class="glyphicon glyphicon-trash"></span>
+					</button>
+					<button id="saveEventBtn" type="button" class="btn btn-primary" ng-click="saveEvent()">
+						Add to Calendar <span class="glyphicon glyphicon-floppy-disk"></span>
+					</button>
+				</div>
+				
+				<div class="alert alert-dismissible alert-success fade in" id="eventAddSuccess" ng-show="event.addSuccess">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					The event was added successfully
+				</div>
+				<div class="alert alert-dismissible alert-danger fade in" id="eventAddError" ng-show="event.addError">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					Error: The event could not be added.
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>

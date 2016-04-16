@@ -1,0 +1,149 @@
+.redditContainer {
+}
+
+.redditIcon {
+	width: 70px;
+}
+
+.redditIconContainer {
+	float: left;
+	margin: 4px;
+	overflow: hidden;
+	max-height: 100px;
+}
+
+.redditVote {
+	float: left;
+	width: 30px;
+	margin: 5px 7px;
+}
+
+.redditGrey {
+	color: inherit;
+}
+
+.redditVoteArrow {
+    width: 50%;
+	margin: -5px auto;
+}
+
+.redditVoteLink {
+	cursor: pointer;
+	color: grey;
+}
+
+.redditVoteLinkDisabled {
+	cursor: default;
+	pointer-events: none;
+	color: lightgrey;
+}
+
+.redditUpVoteColor {
+	color: #FF8B60 !important;
+}
+
+.redditDownVoteColor {
+	color: #9494FF;
+}
+
+.redditVoteCount {
+	text-align: center;
+	padding-right: 2px; //push it a bit to the left for complete centering
+}
+
+.redditOptions {
+	float: left;
+    margin: -8px 0px;
+	clear: left;
+}
+
+.redditClearLeft {
+	clear: left;
+}
+
+.redditMainLink {
+	line-height: 20px;
+}
+
+.redditDomainLink {
+	color: grey;
+	font-size: 0.9em;
+}
+
+.redditButtons {
+	color: grey;
+    font-weight: 500;
+    font-size: 0.85em;
+	cursor: pointer;
+	padding: 0px 2px;
+}
+
+.redditTopButtons {
+	font-size: 1.25em;
+	cursor: pointer;
+	padding: 5px;
+}
+
+.redditTopHighlight {
+	color: orange;
+}
+
+.redditTopHighlight:hover {
+	color: orange;
+}
+
+.searchForm .formGroup {
+  float: right !important;
+  transition: all 0.35s, border-radius 0s;
+  width: 32px;
+  height: 32px;
+  background-color: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  margin-top: -24px;
+  margin-bottom: 0px;
+}
+.searchForm .formGroup input.formControl {
+  padding-right: 30px;
+  border: 0 none;
+  background: transparent;
+  box-shadow: none;
+  display:block;
+  padding-left: 10px;
+  margin-top: -3px;
+}
+.searchForm .formGroup input.formControl::-webkit-input-placeholder {
+  display: none;
+}
+.searchForm .formGroup input.formControl:-moz-placeholder {
+  /* Firefox 18- */
+  display: none;
+}
+.searchForm .formGroup input.formControl::-moz-placeholder {
+  /* Firefox 19+ */
+  display: none;
+}
+.searchForm .formGroup input.formControl:-ms-input-placeholder {
+  display: none;
+}
+.searchForm .formGroup:hover,
+.searchForm .formGroup.hover {
+  width: 70%;
+  //border-radius: 4px 25px 25px 4px;
+}
+.searchForm .formGroup span.formControlFeedback {
+  position: absolute;
+  //top: -1px;
+  //right: -2px;
+  margin: -2px;
+  z-index: 2;
+  display: block;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  color: #3596e0;
+  left: initial;
+  font-size: 14px;
+}

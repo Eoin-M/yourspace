@@ -1,0 +1,98 @@
+<div data-ng-controller="RedditController" class="panel panel-primary" ng-init="getReddit('/hot')">
+	<div class="panel-heading" id="handle" style="background-color: #ff6600">
+		<h3 class="panel-title">
+			<span style="cursor: pointer;" onClick="loadMenu(['redditMenu','redditBody'])">
+				<i class="fa fa-reddit-alien"></i>
+			</span>
+			<a ng-href="https://reddit.com/{{r.curr}}" target="_blank">reddit.com{{r.curr}}</a>
+			<span style="cursor: pointer;"  onclick="removeTheModule('reddit')" class="glyphicon glyphicon-remove pull-right"></span>
+			<span style="cursor:pointer; padding-right: 15px" class="pull-right glyphicon glyphicon-home" ng-click="setReddit('/hot'); r.curr = ''; r.hotOrNot = '/hot';"></span>
+			<form ng-submit="setReddit(r.search)" class="search-form searchForm" style="margin-right: 55px;">
+                <div class="form-group formGroup has-feedback" >
+            		<label for="search" class="sr-only">Search</label>
+            		<input type="text" class="form-control formControl" name="search" id="search" placeholder="search" ng-model="r.search">
+              		<span class="glyphicon glyphicon-search form-control-feedback formControlFeedback" type="submit" style="color: #ff6600"></span>
+            	</div>
+            </form>
+		</h3>
+	</div>
+	<div class="panel-body scroll" style="clear:both">
+		<span ng-show="redditLoggedin" ng-class="{social_icon_long:redditLogExpand}" class="social_icon social_icon_reddit social_icon_small"ng-mouseover="redditLogExpand = true" ng-mouseleave="redditLogExpand = false">
+			<a target="_self" ng-href="/api/auth/reddit" class="button" href="/api/auth/reddit">
+				<span class="text-capitalize ng-binding">{{redditLoggedin}} reddit</span>
+			</a>
+		</span>
+		<div id="redditMenu" class="CustomMenu">
+			<div ng-repeat="subreddit in subreddits">
+				<a style="cursor: pointer" ng-click="setReddit(subreddit.data.url)" onClick="loadMenu(['redditMenu','redditBody'])"><span>{{subreddit.data.display_name}}</span></a>
+			</div>
+		</div>
+		<div class="panel-primary">
+			<a id="rHot" class="redditTopButtons redditTopHighlight" onclick="redditTop(id)" ng-click="r.hotOrNot = '/hot'; getReddit(r.curr + '/hot')">hot</a>
+			<a id="rNew" class="redditTopButtons" onclick="redditTop(id)" ng-click="r.hotOrNot = '/new'; getReddit(r.curr + '/new')">new</a>
+			<a id="rRis" class="redditTopButtons" onclick="redditTop(id)" ng-click="r.hotOrNot = '/rising'; getReddit(r.curr + '/rising')">rising</a>
+			<!--<span class="dropdown">
+				<a id="rCon" class="redditTopButtons" class="dropdown-toggle" data-toggle="dropdown">controversial<span class="caret"></span></a>
+				<ul class="dropdown-menu">
+				  <li><a onclick="redditTop('rCon')" ng-click="r.hotOrNot = '/controversial+hour'; getReddit(r.curr + r.hotOrNot)">past hour</a></li>
+				  <li><a onclick="redditTop('rCon')" ng-click="r.hotOrNot = '/controversial+day'; getReddit(r.curr + r.hotOrNot)">past day</a></li>
+				  <li><a onclick="redditTop('rCon')" ng-click="r.hotOrNot = '/controversial+week'; getReddit(r.curr + r.hotOrNot)">past week</a></li>
+				  <li><a onclick="redditTop('rCon')" ng-click="r.hotOrNot = '/controversial+month'; getReddit(r.curr + r.hotOrNot)">past month</a></li>
+				  <li><a onclick="redditTop('rCon')" ng-click="r.hotOrNot = '/controversial+year'; getReddit(r.curr + r.hotOrNot)">past year</a></li>
+				  <li><a onclick="redditTop('rCon')" ng-click="r.hotOrNot = '/controversial+all'; getReddit(r.curr + r.hotOrNot)">all time</a></li>
+				</ul>
+			</span>-->
+			<span class="dropdown">
+				<a id="rTop" class="redditTopButtons" class="dropdown-toggle" data-toggle="dropdown">top<span class="caret"></span></a>
+				<ul class="dropdown-menu">
+				  <li><a onclick="redditTop('rTop')" ng-click="r.hotOrNot = '/top+hour'; getReddit(r.curr + r.hotOrNot)">past hour</a></li>
+				  <li><a onclick="redditTop('rTop')" ng-click="r.hotOrNot = '/top+day'; getReddit(r.curr + r.hotOrNot)">past day</a></li>
+				  <li><a onclick="redditTop('rTop')" ng-click="r.hotOrNot = '/top+week'; getReddit(r.curr + r.hotOrNot)">past week</a></li>
+				  <li><a onclick="redditTop('rTop')" ng-click="r.hotOrNot = '/top+month'; getReddit(r.curr + r.hotOrNot)">past month</a></li>
+				  <li><a onclick="redditTop('rTop')" ng-click="r.hotOrNot = '/top+year'; getReddit(r.curr + r.hotOrNot)">past year</a></li>
+				  <li><a onclick="redditTop('rTop')" ng-click="r.hotOrNot = '/top+all'; getReddit(r.curr + r.hotOrNot)">all time</a></li>
+				</ul>
+			</span>
+		</div>
+		<div id="redditLoading" class="fa fa-spinner fa-spin fa-5x is-active loading"></div>
+		<div id="redditBody" class="list-group">
+			<div ng-repeat="post in reddit">
+				<li class="list-group-item">
+					<div class="redditContainer">
+						<div class="redditVote">
+							<div class="redditVoteArrow"><a class="redditVoteLink" ng-class="{redditVoteLinkDisabled:(!r.loggedIn || post.data.archived)}" ng-click="redditUpVote(post.data)"><i class="fa fa-arrow-up redditGrey" ng-class="{redditUpVoteColor:post.data.likes}"></i></a></div>
+							<div class="redditGrey redditVoteCount" ng-class="{redditDownVoteColor:post.data.likes === false, redditUpVoteColor:post.data.likes}">{{post.data.score}}</div>
+							<div class="redditVoteArrow"><a class="redditVoteLink" ng-class="{redditVoteLinkDisabled:(!r.loggedIn || post.data.archived)}" ng-click="redditDownVote(post.data)"><i class="fa fa-arrow-down redditGrey" ng-class="{redditDownVoteColor:post.data.likes === false}"></i></a></div>
+						</div>
+						<a ng-if="post.data.thumbnail.indexOf('http') >= 0" ng-href="{{post.data.url}}" target="_blank" class="redditIconContainer">
+							<img ng-src="{{post.data.thumbnail}}" class="redditIcon" />
+						</a>
+						<div>
+							<a ng-href="{{post.data.url}}" target="_blank" class="redditMainLink">{{post.data.title}}</a>
+							<a style="cursor:pointer" target="_blank" class="redditDomainLink" ng-click="setReddit('/domain/' + post.data.domain)">({{post.data.domain}})</a>
+						</div>
+						<div class="redditOptions">
+							<br>
+							<p class="redditDomainLink">submitted {{post.data.created}} ago by 
+								<a target="_blank" ng-href="https://www.reddit.com/user/{{post.data.author}}">{{post.data.author}}</a> to 
+								<a style="cursor:pointer" ng-click="setReddit('/r/' + post.data.subreddit)">/r/{{post.data.subreddit}}</a>
+							</p>
+						</div>
+						<div class="redditOptions">
+							<a class="redditButtons">{{post.data.num_comments}} comments</a>
+							<a ng-class="{redditUpVoteColor:post.data.saved}" class="redditButtons" ng-click="saveReddit(post.data)">save</a>
+							<a class="redditButtons" ng-click="hideReddit(post.data.name)">hide</a>
+							<!--<a class="redditButtons">report</a>-->
+						</div>
+					</div>
+					<div class="redditClearLeft" />
+				</li>
+			</div>
+			<div class="text-center">
+				<span class="text-center" ng-click="getMoreReddit()">
+					<span class="btn btn-xs btn-default"> Load More <span class="glyphicon glyphicon-refresh"></span></span>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>

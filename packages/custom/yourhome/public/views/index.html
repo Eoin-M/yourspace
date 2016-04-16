@@ -1,0 +1,35 @@
+<!--<link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css">-->
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		myGetLocation();
+	});
+</script>
+
+<div id="yourhome" data-ng-controller="YourhomeController">
+	<div class="row sortable">
+		<div data-ng-include="'/yourhome/views/location.html'"></div>
+		<div ng-repeat="module in modules | orderBy:'position'" data-ng-include="'/yourhome/views/' + module.include + '.html'" id="{{module.include}}" class="{{module.class}}" ng-show="module.visible"></div>
+	</div>
+	
+	<!-- Modal -->
+	<div id="profileSnag" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+		  <div class="">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h3 class="modal-title">Account Already Exists</h3>
+		  </div>
+		  <div class="modal-body">
+			
+		  </div>
+		  <div class="modal-footer">
+			
+		  </div>
+		</div>
+
+	  </div>
+	</div>
+</div>

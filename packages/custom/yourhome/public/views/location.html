@@ -1,0 +1,24 @@
+<style>
+	#map {
+		height: 65vh;
+	}
+</style> 
+<div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="Map modal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button btn-xs" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exampleModalLabel">Choose your location</h4>
+			</div>
+			
+			<div class="modal-body" id="map"> </div>
+			
+			<div class="modal-footer">
+				<span class="pull-left" id="addressLine"></span>
+				<button type="button" class="btn btn-primary" onclick="manualUpdateLoc()">
+					Update Location &nbsp;<span class="glyphicon glyphicon-floppy-disk"></span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

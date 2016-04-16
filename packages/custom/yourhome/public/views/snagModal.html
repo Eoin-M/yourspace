@@ -1,0 +1,20 @@
+<!-- Modal content-->
+<div class="twitterHeader">
+<button type="button" class="close" ng-click="cancel()">&times;</button>
+<h4 class="modal-title"><i class="fa fa-exclamation-triangle"></i> Account Already Exists</h4>
+</div>
+<div class="modal-body">
+	<h5>
+		<img ng-src="{{user.imgsrc}}" style="height: 50px; width: auto;"/> {{user.name}} <br>
+		<h6 ng-if="user.email[0] !== '@'">Email: {{user.email}}</h6>
+		<h5>Personal settings for this account will be migrated over to the new account!</h5>
+		<span> Linked accounts that will be merged:</span><br>
+		<span ng-repeat="provider in user.providers" class="snagIcon social_icon social_icon_{{provider}}" ng-init="this[this.provider + 'Tip'] = false" ng-mouseover="this[this.provider + 'Tip'] = true" ng-mouseout="this[this.provider + 'Tip'] = false">
+			<div class="social_tooltip" ng-class="{invisible:!this[this.provider + 'Tip']}">{{user[provider].displayName}}</div>
+		</span>
+	</h5>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-default" style="float: left" ng-click="cancel()">Don't Link</button>
+	<button class="btn btn-danger" style="float: right" ng-click="link()">Link</button>
+</div>

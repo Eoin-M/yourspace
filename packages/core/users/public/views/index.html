@@ -1,0 +1,28 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+<div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12" ng-controller="AuthCtrl" ng-class="($state.is('auth.register')) ? 'register-form' : ''">
+    <div class="row form main-form">
+	<div class="col-lg-6 col-xs-12 login-form__left" style="text-align: center" ui-view></div>
+	<div class="col-xs-12 col-lg-0 login-form__center-horizontal" style="text-align: center">
+	<!--<div class="login-form__center">-->
+		<p>or</p>
+	</div>
+	<div class="col-lg-6 col-xs-12" style="height: 500px">
+		<div class="col-xs-0 login-form__center">
+		<!--<div class="login-form__center">-->
+			<p>or</p>
+		</div>
+		<div class="login-form__right">
+			<div class="social_wrap" ng-class="{bigger:socialButtonsCounter > 4 && !global.registerForm}">
+				<ul class="social">
+					<li ng-repeat="(key, val) in socialButtons" class="social_icon social_icon_{{key}}">
+						<a target="_self" ng-href="/api/auth/{{key}}" class="button">
+							<span class="text-capitalize">Log In With {{key}}</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	</div>
+</div>

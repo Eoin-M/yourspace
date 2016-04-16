@@ -1,0 +1,153 @@
+.page-header {
+    padding-bottom: 0 !important;
+    margin: 0 !important;
+    border-bottom: 0 !important;
+}
+.page-header .navbar-nav {
+    float: right;
+}
+.page-header > div > div, .page-header > div > ul {
+    display: inline-block;
+}
+.text-edit {
+    float: right; 
+    margin-top: 12px;
+}
+.account {
+    text-align:right;
+}
+.account > div, .account > ul {
+    text-align: left;
+}
+.navbar .nav > li > a.brand {
+    padding-left: 20px;
+    margin-left: 0
+}
+.content {
+    margin-top: 70px;
+    width: 100%
+}
+footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	height: 30px;
+	width: 100%;
+	background: #ddd;
+	-webkit-box-shadow: 0 8px 6px 6px black;
+	-moz-box-shadow: 0 8px 6px 6px black;
+	box-shadow: 0 8px 6px 6px black
+}
+footer p {
+	padding: 5px 0 12px 10px
+}
+
+.featuredpic img{
+  width:510px;
+}
+
+.profileIMG {
+	width: 40px;
+    margin-right: 8px;
+    margin-top: -20px;
+    margin-bottom: -20px;
+}
+
+/******** JO'S NAVBAR CODE ********/
+
+.dropdown-accordion .panel-heading {
+          padding: 0;
+        }
+
+        .dropdown-accordion .panel-heading a {
+          display: block;
+          padding: 10px 15px;
+        }
+
+        .JO-dropdown-menu {
+          background-color: #093170;
+          width: 250px;
+          /*dark navy*/
+        }
+
+        .navbar {
+          background-color: #093170;
+          /*dark navy*/
+        }
+
+        /*.navbar-brand {
+          font-family: Quicksand;
+        }*/
+
+        .navbar-text {
+          color: #e3f2fd;
+        }
+
+        .lil {
+          /*the heading in the dropdown*/
+          width: 90%;
+          margin-left: 5%;
+          background-color: #b2ebf2;
+          /*bluey*/
+          border-radius: 0px;
+          /*font-family: Quicksand;*/
+          font-size: 20px;
+          color: white;
+        }
+
+        #droptitle {
+          /*the bg in the heading in the dropdown(at the sides)*/
+          background-color: #093170;
+          /*dark navy*/
+        }
+
+        .modname {
+          /*module name under MODULE*/
+          /*font-family: Quicksand;*/
+          font-size: 120%;
+          margin-left: 2px;
+          color: #093170;
+          margin-top: 2px;
+		  text-transform: capitalize;
+        }
+
+        .opt {
+          /*the div surrounding all the module names*/
+          margin-top: 0px;
+          margin-bottom: 0px;
+          border-radius: 0px;
+          background-color: #093170;
+        }
+
+        #dropmodbg {
+          /* the background of the module names names- the overall thing, not just highlighter bg*/
+          background-color: #093170;
+          /*dark navy*/
+        }
+
+        .sortable {
+          /* takes away the bullet of an ul*/
+          list-style-type: none;
+          /*overflow: hidden;*/
+        }
+
+        input[type="checkbox"]{
+                float: right;
+              }
+        .modNameCheckBox{
+                margin-bottom: 3px;
+                background-color: #ef9a9a; /*light reddy*/
+              }
+        #accbg, #meanteambg{/*the bg for the options under the account heading in the accordeon*/
+                background-color: #71F79F;
+                /*border: 2px solid white;*/
+                color: #093170;
+                margin-bottom: -5px;
+                margin-top: -5px;
+              }
+              #accoptname, #meanteamoptname{
+                /*font-family: Quicksand;*/
+                font-size: 18px;
+                color: #093170;
+                margin-left: 5px;
+              }

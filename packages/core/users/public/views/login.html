@@ -1,0 +1,33 @@
+<div data-ng-controller="LoginCtrl as login">
+
+    <div class="alert alert-danger animated fadeIn" ng-show="login.loginError">{{login.loginError}}</div>
+
+    <h2>Login</h2>
+
+    <form id="login_form" ng-submit="login.login()">
+        <div class="input-wrapper field">
+            <input required id="email_block" class="loginInput" type="email" name="email" placeholder="Email Address" ng-model="login.user.email">
+            <div class="error_message">Please enter a correct info #</div>
+            <span class=""><i class="fa fa-envelope-o fa-2x inputIconStyle" /></span>
+        </div>
+        <div class="input-wrapper field">
+            <input required id="password_block" class="loginInput" name="password" type="{{login.input.type}}" placeholder="{{login.input.placeholder}}" ng-model="login.user.password">
+            <div class="error_message">Please enter a correct info #</div>
+                <span class="inputIconStyle" ng-click="login.togglePasswordVisible()" style="cursor: pointer">
+					<i class="fa fa-eye fa-2x" ng-init="eyeVisible1 = false; tipVisible1 = false;" ng-mouseover="tipVisible1 = true" ng-mouseleave="tipVisible1 = false" ng-click="eyeVisible1 = !eyeVisible1" ng-class="{'fa-eye-slash': eyeVisible1}"/>
+					  <div class="hide_text_password" ng-class="{invisible:!tipVisible1}">
+						  {{login.input.tooltipText}}
+					  </div>
+				</span>
+        </div>
+        <div class="forgot_password">
+            <a ui-sref='forgot-password'>Forgot your password?</a>
+        </div>
+        <div class="button_login">
+            <button type="submit" class="loginButton">Login</button>
+			<br>
+            <p>Don't have an account?</p>
+            <a ui-sref='auth.register' >Sign up</a>
+        </div>
+    </form>
+</div>

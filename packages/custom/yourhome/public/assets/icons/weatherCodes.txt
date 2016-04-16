@@ -1,0 +1,14 @@
+cloud = cloudy|| mostlycloudy
+cloudDrizzle = flurries
+CloudDrizzleSun = chanceflurries
+cloudFog  = fog|| hazy
+cloudHail = chancesleet|| sleet
+cloudHailSun =
+cloudRain = rain||
+cloudRainSun = chancerain|| 
+cloudSnow  = chancesnow|| snow
+cloudSnowSun = 
+lightning =  tstorms
+lightningSun = chancetstorms
+partialCloud = partlycloudy|| mostlysunny 
+sun = clear|| sunny

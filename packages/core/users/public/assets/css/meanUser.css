@@ -1,0 +1,121 @@
+@media (max-width: 1200px){
+  .col-xs-0 {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px){
+  .col-lg-0 {
+    display: none !important;
+  }
+}
+
+.inputIconStyle {
+	position: absolute;
+    right: 35px;
+    top: 15px;
+	color: #71f79f;
+}
+
+.inputIconStyle:hover {
+	display:block;
+}
+
+#loginfiledsbox{ /*box containing the login fields*/
+  width: 300px;
+  float: left;
+}
+#altloginbox{ /*affects the box containing the alt login means*/
+  width: 240px;
+  float: left;
+  /*border: 2px solid white;*/
+}
+#altloginbox #icon{/*afefcts all media thumnail icons*/
+  float: left;
+}
+.field{ /*the word eg "username" and then the field itself*/
+  height: 80px;
+  width: 100%;
+  padding-top: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: white;
+  position: relative;
+}
+
+.loginInput{/*the user types their uname and pass*/
+  height: 45px;
+  width: 100%;
+  padding-left: 10px !important;
+}
+
+.field .loginInput{/*text: uname, pass*/
+  font: 700 20px Quicksand;
+  color: #71f79f;
+}
+.field .loginInput{/*input field*/
+  font: 700 20px Quicksand;
+  color: #71f79f;
+  background: transparent;
+  border: 2.5px solid #71f79f;
+  border-radius: 80px;
+  outline: none;
+  -webkit-transition: all 0.7s;
+}
+.loginButton{
+  font: 700 20px Quicksand;
+  border: none;
+  background: none;
+  outline: none;
+  height: 40px;
+  width: 130px;
+  border-radius: 20px;
+  color: #b2ebf2;
+  /*background-color: #0A2239;*/
+  border: 2.5px solid #71f79f;
+}
+.loginButton:hover{
+  font: 700 20px Quicksand;
+  background: #61C6EC; /*light blue*/
+  color: #0A2239; /*dark blue*/
+  cursor:pointer;
+  border: 2.5px solid #0A2239;
+  }
+.alttext{
+  position: absolute;
+  font: 700 20px Quicksand;
+  color: #71f79f;
+  /*position: absolute;*/
+  margin-left: 20px;
+  margin-top: 30px;
+}
+.altloginbox{
+  margin-left: 150px;
+}
+.icon1{
+  /*position: absolute;*/
+  margin-left: -150px;
+  margin-top: 70px;
+}
+.icon2 {
+  position: absolute;
+  margin-left: -100px;
+  margin-top: 60px;
+}
+.icon3 {
+  position: absolte;
+  margin-left: -30px;
+  margin-top: 66px;
+}
+#contbox{
+  /*border: 2px solid white;*/
+  width: 620px;
+  margin-left: 100px;
+  margin-top: 20px;
+  background-color: #000;
+  padding-top: 30px;
+  padding-left: 30px;
+  padding-bottom: 30px;
+  opacity: 0.8;
+  /*-webkit-filter: blur(5px);*/
+}

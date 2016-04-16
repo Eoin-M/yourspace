@@ -1,0 +1,57 @@
+<div data-ng-controller="WeatherController" class="panel panel-primary">	
+	<a class="btn weatherButton" ng-class="{true: 'btn-primary btn-sm', false: 'btn-danger btn-sm'}[custom]" ng-click="toggleTemp()">{{custom && '&deg;C' || '&deg;F'}}</a>		
+	<div class="panel-heading clearfix" id="handle">
+		<h3 class="panel-title">
+			
+			<a href="https://www.wunderground.com/" target="_blank" style="cursor: pointer;"><span class="fa fa-cloud pull-left"></span> Weather</a>
+			<span style="cursor: pointer;"  onclick="removeTheModule('weather')" class="glyphicon glyphicon-remove pull-right"></span>
+			<span style="cursor: pointer;" class="glyphicon glyphicon-map-marker pull-right" onclick="manualGetLoc()">&nbsp;</span>
+		</h3>
+		<!--<a class="btn pull-right" ng-class="{true: 'btn-primary', false: 'btn-danger'}[custom]"  ng-click="toggleTemp()">{{custom && '&deg;C' || '&deg;F'}}</a>-->
+	</div>
+	<div class="panel-body text-center scroll" ng-init="weatherGet()">
+		<div class="row" >	
+			<ul class="nav nav-tabs">
+			  <!--<li class="col-md-3 col-sm-3 col-xs-3 active"><a data-toggle="tab" href="#1" ng-model="day1">{{day1}}</a></li>
+			  <li class="col-md-3 col-sm-3 col-xs-3 "><a data-toggle="tab" href="#2" ng-model="day2">{{day2}}</a></li>
+			  <li class="col-md-3 col-sm-3 col-xs-3 "><a data-toggle="tab" href="#3" ng-model="day3">{{day3}}</a></li>
+			  <li class="col-md-3 col-sm-3 col-xs-3 "><a data-toggle="tab" href="#4" ng-model="day4">{{day4}}</a></li>-->
+			  <li class="col-xs-4 active"><a data-toggle="tab" href="#weather1" ng-model="day1">{{day1}}</a></li>
+			  <li class="col-xs-4 "><a data-toggle="tab" href="#weather2" ng-model="day2">{{day2}}</a></li>
+			  <li class="col-xs-4 "><a data-toggle="tab" href="#weather3" ng-model="day3">{{day3}}</a></li>
+			</ul>
+			<!--<div  class="col-md-3 col-sm-3 col-xs-3 svgs" ng-repeat="forecastday in data">
+				<div  data-ng-include data-src="forecastday.icon"> </div>
+				<div id="celsDiv" ng-show="custom"><h4>{{forecastday.high.celsius}}&deg; <small>{{forecastday.low.celsius}}&deg;</small></h4></div>
+				<div id="fahrDiv"  ng-hide="custom"><h4>{{forecastday.high.fahrenheit}}&deg; <small>{{forecastday.low.fahrenheit}}&deg;</small></h4></div>
+			</div>-->	
+			<div  class="col-xs-4 svgs" ng-repeat="forecastday in data">
+				<div  data-ng-include data-src="forecastday.icon"> </div>
+				<div id="celsDiv" ng-show="custom"><h4>{{forecastday.high.celsius}}&deg; <small>{{forecastday.low.celsius}}&deg;</small></h4></div>
+				<div id="fahrDiv"  ng-hide="custom"><h4>{{forecastday.high.fahrenheit}}&deg; <small>{{forecastday.low.fahrenheit}}&deg;</small></h4></div>
+			</div>
+			<br>
+			<div class="tab-content weatherPadding">
+				<p>
+				<div id="weather1" class="tab-pane fade in active descBox">
+					<div ng-show="custom" ng-model="day1c"><h5>{{day1c}}</h5></div>
+					<div ng-hide="custom" ng-model="day1f"><h5>{{day1f}} </h5></div>
+				</div>
+				<div id="weather2" class="tab-pane fade descBox">
+					<div ng-show="custom" ng-model="day2c"><h5>{{day2c}}</h5></div>
+					<div ng-hide="custom" ng-model="day2f"><h5>{{day2f}} </h5></div>
+				</div>
+				<div id="weather3" class="tab-pane fade descBox">
+					<div ng-show="custom" ng-model="day3c"><h5>{{day3c}}</h5></div>
+					<div ng-hide="custom" ng-model="day3f"><h5>{{day3f}} </h5></div>
+				</div>
+				<!--<div id="4" class="tab-pane fade descBox">
+					<div ng-show="custom" ng-model="day4c"><h5>{{day4c}}</h5></div>
+					<div ng-hide="custom" ng-model="day4c"><h5>{{day4f}} </h5></div>
+				</div>-->
+				</p>
+				
+			</div>
+		</div>
+	</div>
+</div>

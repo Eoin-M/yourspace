@@ -1,0 +1,125 @@
+.social_icon_small {
+	position: absolute !important;
+    z-index: 9;
+    background: #E4E2E2;
+    bottom: 5%;
+    float: right;
+    width: 58px !important;
+    overflow: hidden;
+	white-space: nowrap;
+	
+	-webkit-transition: width 0.3s ease-in-out;
+    -moz-transition: width 0.3s ease-in-out;
+    -o-transition: width 0.3s ease-in-out;
+    transition: width 0.3s ease-in-out;
+}
+
+.social_icon_long {
+    width: Calc(100% - 75px) !important;
+}
+
+.social_icon {
+    //width: 225px;
+    width: 97.5%;
+    height: 60px;
+    border: 1px solid #e1e1e0;
+    border-radius: 5px;
+    margin: 5px;
+    list-style-type: none;
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+}
+
+.social_icon:hover {
+    background: #61C6EC;
+	color: #0A2239;
+}
+
+.social_icon .button {
+    display: block;
+    text-decoration: none;
+    padding: 22px 0 22px 60px;
+    line-height: 1;
+    color: inherit;
+    position: relative;
+}
+
+.social_icon .button:active {
+    color: #959595;
+}
+
+.social_icon .button span {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.social_icon_google:before {
+    content: '';
+    position: absolute;
+    background: url("/theme/assets/img/social_g+.png") no-repeat 50% 50%;
+    width: 40px;
+    height: 41px;
+    top: 10px;
+    left: 8px;
+}
+
+.social_icon_instagram:before {
+    content: '';
+    position: absolute;
+    background: url("/theme/assets/img/social_instagram.png") no-repeat 50% 50%;
+    width: 40px;
+    height: 41px;
+    top: 10px;
+    left: 8px;
+}
+
+.social_icon_twitter:before {
+    content: '';
+    position: absolute;
+    background: url("/theme/assets/img/social_tw.png") no-repeat 50% 50%;
+    width: 40px;
+    height: 41px;
+    top: 10px;
+    left: 8px;
+}
+
+.social_icon_facebook:before {
+    content: '';
+    position: absolute;
+    background: url("/theme/assets/img/social_fb.png") no-repeat 50% 50%;
+    width: 40px;
+    height: 41px;
+    top: 10px;
+    left: 8px;
+}
+
+.social_icon_reddit:before {
+    content: '';
+    position: absolute;
+    background: url("/theme/assets/img/social_reddit.png") no-repeat 50% 50%;
+    width: 40px;
+    height: 41px;
+    top: 10px;
+    left: 8px;
+}
+
+.social_icon_github:before {
+    content: '';
+    position: absolute;
+    background: url("/theme/assets/img/social_github.png") no-repeat 50% 50%;
+    width: 40px;
+    height: 41px;
+    top: 10px;
+    left: 8px;
+}
+
+.social_icon_local:before {
+    content: '';
+    position: absolute;
+    background: url("/theme/assets/img/pineapple.png") no-repeat 50% 50%;
+    width: 40px;
+    height: 41px;
+    top: 10px;
+    left: 8px;
+}

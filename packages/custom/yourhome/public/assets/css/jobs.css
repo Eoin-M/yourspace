@@ -1,0 +1,99 @@
+.hundred{
+	width: 100% !important;; 
+}
+
+.pad0{
+	padding: 0px !important;;
+}
+
+.base{
+	vertical-align: baseline !important;;
+}
+
+.padLeft{
+	padding-left: 0px !important;;
+}
+
+.jobTitle{
+	color: white !important;
+	text-decoration: none !important;
+	text-align: left;
+	font-size: 0.95em;
+}
+
+.jobDesc{
+	text-decoration: none !important;
+	font-size: 1em;
+	font-weight: 700;
+}
+
+a.jobLink{
+	text-decoration: none !important;
+}
+
+.jobBottomPad{
+	padding-bottom: 0px !important;
+}
+
+.jobPanel{
+	background-color: #2D87B4 !important;
+}
+
+.jobPanelTitle{
+	background-color: #297AA3 !important;
+}
+
+.jobStar{
+	color: yellow;
+}
+
+.jobTime{
+	text-align:right;
+	color: white;
+}
+
+.rotate{
+    -moz-transition: all 0.3s linear;
+    -webkit-transition: all 0.3s linear;
+    transition: all 0.3s linear;
+}
+
+.rotate.down{
+    -moz-transform:rotate(180deg);
+    -webkit-transform:rotate(180deg);
+    transform:rotate(180deg);
+}
+
+.jobSearchPad{
+	padding-right: 30px !important;
+	padding-left:0px !important;
+}
+
+.jobScroll {
+    overflow: auto;
+    height: 400px;
+	/*height: 62.21vh;*/
+}
+
+.jobScrollSmall {
+	overflow: auto;
+	height: 270px;
+	/*height: 41.992vh;*/
+}
+
+.jobForm{
+	height: 145px;	
+	/*height: 22.551vh;*/
+}
+
+.boxShadow{
+	box-shadow: 0 -5px 10px -5px #333;
+	/*box-shadow: 0px -10px 5px #333;
+	-moz-box-shadow:0px -10px 5px #333; 
+	-webkit-box-shadow:0px -10px 5px #333;
+	-o-box-shadow: 0px -10px 5px #333;*/
+}
+
+.extendJobs{
+	height: 400px !important;
+}

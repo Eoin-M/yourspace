@@ -1,0 +1,76 @@
+.dropdownRss {
+	width: 100%;
+	max-height: 280px;
+	overflow: auto;
+}
+
+.dropdownMargin {
+	margin: 8px;
+}
+
+.dropdownBtnRss {
+	background-color: #476b6b !important;
+}
+
+.dropdownBtnRss:hover {
+	background-color: #476b6b;
+}
+
+.dropdownBtnRss:focus {
+	background-color: #476b6b;
+}
+
+.dropdownBtnRss:active {
+	background-color: #476b6b;
+}
+
+.rssP {
+	color: grey;
+	line-height: 20px !important;
+}
+
+.rssTitle {
+	background-color: #346299;
+	padding: 8px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.rss {
+	max-height: 500px;
+}
+
+.rssHead {
+	color: #366bad;
+	min-height: 130px;
+}
+
+#newsSectionsText {
+	max-width: 90%;
+    //display: inline-block;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+a.rssTitle {
+	color: white;
+    font-size: 1.17em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+img.rssImages {
+	height: 80px;
+	float: left;
+    margin: 5px 8px 5px 0px;
+	position: relative;
+}
+
+p.rssDate {
+	font-size: 0.65em;
+	text-align: right;
+}

@@ -1,0 +1,203 @@
+<div data-ng-controller="JobController">
+	<div class="panel panel-primary">			
+		<div class="panel-heading clearfix jobPanelTitle" id="handle">
+			<h3 class="panel-title">
+				<a href="http://www.indeed.com" target="_blank" style="cursor: pointer;"><span class="fa fa-briefcase pull-left"></span> Jobs</a>
+				
+				<span style="cursor: pointer;"  onclick="removeTheModule('jobs')" class="glyphicon glyphicon-remove pull-right"></span>
+				<span style="cursor: pointer;" class="glyphicon glyphicon-map-marker pull-right" onclick="manualGetLoc()">&nbsp;</span>
+				<span style="cursor: pointer;" class="glyphicon glyphicon-search pull-right" ng-class="{'glyphicon-zoom-out':jobSearchBox}" ng-click="jobSearchBox = !jobSearchBox;">&nbsp;</span>
+			</h3>
+			<div style="float: right;">			
+				<i style="cursor: pointer; color:white;" ></i>
+			</div>
+		</div>
+		<div class="panel-body scroll" ng-class="{scroll255:jobSearchBox}" ng-if="jobCountry != null">
+			<div id="jobArea" >
+				<div class="panel-group text-center" id="jobAccordion">
+					
+					<div class="panel panel-info" ng-repeat="results in jobs">
+					  <div class="panel-heading jobPanel">
+						<h4 class="panel-title">
+						  <a class="jobLink" ng-class='classForUp(arrocdian{{$index}})' aria-expanded="false" data-toggle="collapse" id="arrocdian{{$index}}" data-parent="#jobAccordion" href="#{{$index}}">
+							<h6 class="jobTitle" >
+								<div style="text-align:left">{{results.jobtitle}}</div>
+								
+								<div  class="fa fa-chevron-down rotate pull-right"></div>
+								<div ng-if="results.sponsored" class="glyphicon glyphicon-star pull-right jobStar"></div>  
+								
+								<small class="jobTime">{{results.formattedRelativeTime}}</small>
+							</h6>
+						  </a>
+						</h4>
+					  </div>
+					  <div id="{{$index}}" class="panel-collapse collapse">
+						<div class="panel-body">
+							<div class="jobDesc" ng-if="results.company != ''">{{results.company}}: </div>
+							<div>{{results.snippet}}</div>
+							<a target="_blank" href="{{results.url}}" class="btn btn-sm btn-primary">Apply</a>
+						</div>
+						
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div  ng-class="{jobBottomPad:jobSearchBox}" class="text-center" ng-if="jobCountry == null">
+			<div class="" ng-class="{true:'jobScroll',false:'jobScrollSmall'}[!jobSearchBox]">
+				<div class="">
+					<h5 class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<i style="cursor: pointer;" onclick="manualGetLoc()" class="fa fa-2x fa-globe"></i><br>
+						<div>
+							We had trouble finding your location! <br><br>
+							Try clicking the globe to enter your location.
+						</div>
+					</h5>
+				</div>
+			</div>
+		</div>
+
+		<div id="desktopTest" class="jobForm boxShadow hidden-xs" ng-init="jobSearchBox = false" ng-show="jobSearchBox" animate-me="" >
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<form class="form-inline"  ng-submit="submit(jobCity, jobCountry, jobTerm, jobType)" >
+					<div class="form-group hundred">
+						<label></label>
+						<div class="row" >
+							<div class="col-md-12 col-sm-12 col-xs-12" >
+								<div class="input-group hundred" style="height:33px">
+									<div class="col-lg-8 col-md-8 col-sm-9 col-xs-9 padLeft" style="display: table-cell;">
+										<label></label>
+										<input type="text" class="hundred form-control padLeft " aria-label="jobDrop" ng-model="jobTerm" placeholder=""/>		
+									</div>
+									<div class="col-lg-4 col-md-4 col-sm-3 col-xs-3 padLeft" style="display: table-cell;">
+										<div class="form-group">
+											<label></label>
+											<button type="button" class="btn btn-sm btn-defaultdropdown-toggle" placeholder="Job Title" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="float: left; width:80px">{{jobType}} <span class="caret"></span></button>
+											<ul class="dropdown-menu dropdown-menu-right">
+											  <li><a ng-click="jobClick('All Jobs')">All Jobs</a></li>
+											  <li><a ng-click="jobClick('Parttime')">Parttime</a></li>
+											  <li><a ng-click="jobClick('Fulltime')">Fulltime</a></li>
+											</ul>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label></label>
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+								<div class="input-group hundred">
+									<div class="col-lg-4 col-md-4 col-sm-5 col-xs-5 padLeft">
+										<div class="form-group ">
+											<label></label>
+											<input type="text" placeholder="City" class="form-control padLeft hundred" aria-label="..." ng-model="jobCity" />
+											
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 padLeft">
+										<div class="form-group">
+											<label></label>
+											<input  type="text" placeholder="Country" class="hundred form-control padLeft " aria-label="..." ng-model="jobCountry" />
+											
+										</div>
+									</div>
+									<div  class=" col-lg-4 col-md-4 col-sm-3 col-xs-3 pad0" >
+										<div class="form-group padLeft" >
+											<label></label>
+											<button type="submit" class="btn btn-primary" style="float: left; display: inline-block; vertical-align: top;">Search</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
+				</form> 
+			</div>
+		</div>
+		
+		<div id="desktopTest" class="jobForm boxShadow visible-xs" ng-show="jobSearchBox" animate-me="" style="height: 200px">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<form class="form-inline"  ng-submit="submit(jobTerm, jobCity, jobType, jobTerm)" >
+					<div class="form-group hundred">
+						<label></label>
+						<div class="row" >
+							<div class="col-md-12 col-sm-12 col-xs-12" >
+								<div class="input-group hundred" style="height:33px">
+									<div class="col-lg-8 col-md-8 col-sm-9 col-xs-9 padLeft" style="display: table-cell;">
+										<label></label>
+										<input type="text" class="hundred form-control padLeft " aria-label="jobDrop" ng-model="jobTerm" placeholder=""/>		
+									</div>
+									<div class="col-lg-4 col-md-4 col-sm-3 col-xs-3 padLeft" style="display: table-cell;">
+										<div class="form-group">
+											<label></label>
+											<button type="button" class="btn btn-sm btn-defaultdropdown-toggle" placeholder="Job Title" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="float: left; width:80px">{{jobType}} <span class="caret"></span></button>
+											<ul class="dropdown-menu dropdown-menu-right">
+											  <li><a ng-click="jobClick('All Jobs')">All Jobs</a></li>
+											  <li><a ng-click="jobClick('Parttime')">Parttime</a></li>
+											  <li><a ng-click="jobClick('Fulltime')">Fulltime</a></li>
+											</ul>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label></label>
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+								<div class="input-group hundred">
+									<div class="col-lg-4 col-md-4 col-sm-5 col-xs-5 padLeft">
+										<div class="form-group ">
+											<label></label>
+											<input type="text" placeholder="City" class="form-control padLeft hundred" aria-label="..." ng-model="jobCity" />
+											
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 padLeft">
+										<div class="form-group">
+											<label></label>
+											<input  type="text" placeholder="Country" class="hundred form-control padLeft " aria-label="..." ng-model="jobCountry" />
+											
+										</div>
+									</div>
+									<div  class=" col-lg-4 col-md-4 col-sm-3 col-xs-3 pad0" >
+										<div class="form-group padLeft" >
+											<label></label>
+											<button type="submit" class="btn btn-primary" style="float: left; display: inline-block; vertical-align: top;">Search</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
+				</form> 
+			</div>
+		</div>
+	</div>
+	 <!-- Modal -->
+	<div id="jobModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+		<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">No Results Found</h4>
+				</div>
+				<div class="modal-body">
+					<p>Sorry, there doesn't seem to be any {{jobTerm}} in {{jobCity}}, {{jobCountry}}.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+	  </div>
+	</div>
+</div>

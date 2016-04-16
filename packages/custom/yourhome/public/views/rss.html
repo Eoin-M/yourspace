@@ -1,0 +1,49 @@
+<div data-ng-controller="RssController" class="panel panel-primary">
+	<div class="panel-heading" id="handle" style="background-color: #476b6b">
+		<h3 class="panel-title">
+			<span style="cursor: pointer;" onClick="loadMenu(['rssMenu','rssFeed'])">
+				<i class="fa fa-newspaper-o"></i>
+			</span>
+			<a ng-href="{{rssLink}}" target="_blank">{{rssTitle}}</a>
+			
+			<span style="cursor: pointer;"  onclick="removeTheModule('rss')" class="glyphicon glyphicon-remove pull-right"></span>
+		</h3>
+	</div>
+	<div class="panel-body scroll">
+		<div id="rssMenu" class="CustomMenu">
+			<div class="dropdown dropdownMargin btnTitles" id="newsTitles">
+				<button type="button" id="newsTitlesBtn" data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-block dropdownBtnRss">
+					<span id="newsTitlesText">{{newsTitle}}</span>
+					<b class="caret"></b>
+				</button>
+				<ul class="dropdown-menu dropdownRss">
+					<li><a id="bbc" ng-click="bbc()">BBC</a></li>
+					<li><a id="cnn" ng-click="cnn()">CNN</a></li>
+					<li><a id="rte" ng-click="rte()">RTE</a></li>
+					<li><a id="sky" ng-click="sky()">Sky</a></li>
+				</ul>
+			</div>
+			<div class="dropdown dropdownMargin" id="newsSections">
+				<button type="button" id="newsSectionsBtn" data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-block disabled dropdownBtnRss"">
+					<span id="newsSectionsText">{{newsSection}}</span>
+					<b class="caret"></b>
+				</button>
+				<ul class="dropdown-menu dropdownRss" id="newsSectionsList"></ul>
+			</div>
+		</div>
+		<div id="rssFeed">
+			<div id="rssLoading" class="fa fa-spinner fa-spin fa-5x is-active loading"></div>
+			<ul class="list-group" >
+				<div ng-repeat="article in articles">
+					<a id="article0" ng-href="{{article.link}}" target="_blank" class="list-group-item">
+						<div id="head0" class="rssHead rssP">{{article.title}}<br>
+							<img ng-src="{{article.img}}" class="rssImages">
+							<p class="rssP" id="p0">{{article.summary}}</p>
+							<p class="rssDate">{{article.date}}</p>
+						</div>
+					</a>
+				</div>
+			</ul>
+		</div>
+	</div>
+</div>

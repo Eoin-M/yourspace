@@ -1,0 +1,66 @@
+.individualEvent
+{
+	margin-bottom: 8px;
+	padding: 5px;
+}
+/*Colours for google calendar events as per google's style guidelines*/
+.redEvent
+{
+	background-color: #DC2127;
+    color :#b2ebf2;
+}
+.blueEvent
+{
+	background-color: #A4BDFC;
+    color: #093170;
+	/*color: #edbd54;*/
+    
+}
+.darkblueEvent
+{
+	background-color: #5484ED;
+    color: #ffd688;
+}
+.purEvent
+{
+	background-color: #DBADFF;
+    color: #ffd688;
+}
+.turqEvent
+{
+	background-color: #7AE7BF;
+    color: #093170;
+}
+.yelEvent
+{
+	background-color: #FBD75B;
+    color: #093170;
+}
+.greenEvent
+{
+	background-color: #7AE7BF;
+    color: #093170;
+}
+.darkgreenEvent
+{
+	background-color: #51B749;
+    color: #093170;
+}
+.orangeEvent
+{
+	background-color: #FFB878;
+    color: #093170;
+}
+.pinkEvent 
+{ 
+	background-color: #FF887C;
+    color: #093170;
+}
+.greyEvent 
+{ 
+	background-color: #E1E1E1; 
+}
+.blackTxt
+{
+	color:black;
+}

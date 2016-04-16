@@ -1,0 +1,98 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" data-role="navigation" ng-controller="HeaderController as hdrctr">
+    <div class="page-header">
+        <div class="navbar-header">
+            <div class="logo pull-left" style="width:100%">
+                <button type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+				<a class="navbar-brand" ui-sref="home" mean-token="'site-title'" ng-click="isCollapsed = false">{{mainTitle}}</a>
+            </div>
+        </div>
+
+        <div class="collapse navbar-collapse" ng-class="isCollapsed && 'in'">
+            <div class="left pull-left">
+                <ul class="navbar-nav nav">
+                    <li ui-route="/{{item.link}}" ng-class="{active: $uiRoute}" ng-repeat="item in hdrctr.menus.main">
+                        <a mean-token="item.link" ui-sref='{{item.link}}'>{{item.title}}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="right pull-right">
+                <div class="text-edit" ng-show="hdrctr.hdrvars.authenticated">
+                    <div class="pull-right" mean-token-editable></div>
+                    <div class="pull-right" mean-translate></div>
+                </div>
+                <ul class="navbar-nav nav auth-link" ng-show="!hdrctr.hdrvars.authenticated">
+                    <li><a ui-sref='auth.register' ng-click="isCollapsed = false">Join</a></li>
+                    <li class="divider-vertical"></li>
+                    <li><a ui-sref='auth.login' ng-click="isCollapsed = false">Log In</a></li>
+                </ul>
+                <ul class="navbar-nav nav" ng-show="hdrctr.hdrvars.authenticated">
+                    <!--<li class="dropdown" uib-dropdown on-toggle="toggled(open)">
+                        <a href="#" class="dropdown-toggle" uib-dropdown-toggle>
+                            <img class="profileIMG img-circle" ng-src="{{hdrctr.hdrvars.user.imgsrc}}" /><span>{{hdrctr.hdrvars.user.name}}</span> <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" style="width: 100%">
+                            <li><a href="#" ng-click="hdrctr.logout()">Log Out</a></li>
+                        </ul>
+                    </li>-->
+					<div class="dropdown dropdown-accordion" data-accordion="#accordion" id="bs-example-navbar-collapse-1" >
+					  <ul class="nav navbar-nav navbar-right" >
+						<li class="dropdown">
+						  <a href="#" class="dropdown-toggle" id="joannaDrop" data-toggle="dropdown" role="button" aria-expanded="false" uib-dropdown-toggle>
+								<img class="profileIMG img-circle" ng-src="{{hdrctr.hdrvars.user.imgsrc}}" /><span>{{hdrctr.hdrvars.user.name}}</span> <b class="caret"></b>
+							</a>
+						  <ul class="dropdown-menu JO-dropdown-menu" role="menu" aria-labelledby="dLabel">
+
+							<div id="accordion">
+
+							  <div class="panel panel-default">
+								<div class="panel-heading">
+								  <h4 id="droptitle" class="panel-title">
+												<a class="lil" href="#collapseOne" data-toggle="collapse" data-parent="#accordion"><span class="glyphicon glyphicon-user">
+											  </span>Account</a>
+											  </h4>
+								</div>
+								<div class="panel-collapse collapse" id="collapseOne">
+								  <div id="dropmodbg" class="panel-body">
+									<div class="opt" id="accbg"><a class="mod" id="accoptname" href="/profile">Profile</a></div><br>
+									<div class="opt" id="accbg"><a class="mod" id="accoptname" href="#" ng-click="hdrctr.logout()">Log Out</a></div><br>
+								  </div>
+								</div>
+							  </div>
+
+							  <div class="panel panel-default">
+								<div class="panel-heading">
+								  <h4 id="droptitle" class="panel-title">
+												<a class="lil" href="#collapseTwo" data-toggle="collapse" data-parent="#accordion"><span class="glyphicon glyphicon-th">
+											  </span>Modules</a>
+											  </h4>
+								</div>
+								<div class="panel-collapse collapse" id="collapseTwo">
+								  <div id="dropmodbg" class="panel-body">
+
+									<div class="opt">
+										<div ng-repeat="module in modules | orderBy:'position'" class="modNameCheckBox">
+											<span class="modname" style="">{{module.include}}</span><input type="checkbox" name="check" ng-model="module.visible" ng-click="toggleModule()">
+											<br>
+										</div>
+									  
+									</div>
+
+								  </div>
+								</div>
+							  </div>
+							</div>
+							<!-- end accordion-->
+                </ul>
+				
+            </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

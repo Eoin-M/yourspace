@@ -1,0 +1,79 @@
+header{
+	border: 1px solid rgb(237,238,238);
+	border-radius: 2px;
+    box-sizing: border-box;
+	padding-top: 10px;
+}
+
+.profileText a{
+	color: #125688;
+    text-decoration: none !important;
+	font-size: 1em;
+	font-weight: 700;
+	font-family: proxima-nova, 'Helvetica Neue', Arial, Helvetica;
+	text-overflow: ellipsis;
+	vertical-align: middle;
+	display: inline;
+}
+
+.outProf{
+	line-height: 180%;
+	padding-left: 8px !important; 
+	padding-bottom: 15px;
+	margin-top: 3px;
+}
+
+.instaFix{
+	line-height: 175%;
+	padding-left: 8px !important; 
+	padding-bottom: 15px;
+}
+
+.instaFixFoto{
+	margin-top: 5px;
+}
+.instaLocation{
+	margin-top: -3%;	
+}
+
+.moveForVideo{
+	margin-top: -8px;
+}
+
+.commentName a{
+	color: #125688 !important;
+    text-decoration: none !important;
+	font-size: 1em !important;
+	font-weight: 700 !important ;
+	font-family: proxima-nova, 'Helvetica Neue', Arial, Helvetica !important;
+	vertical-align: middle;
+	display: inline;
+	line-height: 110%;
+}
+
+.instaLikes{
+	color: #4b4f54;
+	font-size: 0.9em;
+	font-weight: 700;
+}
+.inline{
+	display: inline;
+	
+}
+.mainImage{
+	padding: 0px !important; 
+}
+
+.commentSection{
+	padding-bottom: 10px;
+}
+
+.profileImage{
+	padding: 0px !important; 
+	vertical-align: baseline;
+	display: inline;
+	margin-top: 5px;
+	box-shadow: 0 0 2px rgba(0, 0, 0, .8);
+	-webkit-box-shadow: 0 0 2px rgba(0, 0, 0, .8);
+	-moz-box-shadow: 0 0 2px rgba(0, 0, 0, .8);
+}

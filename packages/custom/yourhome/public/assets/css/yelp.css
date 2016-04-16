@@ -1,0 +1,20 @@
+.cleanUp{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.base{
+	vertical-align: baseline !important;;
+}
+
+.pad0{
+	padding: 0px !important;;
+}
+
+.padLeft{
+	padding-left: 0px !important;;
+}
+
+.hundred{
+	width: 100% !important;; 
+}

@@ -1,0 +1,73 @@
+.profilePic{
+	width: 80px;
+	vertical-align: bottom;
+	padding: 0px;
+	border: none;
+	border-radius: 0px;
+}
+#cntbox {
+  background-color: #000;
+  opacity: 0.85;
+  border: none;
+}
+
+body.profile {
+	background: url("/theme/assets/img/bg.jpg");
+    position: relative;
+    background-position: center;
+}
+.Jolegend{
+  font: 700 25px Quicksand;
+  color: white;
+}
+.Jolabel{
+  font: 700 15px Quicksand;
+  color: white;
+}
+.Jolabel[for=inputPassword]{
+	color: black;
+}
+#inputparentdiv input{
+  background: transparent;
+  border: 2.5px solid #71f79f;
+  border-radius: 30px;
+  font: 700 17px Quicksand;
+  color: #71f79f;
+}
+#inputparentdiv input:hover, #inputparentdiv input:focus{
+  border: 2.5px solid #61C6E6; /*sweet blue*/
+  /*horizontal, vertical, blur radius, spread radius*/
+  box-shadow: 0px 0px 5px 0.5px #61C6E6; /*sweet blue*/
+}
+#inputparentdiv ::-webkit-input-placeholder{ /*for the placeholders*/
+  padding-left: 0px;
+  color: #71f79f; /*sea green*/
+}
+#inputparentdiv input[type=password]{ /* for the input text under change password*/
+	color: #093170; /*navy blue*/
+	border: 2.5px solid #093170;
+	margin-left: 10px;
+}
+#inputparentdiv input[type=password]:hover, #inputparentdiv input[type=password]:focus{
+	box-shadow: 0px 0px 5px 0.5px #093170;
+}
+/*the spacing between :: and the previous element can make or break it when it comes to working... headaches*/	
+#inputparentdiv input[type=password]::-webkit-input-placeholder{
+	color: #093170;
+}
+#inputparentdiv .form-control{
+	padding-left: 20px;
+}
+/*.inputIconStyle {
+	position: absolute;
+	right: 30px;
+	top: 5px;
+	color: #71f79f;
+}*/
+#inputparentdiv input[for=inputPassword]{}
+.social_icon_simple_small {
+	z-index: 9;
+    background: #E4E2E2;
+    bottom: 5%;
+    width: 58px !important;
+}

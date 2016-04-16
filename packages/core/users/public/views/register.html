@@ -1,0 +1,66 @@
+<div data-ng-controller="RegisterCtrl as reg">
+    <div ng-repeat="error in reg.registerError">
+        <div class="alert alert-danger animated fadeIn">{{error.msg}}</div>
+    </div>
+    <div class="alert alert-danger animated fadeIn" ng-show="reg.usernameError">{{reg.usernameError}}</div>
+    <div class="alert alert-danger animated fadeIn" ng-show="reg.emailError">{{reg.emailError}}</div>
+    <form id="register_form" ng-submit="reg.register()">
+        <h2>Sign Up</h2>
+
+        <div class="input-wrapper field">
+            <input required id="name"  class="loginInput" type="text" name="name" placeholder="Full Name"
+                   ng-model="reg.user.name">
+
+            <div class="error_message">Please enter a correct info #</div>
+            <span class=""><i class="fa fa-user fa-2x inputIconStyle" /></span>
+        </div>
+
+        <div class="input-wrapper field">
+            <input required id="email_block"  class="loginInput" type="email" name="email" placeholder="Email Address"
+                   ng-model="reg.user.email">
+
+            <div class="error_message">Please enter a correct info #</div>
+            <span class=""><i class="fa fa-envelope-o fa-2x inputIconStyle" /></span>
+        </div>
+
+        <div class="input-wrapper field">
+            <input required id="username"  class="loginInput" type="text" name="username" placeholder="Username"
+                   ng-model="reg.user.username">
+
+            <div class="error_message">Please enter a correct info #</div>
+            <span class=""><i class="fa fa-child fa-2x inputIconStyle" /></span>
+        </div>
+
+        <div class="input-wrapper field">
+            <input required id="password_block"  class="loginInput" name="password" type="{{reg.input.type}}"
+                   placeholder="{{reg.input.placeholder}}" ng-model="reg.user.password">
+
+            <div class="error_message">Please enter a correct info #</div>
+        <span class="inputIconStyle" ng-click="reg.togglePasswordVisible()" style="cursor: pointer">
+		<i class="fa fa-eye fa-2x" ng-init="eyeVisible1 = false; tipVisible1 = false;" ng-mouseover="tipVisible1 = true" ng-mouseleave="tipVisible1 = false" ng-click="eyeVisible1 = !eyeVisible1" ng-class="{'fa-eye-slash': eyeVisible1}"/>
+              <div class="hide_text_password" ng-class="{invisible:!tipVisible1}">
+                  {{reg.input.tooltipTextConfirmPass}}
+              </div>
+        </span>
+        </div>
+        <div class="input-wrapper field">
+            <input required id="confirm_password"  class="loginInput" name="confirm_password" type="{{reg.input.type}}"
+                   placeholder="{{reg.input.placeholderConfirmPass}}" ng-model="reg.user.confirmPassword">
+
+            <div class="error_message">Please enter a correct info #</div>
+        <span class="inputIconStyle" ng-click="reg.togglePasswordConfirmVisible()" style="cursor: pointer">
+		<i class="fa fa-eye fa-2x" ng-init="eyeVisible2 = false; tipVisible2 = false;" ng-mouseover="tipVisible2 = true" ng-mouseleave="tipVisible2 = false" ng-click="eyeVisible2 = !eyeVisible2" ng-class="{'fa-eye-slash': eyeVisible2}"/>
+              <div class="hide_text_password" ng-class="{invisible:!tipVisible2}">
+                  {{reg.input.tooltipTextConfirmPass}}
+              </div>
+        </span>
+        </div>
+
+        <div class="button_register">
+            <button type="submit" class="loginButton">Sign up</button>
+			<br>
+            <p>Already have an account?</p>
+            <a ui-sref='auth.login'>Log in</a>
+        </div>
+    </form>
+</div>

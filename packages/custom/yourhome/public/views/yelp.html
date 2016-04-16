@@ -1,0 +1,80 @@
+<div data-ng-controller="YelpController">
+	<div class="panel panel-danger">			
+		<div class="panel-heading clearfix" id="handle">
+			<h3 class="panel-title">
+				<a href="https://yelp.com/" target="_blank" style="cursor: pointer;"><span class="fa fa-yelp pull-left"></span> Yelp</a>
+				<span style="cursor: pointer;"  onclick="removeTheModule('yelp')" class="glyphicon glyphicon-remove pull-right"></span>
+				<!--<span style="cursor: pointer; float: right" ng-click="yelpSearchBox = !yelpSearchBox"><i  ng-class="{'fa-search-minus':yelpSearchBox}" class="fa fa-search" />&nbsp;</span>-->
+				<span style="cursor: pointer;" class="glyphicon glyphicon-map-marker pull-right" onclick="manualGetLoc()">&nbsp;</span>
+				<span style="cursor: pointer;" class="glyphicon glyphicon-search pull-right" ng-class="{'glyphicon-zoom-out':yelpSearchBox}" ng-click="yelpSearchBox = !yelpSearchBox">&nbsp;</span>
+			</h3>
+		</div>
+		<div class="panel-body scroll" ng-class="{scrollSmall:yelpSearchBox}">
+			<ul class="list-group" style="padding-bottom:5px; ">
+				<div ng-repeat="businesses in yelpData | orderBy:'rating':'reverse'" class="yelpSlide">
+					<a  ng-href="{{businesses.url}}" target="_blank"class="list-group-item clearfix " >
+						<img ng-src ="{{businesses.image_url}}" err-src="/yourhome/assets/img/No-image-found.jpg" class="img-rounded col-md-3 col-sm-3 col-xs-3" style="padding:0px;">
+						<div class="col-md-9 col-sm-9 col-xs-9 cleanUp" style="padding-right:0px; vertical-align: top; margin-top:2px">
+							<h5 style="margin-top:0px; margin-bottom:5px;">{{$index + 1}}. {{businesses.name}} 
+								<small>  {{businesses.categories[0][0]}}</small>
+							</h5>
+							<div  style="margin-bottom:8px;">{{businesses.location.address[0]}}</div>
+							<div><img ng-src ="{{businesses.rating_img_url_large}}" style="width: 50%;" >{{businesses.review_count}} review{{(businesses.review_count == 1 && '') || 's'}}.</div>
+						</div>
+					</a>
+				</div>
+			</ul>
+		</div>
+		<div>
+			<form ng-init="yelpSearchBox = false" ng-show="yelpSearchBox" ng-submit="submit(place, term)" class="form-inline " style="height: 100px; padding:10px;">
+				<div class="form-group">
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+							<div class="input-group hundred">
+								<div class="col-lg-5 col-md-3 col-sm-4 col-xs-5 padLeft" >
+									
+										<label></label>
+										<input class="form-control hundred" type="text" placeholder="" ng-model="term" />
+										<div class="pull-left base">Find: pizza, pub...</div>
+									
+								</div>
+								<div class="col-lg-5 col-md-3 col-sm-4 col-xs-5 padLeft">
+									
+										<label></label>
+										<input type="text" class="form-control hundred" placeholder={{place}} ng-model="place"/>
+										<div class="pull-left base">Near</div>
+									
+								</div>
+								<div  class=" col-lg-2 col-md-3 col-sm-4 col-xs-2 pad0 center-block text-center" >
+									<div class="form-group padLeft pullRight" >
+										<label></label>
+										<button type="submit" class="btn btn-primary btn-sm" style="vertical-align: top; float:left;">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	 <!-- Modal -->
+	<div id="yelpModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+		<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">No Results</h4>
+				</div>
+				<div class="modal-body">
+					<p>Sorry, there doesn't seem to be any {{term}} in {{place}}.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+	  </div>
+	</div>
+</div>

@@ -1,0 +1,56 @@
+<div class="panel panel-danger" data-ng-controller="InstagramController">			
+	<div class="panel-heading clearfix" id="handle" style="background-color: #125688">
+		<h3 class="panel-title">
+			<a href="https://www.instagram.com" target="_blank" style="cursor: pointer;"><span class="fa fa-instagram pull-left"></span> Instagram</a>
+			
+			<span style="cursor: pointer;" onclick="removeTheModule('instagram')" class="glyphicon glyphicon-remove pull-right"></span>
+		</h3>
+	</div>
+	<div class="panel-body scroll">
+		<span ng-show="instaLoggedin" class="social_icon social_icon_instagram">
+			<a target="_self" ng-href="/api/auth/instagram" class="button" href="/api/auth/instagram">
+				<span class="text-capitalize ng-binding">{{instaLoggedin}} instagram</span>
+			</a>
+			<img src="/yourhome/assets/img/instagram_gif.gif" style="width: 100%; padding-top: 5px;" />
+		</span>
+		<ul ng-if="!instaLoggedin" class="list-group">
+			<div ng-repeat="data in myInsta">
+				<li class="list-group-item clearfix listItemHover" > 
+					<header class="col-md-12 col-sm-12 col-xs-12">
+							<div class="col-md-1 col-sm-1 col-xs-1 pad0" ng-class='whatClassPhoto(data.location !== null)'>
+								<img  ng-src ="{{data.user.profile_picture}}" class="img-circle profileImage col-md-12 col-sm-12 col-xs-12">
+							</div>
+							<div class="col-md-10 col-sm-10 col-xs-10" ng-class='whatClassIsIt(data.location !== null)'>
+								<div class="profileText"><a target="_blank" ng-href="{{'https://www.instagram.com/' +data.user.username}}">{{data.user.username}}</a></div>
+								<div ng-if="data.location !== null" class="instaLocation"><a target="_blank" ng-href="{{'https://www.instagram.com/explore/locations/' +data.location.id}}">{{data.location.name}}</a></div>
+							</div>
+							<div class="col-md-1 col-sm-1 col-xs-1 pad0" ng-class='whatClassPhoto(data.location !== null)'>
+								{{data.created_time | dateFilter}}
+							</div>
+					</header>
+					<div class="col-md-12 col-sm-12 col-xs-12 pad0">
+						<img ng-if="data.type == 'image'" ng-src ="{{data.images.standard_resolution.url}}" class="img-responsive col-md-12 col-sm-12 col-xs-12 mainImage">
+						<!--<div ng-if="data.type == 'video'"  ng-init="someMethod(data.videos.standard_resolution.url)" my-youtube code="code"></div>-->
+					
+						<div ng-if="data.type == 'video'">
+							<video class="hundred" controls="controls" name="Video Name" src="{{data.videos.standard_resolution.url | trustUrl}}"></video>
+						</div>
+					</div>
+					<header class="col-md-12 col-sm-12 col-xs-12 commentSection" ng-class='moveForVid(data.type == "video")'>
+						<div class="instaLikes" ng-if="data.likes.count > 0 && data.likes.count != 1">{{data.likes.count}} likes</div>
+						<div class="instaLikes" ng-if="data.likes.count == 1">{{data.likes.count}} like</div>
+						<div>
+							<div class="commentName inline"><a target="_blank" ng-href="{{'https://www.instagram.com/' +data.caption.from.username}}">{{data.caption.from.username}}</a></div>
+							<div class="inline" ng-bind-html="data.caption.text"></div>
+						</div>
+						<div ng-repeat="data in data.realComments">
+							<div class="commentName inline"><a target="_blank" ng-href="{{'https://www.instagram.com/' +data.from.username}}">{{data.from.username}}</a></div>
+							<div class="inline" ng-bind-html="data.text"></div>
+						</div>
+					</header>
+				</li>
+			</div>
+		</ul>
+	</div>
+	
+</div>

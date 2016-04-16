@@ -1,0 +1,101 @@
+<div class="row" data-ng-controller="ProfileController">
+<div class="container">
+	<div class="col-xs-12">
+        <div class="panel panel-default" ng-init="getDetails()" id="cntbox">
+            <div class="panel-body ">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <legend class="Jolegend">Your Profile</legend>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-xs-2 col-md-2 control-label Jolabel">Name</label>
+                                <div class="col-xs-10 col-md-10" id="inputparentdiv">
+                                    <input type="text" class="form-control" id="inputEmail" placeholder="First Name" ng-model="profile.first_name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-xs-2 col-md-2 control-label Jolabel">Surname</label>
+                                <div class="col-xs-10 col-md-10" id="inputparentdiv">
+                                    <input type="text" class="form-control" id="inputEmail" placeholder="Last Name" ng-model="profile.last_name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-xs-2 col-md-2 control-label Jolabel">Email</label>
+                                <div class="col-xs-10 col-md-10" id="inputparentdiv">
+                                    <input type="text" class="form-control" id="inputEmail" placeholder="Email" ng-model="profile.email">
+                                </div>
+                            </div>
+                            <div class="form-group" ng-hide="profile.providers.length == 0">
+                                <label class="col-xs-2 col-md-2 control-label Jolabel">Remove Account</label>
+                                <div class="col-xs-10">
+                                    <span ng-repeat="provider in profile.providers" class="social_icon social_icon_{{provider}} social_icon_simple_small" style="cursor: pointer">
+										<a target="_self" ng-click="removeAccount(provider)" class="button">
+										</a>
+									</span>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-hide="profile.providers.length == socialButtonsCounter">
+                                <label class="col-xs-2 col-md-2 control-label Jolabel">Add account</label>
+								<div class="col-xs-10">
+									<span ng-repeat="(key, val) in socialButtons" ng-hide="profile.providers.indexOf(key) >= 0" class="social_icon social_icon_{{key}} social_icon_simple_small">
+										<a target="_self" ng-href="/api/auth/{{key}}" class="button">
+										</a>
+									</span>
+								</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-xs-2 col-md-2 control-label Jolabel">Profile Picture</label>
+                                <div class="col-xs-10 col-md-10">
+                                    <img ng-src="{{profile.imgsrc}}" class="img-thumbnail profilePic" alt="Profile pic">
+                                    <img ng-repeat="provider in profile.providers" ng-src="{{profile[provider].imgsrc}}" ng-click="changeProfilePic(profile[provider].imgsrc)" ng-hide="profile[provider].imgsrc == profile.imgsrc || profile[provider].imgsrc == defaultIMG" class="img-thumbnail profilePic" alt="Profile pic" style="width: 40px;">
+                                    <input type="text" class="form-control" id="inputEmail" placeholder="Image URL" ng-model="profile.imgsrc">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-6">
+                            <uib-accordion close-others="true">
+
+                                <!--<uib-accordion-group heading="To change your password open this" panel-class="panel-warning">
+                                    <div class="form-group">
+                                        <label for="inputPassword" class="col-xs-2 col-md-2 control-label">Password</label>
+                                        <div class="col-xs-10 col-md-10" id="inputparentdiv">
+                                            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword" class="col-xs-2 col-md-2 control-label">Password</label>
+                                        <div class="col-xs-10 col-md-10" id="inputparentdiv">
+                                            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+
+                                        </div>
+                                    </div>
+                                </uib-accordion-group>-->
+
+                                <uib-accordion-group heading="To completely delete your account open this" panel-class="panel-danger">
+                                    <strong>Caution: This action cannot be undone. Proceed with caution</strong>
+                                    <br>
+                                    <button class="btn btn-danger" ng-click="deleteProfile()">Delete</button>
+                                </uib-accordion-group>
+
+                            </uib-accordion>
+                        </div>
+
+                    </fieldset>
+                    <div class="form-group">
+                        <div class="text-center">
+                            <button class="btn btn-default" ng-click="cancelProfile()">Cancel</button>
+                            <button class="btn btn-primary" ng-click="saveProfile()">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+	</div>
+</div>
+

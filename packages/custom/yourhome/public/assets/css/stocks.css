@@ -1,0 +1,21 @@
+.redStockText
+{
+	color: red;
+}
+.greenStockText
+{
+	color: green;
+}
+.stockForm
+{
+	margin-bottom: 0px;
+}
+.individualStock
+{
+	margin-bottom: 8px;
+	padding: 5px;
+}
+.pointer
+{
+	cursor: pointer;
+}

@@ -1,0 +1,39 @@
+<div data-ng-controller="StocksController" class="panel panel-success" ng-init="initialiseStocks()">
+	<div class="panel-heading" id="handle">
+		<h3 class="panel-title">
+			<a href="http://finance.yahoo.com/" target="_blank" style="cursor: pointer;"><span class="fa fa-line-chart pull-left"></span> Stocks</a>
+		
+			<span style="cursor: pointer;"  onclick="removeTheModule('stocks')" class="glyphicon glyphicon-remove pull-right"></span>
+			<span style="cursor: pointer;" class="glyphicon glyphicon-repeat pull-right">&nbsp;</span>
+		</h3>
+	</div>
+	<div class="panel-body panel-group scroll">   
+		<ul class="list-group" >
+			<div ng-repeat="stock in stocks | orderBy: 'name' track by stock.symbol">
+			<!-- Add this to above line to enable swipe to delete ng-swipe-left="multiStocks.splice($index,1)" ng-swipe-right="multiStocks.splice($index,1)"-->
+				<li class="list-group-item">
+					<div class="individualStock"> 
+						<span ng-click="removeStock(stock)" class="closeIndStock pull-right pointer"> &times; </span>
+						<div>Stock: <a ng-href="http://finance.yahoo.com/q?s={{stock.symbol}}" target="_blank">{{ stock.name}}</a></div>
+						<div>Symbol: {{ stock.symbol | uppercase}}</div><!--filter formats to uppercase-->
+						<div>Price: {{ stock.lastTradePriceOnly | currency:"$" }}<!--filter formats to currency-->
+							<span ng-class="setStockClass(stock.change)" class="pull-right">{{ stock.percentChange || '0' | number }}%<!--chooses which style to apply-->
+								<span class="glyphicon glyphicon-arrow-up" ng-hide="(stock.change == null) || (stock.change <= 0)"></span>
+								<span class="glyphicon glyphicon-arrow-down" ng-hide="(stock.change == null) || (stock.change >= 0)"></span>
+							</span>
+						</div>
+					</div>
+				</li>
+			</div>
+		</ul>
+		<form ng-submit="validateStock()" class="text-center form-group stockForm" autocomplete="off">
+			<div class="input-group">
+				<input type="text" id="stockInput" class="form-control" ng-model="wanted.stock" 
+					placeholder="Add another stock"data-container="body" data-toggle="popover" data-placement="bottom" >
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="submit">Go</button>
+				</span>
+			</div>
+		</form>
+	</div>
+</div>

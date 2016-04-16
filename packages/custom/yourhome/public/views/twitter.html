@@ -1,0 +1,113 @@
+<div data-ng-controller="TwitterController">
+	<div class="panel panel-primary">
+		<div class="panel-heading" id="handle" style="background-color: #55acee">
+			<h3 class="panel-title">
+				
+				<a href="https://twitter.com/" target="_blank" style="cursor: pointer;"><span class="fa fa-twitter pull-left"></span> Twitter</a>
+		
+				<span style="cursor: pointer;"  onclick="removeTheModule('twitter')" class="glyphicon glyphicon-remove pull-right"></span>
+				<span ng-show="!twitterLoggedin" style="cursor: pointer;" ng-click="tweetBox = !tweetBox"class="glyphicon glyphicon-pencil pull-right">&nbsp;</span>
+			</h3>
+		</div>
+		<div class="panel-body scroll" ng-class="{scrollSmall:tweetBox}">
+			<!--<span ng-show="twitterLoggedin" ng-class="{social_icon_long:twitterLogExpand}" class="social_icon social_icon_twitter social_icon_small"ng-mouseover="twitterLogExpand = true" ng-mouseleave="twitterLogExpand = false">
+				<a target="_self" ng-href="/api/auth/twitter" class="button" href="/api/auth/twitter">
+					<span class="text-capitalize ng-binding">{{twitterLoggedin}} twitter</span>
+				</a>
+			</span>-->
+			<span ng-show="twitterLoggedin" class="social_icon social_icon_twitter">
+				<a target="_self" ng-href="/api/auth/twitter" class="button" href="/api/auth/twitter">
+					<span class="text-capitalize ng-binding">{{twitterLoggedin}} twitter</span>
+				</a>
+			</span>
+			<div id="twitterFeed" class="list-group" ng-if="!twitterLoggedin">
+				<!--<div id="twitterLoading" class="mdl-spinner mdl-js-spinner is-active rssLoading hidden"></div>-->
+				<div ng-repeat="tweet in tweets">
+					<li class="list-group-item twitterList">
+						<div class="twitterBody">
+							<div ng-show="tweet.retweet">
+								<i class="fa fa-retweet twitterRetweetedIcon twitterGreen" />
+								<div ng-bind-html="tweet.retweet" class="twitterGrey"></div>
+							</div>
+							<div>
+								<a ng-href="https://twitter.com/{{tweet.user.screen_name}}" target="_blank" class="twitterProfileLink">
+									<img ng-src="{{tweet.user.img}}" class="twitterProfilePic">
+									<strong class="twitterUsername">{{tweet.user.name}}</strong>
+									<span class="twitterGrey">@{{tweet.user.screen_name}}</span>
+								</a>
+								<span class="twitterGrey">- {{tweet.created_at}}</span>
+							</div>
+							<div ng-bind-html="tweet.text" class="twitterText"></div>
+							<div ng-show="tweet.is_quote_status" class="twitterQuoteBox">
+								<div ng-show="!tweet.quote_unavailable">
+									<a ng-href="https://twitter.com/{{tweet.quoted_status.user.screen_name}}" target="_blank" class="twitterProfileLink">
+										<strong class="twitterUsername">{{tweet.quoted_status.user.name}}</strong>
+										<span class="twitterGrey">@{{tweet.quoted_status.user.screen_name}}</span>
+									</a>
+								</div>
+								<div ng-bind-html="tweet.quoted_status.text" class="twitterText" />
+							</div>
+							<div ng-show="!tweet.error">
+								<!-- Reply Button -->
+								<a class="twitterIcon"  data-toggle="modal" data-target="#twitterReply" ng-click="assignReplyTweet(tweet)">
+									<i class="fa fa-reply" />
+								</a>
+								<!-- Retweet Button -->
+								<a class="twitterIcon" ng-class="{twitterGreen:tweet.retweeted, twitterLinkDisabled:tweet.userTweet}" ng-click="twitterRetweet(tweet)">
+									<i class="fa fa-retweet" />
+									<span>{{tweet.retweet_count}}</span>
+								</a>
+								<!-- Favorite Button -->
+								<a class="twitterIcon" ng-class="{twitterRed:tweet.favorited}">
+									<i class="fa fa-heart" />
+									<span>{{tweet.favorite_count}}</span>
+								</a>
+								<a class="twitterIcon" ng-show="tweet.userTweet" ng-click="twitterDelete(tweet)">
+									<i class="fa fa-trash" />
+								</a>
+							</div>
+						</div>
+					</li>
+				</div>
+			</div>
+		</div>
+			<form ng-init="tweetBox=false" ng-show="tweetBox" class="form-horizontal" style="height: 100px; padding: 10px">
+				<input type="text" class="form-control" placeholder="What's Happening?" ng-model="newTweet.tweet" ng-trim="false"/>
+				<button class="btn primary-btn fa fa-twitter twitterTweet" ng-click="postTweet()" ng-disabled="!newTweet.tweet.trim() || (140 - newTweet.tweet.length) < 0"> Tweet</button>
+				<div class="twitterGrey twitterCount" ng-class="{twitterRed:(140 - newTweet.tweet.length) <= 10}">{{140 - newTweet.tweet.length}}</div>
+			</form>
+	</div>
+
+	<!-- Modal -->
+	<div id="twitterReply" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+		  <div class="twitterHeader">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h3 class="modal-title twitterModalTitle">Reply to @{{replyTweet.user.screen_name}}</h3>
+		  </div>
+		  <div class="modal-body twitterBody">
+			<div>
+				<a ng-href="https://twitter.com/{{replyTweet.user.screen_name}}" target="_blank" class="twitterProfileLink">
+					<img ng-src="{{replyTweet.user.img}}" class="twitterProfilePic">
+					<strong class="twitterUsername">{{replyTweet.user.name}}</strong>
+					<span class="twitterGrey">@{{replyTweet.user.screen_name}}</span>
+				</a>
+				<span class="twitterGrey">- {{replyTweet.created_at}}</span>
+			</div>
+			<div ng-bind-html="replyTweet.text" class="twitterText"></div>
+		  </div>
+		  <div class="modal-footer">
+			<form class="form-horizontal">
+				<input id="replyTweetInput" type="text" class="form-control" placeholder="What's Happening?" ng-model="newReplyTweet.tweet" ng-trim="false"/>
+				<button class="btn primary-btn fa fa-twitter twitterTweet" data-dismiss="modal" ng-click="twitterReply()" ng-disabled="!newReplyTweet.tweet.trim() || (140 - newReplyTweet.tweet.length) < 0 || newReplyTweet.tweet.trim() == replyPeople.trim()"> Tweet</button>
+				<div class="twitterGrey twitterCount" ng-class="{twitterRed:(140 - newReplyTweet.tweet.length) <= 10}">{{140 - newReplyTweet.tweet.length}}</div>
+			</form>
+		  </div>
+		</div>
+
+	  </div>
+	</div>
+</div>
