@@ -1,9 +1,10 @@
-angular.module('mean.yourhome').controller('InstagramController', ['$scope', '$rootScope', '$http', 'MeanUser', 'Global', 'Yourhome', 'Module',
-function($scope, $rootScope, $http, MeanUser, Global, Yourhome, Module) {
+angular.module('mean.yourhome').controller('InstagramController', ['$scope', '$rootScope', '$http', '$interval', 'MeanUser', 'Global', 'Yourhome', 'Module', 
+function($scope, $rootScope, $http, $interval, MeanUser, Global, Yourhome, Module) {
 	var instagram = [];
 	var counterInsta = 0;
-	
+
 	$scope.instaLoggedin = 'Log In With';
+	
 	
 	$scope.initInsta = function() {		
 		var requestInsta = $http({
@@ -87,7 +88,8 @@ function($scope, $rootScope, $http, MeanUser, Global, Yourhome, Module) {
 	if(MeanUser && MeanUser.user){
 		if(MeanUser.user.instagram) {
 			$scope.instaLoggedin = undefined;
-			$scope.initInsta();
+			$interval($scope.initInsta(), 5000);
+			//$scope.initInsta();
 		}
 		else if(MeanUser.user) $scope.instaLoggedin = 'Link';
 	}
@@ -95,7 +97,8 @@ function($scope, $rootScope, $http, MeanUser, Global, Yourhome, Module) {
 	$rootScope.$on('loggedin', function() {
 		if(MeanUser.user.instagram) {
 			$scope.instaLoggedin = undefined;
-			$scope.initInsta();
+			$interval($scope.initInsta(), 5000);
+			
 		}
 		else if(MeanUser.user) $scope.instaLoggedin = 'Link';
     });
