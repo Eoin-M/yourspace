@@ -67,6 +67,7 @@ modules/views/
 /public/build/
 /packages/contrib/
 /packages/**/**/public/assets/lib
+database/
 
 
 # --------------------

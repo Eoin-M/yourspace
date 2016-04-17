@@ -13,7 +13,8 @@
     "web-bootstrap": "./node_modules/meanio/resources/web-bootstrap.js",
     "angular-ui-select": "latest",
     "angular-sanitize": "latest",
-	"angular-animate": "latest",
-	"jquery-ui": "latest"
+    "angular-animate": "latest",
+    "jquery-ui": "latest",
+    "font-awesome": "^4.6.1"
   }
 }
