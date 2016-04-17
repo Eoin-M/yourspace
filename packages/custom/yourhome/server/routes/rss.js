@@ -5,7 +5,6 @@ var mongoose = require('mongoose'),
 module.exports = function(Yourhome, app, auth, database) {  
   
 	var bodyParser = require('body-parser');
-	var get_ip = require('ipware')().get_ip;
 	var FeedParser = require('feedparser')
 	  , request = require('request');
 
