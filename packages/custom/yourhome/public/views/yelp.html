@@ -12,7 +12,7 @@
 		<div class="panel-body scroll" ng-class="{scrollSmall:yelpSearchBox}">
 			<ul class="list-group" style="padding-bottom:5px; ">
 				<div ng-repeat="businesses in yelpData | orderBy:'rating':'reverse'" class="yelpSlide">
-					<a  ng-href="{{businesses.url}}" target="_blank"class="list-group-item clearfix " >
+					<a  ng-href="{{businesses.url}}" target="_blank"class="list-group-item clearfix " style="position:inherit">
 						<img ng-src ="{{businesses.image_url}}" err-src="/yourhome/assets/img/No-image-found.jpg" class="img-rounded col-md-3 col-sm-3 col-xs-3" style="padding:0px;">
 						<div class="col-md-9 col-sm-9 col-xs-9 cleanUp" style="padding-right:0px; vertical-align: top; margin-top:2px">
 							<h5 style="margin-top:0px; margin-bottom:5px;">{{$index + 1}}. {{businesses.name}} 
@@ -26,7 +26,7 @@
 			</ul>
 		</div>
 		<div>
-			<form ng-init="yelpSearchBox = false" ng-show="yelpSearchBox" ng-submit="submit(place, term)" class="form-inline " style="height: 100px; padding:10px;">
+			<form ng-init="yelpSearchBox = false" ng-show="yelpSearchBox" ng-submit="submit(place, term)" class="form-inline boxShadow" style="height: 100px; padding:10px;">
 				<div class="form-group">
 					<div class="row">
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
