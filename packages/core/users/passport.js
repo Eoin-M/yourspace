@@ -10,6 +10,7 @@ var mongoose = require('mongoose'),
   InstagramStrategy = require('passport-instagram').Strategy,
   LinkedinStrategy = require('passport-linkedin').Strategy,
   refresh = require('passport-oauth2-refresh'),
+  TumblrStrategy = require('passport-tumblr').Strategy,
   User = mongoose.model('User'),
   config = require('meanio').loadConfig();
   

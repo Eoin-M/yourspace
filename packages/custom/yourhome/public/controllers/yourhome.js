@@ -194,12 +194,17 @@ angular.module('mean.yourhome').controller('YourhomeController', ['$scope', '$ro
 		}
 		
 		$scope.getLocation = function(){
-			$http.get('/api/yourhome/getLocation')
-			.success(function(data){
-				loc = data.loc;
+			$http.get('http://ipinfo.io')
+			.success(function(obj){
+				loc.lat = obj.loc.split(",")[0];
+				loc.long = obj.loc.split(",")[1];
+				loc.city = obj.city;
+				loc.country = obj.country;
+				loc.isFound = true;
+				loc.state = obj.region;
 				$rootScope.$emit('loc');
 			})
-			.error(function(data){
+			.error(function(obj){
 				$rootScope.$emit('noLoc');
 			});
 		}

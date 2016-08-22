@@ -12,10 +12,8 @@ function($scope, $rootScope, $http, Global, Yourhome) {
 	$scope.jobGet = function ()
 	{
 		$scope.jobCity = loc.city;
-		$scope.jobCountry = loc.country;
+		$scope.jobCountry = getIndexOfCountry((loc.country).toLowerCase());
 		country = loc.country;
-		country = country.toLowerCase();
-		country = countryMap[country];
 		$scope.jobTerm = "";
 
 		city = loc.city;
@@ -35,7 +33,7 @@ function($scope, $rootScope, $http, Global, Yourhome) {
 			}
 		});	
 		requestJobs.error( function(obj){
-				console.log("error finding with location in yelpApp");
+				console.log("error finding with location in jobs");
 			}
 		);
 	}

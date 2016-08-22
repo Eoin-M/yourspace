@@ -15,19 +15,19 @@ function($scope, $rootScope, $http, Global, Yourhome) {
 			if(typeof loc.state === 'undefined')
 			{ 
 				if(typeof loc.country === 'undefined'){ console.log('cant use location');}
-				else{ location = loc.country;}
+				else{ location = getIndexOfCountry((loc.country).toLowerCase());}
 			}
 			else{ location = loc.state;}
 		}
 		else { location = loc.city;}
 		console.log(loc.city);
 		
-	console.dir(Yourhome);
+		//console.dir(Yourhome);
 		$scope.place = location;
 		requestYelp = $http({
 		method: "post",
 		url: "/api/yourhome/yelpApp",
-		data: {location: 'galway', term: term}
+		data: {location: location, term: term}
 		});
 		requestYelp.success( function(obj){	
 			if(obj.length == 0){

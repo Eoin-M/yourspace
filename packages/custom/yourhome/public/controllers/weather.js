@@ -21,7 +21,8 @@ angular.module('mean.yourhome').controller('WeatherController', ['$scope', '$roo
 	
 	$scope.weatherGet = function ()
 	{
-		console.dir(loc);
+		//console.dir(loc);
+		var country = getIndexOfCountry((loc.country).toLowerCase());
 		if(typeof loc.city === 'undefined')
 		{
 			if(typeof loc.state !== 'undefined'){ console.log('cant use location');}
@@ -30,7 +31,7 @@ angular.module('mean.yourhome').controller('WeatherController', ['$scope', '$roo
 				var requestWeather = $http({
 					method: "post",
 					url: "/api/yourhome/weather",
-					data: {city: loc.state, country: loc.country}
+					data: {city: loc.state, country: country}
 				});
 			}
 		}
@@ -39,7 +40,7 @@ angular.module('mean.yourhome').controller('WeatherController', ['$scope', '$roo
 			var requestWeather = $http({
 				method: "post",
 				url: "/api/yourhome/weather",
-				data: {city: loc.city, country: loc.country}
+				data: {city: loc.city, country: country}
 			});
 		}
 		requestWeather.success(

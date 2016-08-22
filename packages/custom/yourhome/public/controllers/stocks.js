@@ -5,7 +5,7 @@ angular.module('mean.yourhome').controller('StocksController', ['$scope', '$http
         
 		$scope.getStock=function(stockArray)
 		{
-			console.log("entered getStock");
+			//console.log("entered getStock");
 			$http.post('/api/yourhome/getStock', JSON.stringify(
                 {
                     symbols: stockArray
@@ -44,8 +44,8 @@ angular.module('mean.yourhome').controller('StocksController', ['$scope', '$http
                 symbols.push($scope.stocks[i].symbol);
             }
             $scope.getStock(symbols);
-            console.log("updating:");
-            console.dir(symbols);
+            //console.log("updating:");
+            //console.dir(symbols);
 			
 		}, 30000);//Updates stocks every 30 seconds
 		

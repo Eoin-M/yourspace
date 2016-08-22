@@ -100,6 +100,7 @@ var UserSchema = new Schema({
   reddit: {},
   instagram: {},
   linkedin: {},
+  tumblr: {},
   snag: {},
   rss: {
 	  defaultURL: {

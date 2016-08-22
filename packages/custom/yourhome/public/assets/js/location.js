@@ -4,9 +4,9 @@ var loc = new UserLocation;
 var tempLoc = new UserLocation;
 var mapMarker = null;
 
-function myGetLocation()
-{
-	setTimeout(function(){angular.element(document.getElementById("yourhome")).scope().getLocation();} , 1000);
+//function myGetLocation()
+//{
+//	setTimeout(function(){angular.element(document.getElementById("yourhome")).scope().getLocation();} , 1000);
 	
 	/*if (navigator.geolocation)//if navigator geolocation is supported then
 	{
@@ -22,8 +22,8 @@ function myGetLocation()
 	}*/
 	//setTimeout(function(){angular.element(document.getElementById("divCntrl")).scope().yelpWait();} , 5000);
     //TODO wait for set time, then maybe call the map function if isFound isn't true
-}
-
+//}
+/*
 function positionToLongLat(position)
 {
 	//console.log("longtitude: "+position.coords.longitude+"\nlatitude: "+position.coords.latitude);
@@ -33,7 +33,8 @@ function positionToLongLat(position)
 	runGoogleNavigatorAPI( position.coords.longitude , position.coords.latitude, loc);
 	//console.log(loc);
 }
-
+*/
+/*
 function noLocationError(error) //should work but I've never seen it called...
 {
 	console.log("err");
@@ -61,7 +62,8 @@ function noLocationError(error) //should work but I've never seen it called...
 }
 
 var attempts = 0;
-
+*/
+/*
 function runGoogleNavigatorAPI(long, lat, location)
 //http://stackoverflow.com/questions/6797569/get-city-name-using-geolocation source
 {
@@ -144,6 +146,7 @@ function runGoogleNavigatorAPI(long, lat, location)
     
     return loc;
 }
+*/
 
 function initMap() 
 {
