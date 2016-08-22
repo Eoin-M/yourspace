@@ -43,7 +43,6 @@ nb-configuration.xml
 .nodemonignore
 npm-debug.log
 node_modules/
-env/
 
 # --------------------
 # SASS Files
@@ -65,7 +64,6 @@ modules/public/
 modules/views/
 /public/build/
 /packages/contrib/
-/packages/**/**/public/assets/lib
 database/
 
 
